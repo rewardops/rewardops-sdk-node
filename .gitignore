@@ -1,0 +1,13 @@
+# vim artifacts
+**.swp
+
+# Don't commit Node modules
+node_modules
+
+# Used to ensure certain empty directories
+# are added to the git index
+!.gitkeep
+
+# Don't commit actual config details (that's
+# what the sample config is for)
+/config.json
