@@ -11,6 +11,9 @@ var gulp            = require('gulp'),
         'index.js',
         'lib/**/*.js',
         'test/**/*.js'
+      ],
+      tests: [
+        'test/**/*.js'
       ]
     };
 
@@ -30,7 +33,7 @@ gulp.task('lint', function() {
 
 gulp.task('test', function() {
   return gulp
-    .src('test/*.js')
+    .src(paths.tests)
     .pipe(mocha({reporter: 'spec'}));
 });
 
