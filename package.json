@@ -1,0 +1,16 @@
+{
+  "name": "rewardops-sdk",
+  "version": "0.1.0",
+  "description": "Official Node.js SDK for the RewardOps API",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "RewardOps",
+    "rewards",
+    "API"
+  ],
+  "author": "RewardOps/Jerad Gallinger",
+  "license": "Proprietary"
+}
