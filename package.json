@@ -4,7 +4,7 @@
   "description": "Official Node.js SDK for the RewardOps API",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/RewardOps/rewardops-node-sdk.git"
+    "url": "https://bitbucket.org/RewardOps/rewardops-sdk-node.git"
   },
   "main": "index.js",
   "scripts": {
