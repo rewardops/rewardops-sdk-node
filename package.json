@@ -2,6 +2,10 @@
   "name": "rewardops-sdk",
   "version": "0.1.0",
   "description": "Official Node.js SDK for the RewardOps API",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/RewardOps/rewardops-node-sdk.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
@@ -12,5 +16,12 @@
     "API"
   ],
   "author": "RewardOps/Jerad Gallinger",
-  "license": "Proprietary"
+  "license": "Proprietary",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^1.9.0",
+    "gulp-mocha": "^2.0.0",
+    "jshint-stylish": "^1.0.0"
+  }
 }
