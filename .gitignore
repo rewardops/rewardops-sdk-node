@@ -1,7 +1,10 @@
-# vim artifacts
+# OS X artifacts
+.DS_Store
+
+# Vim artifacts
 **.swp
 
-# Don't commit Node modules
+# Node modules
 node_modules
 
 # Used to ensure certain empty directories
