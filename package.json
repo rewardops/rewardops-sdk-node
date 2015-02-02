@@ -30,7 +30,8 @@
     "gulp-jshint": "^1.9.0",
     "gulp-mocha": "^2.0.0",
     "jshint-stylish": "^1.0.0",
-    "nock": "^0.59.0"
+    "nock": "^0.59.0",
+    "sinon": "~1.12.2"
   },
   "dependencies": {
     "request": "^2.51.0",

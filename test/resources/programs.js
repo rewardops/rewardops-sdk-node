@@ -6,11 +6,19 @@ var chai      = require('chai'),
 
 describe('RewardOps', function() {
   describe('programs', function() {
-    it('should return an array', function(done) {
-      programs(function(error, programList) {
-        expect(programList).to.be.an('array');
+    it('should be an object', function() {
+      expect(programs).to.be.an('object');
+    });
 
-        done();
+    describe('getAll()', function() {
+      it('should return an array', function(done) {
+        programs.getAll(function(error, programList) {
+          expect(error).to.equal(null);
+
+          expect(programList).to.be.an('array');
+
+          done();
+        });
       });
     });
   });
