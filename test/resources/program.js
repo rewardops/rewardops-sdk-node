@@ -7,7 +7,7 @@ var chai      = require('chai'),
     programs  = require('../../lib/resources/programs.js');
 
 describe('RewardOps', function() {
-  describe('program', function() {
+  describe('program()', function() {
     it('should return an object', function() {
       expect(program(1)).to.be.an('object');
     });
