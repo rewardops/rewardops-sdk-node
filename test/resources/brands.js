@@ -2,19 +2,19 @@
 
 var chai    = require('chai'),
     expect  = chai.expect,
-    RO      = require('../../lib/rewardops.js');
+    RO      = require('../..');
 
-describe('RO.programs', function() {
+describe('brands', function() {
   it('should be an object', function() {
-    expect(RO.programs).to.be.an('object');
+    expect(RO.brands).to.be.an('object');
   });
 
   describe('getAll()', function() {
     it('should return an array', function(done) {
-      RO.programs.getAll(function(error, programList) {
+      RO.brands.getAll(function(error, brandList) {
         expect(error).to.equal(null);
 
-        expect(programList).to.be.an('array');
+        expect(brandList).to.be.an('array');
 
         done();
       });
@@ -25,7 +25,7 @@ describe('RO.programs', function() {
     it('should return an object', function(done) {
       var id = 555;
 
-      RO.programs.get(id, function(error, data) {
+      RO.brands.get(id, function(error, data) {
         expect(error).to.equal(null);
 
         expect(data).to.be.an('object');

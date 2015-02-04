@@ -2,21 +2,21 @@
 
 var chai    = require('chai'),
     expect  = chai.expect,
-    Orders  = require('../../lib/resources/orders.js');
+    RO      = require('../..');
 
 describe('Orders', function() {
   it('should create an orders object for a program', function() {
-    var programOrders = new Orders('program', 488);
+    var programOrders = RO.program(488).orders;
 
-    expect(programOrders).to.be.an('object').and.to.be.an.instanceof(Orders);
+    expect(programOrders).to.be.an('object');
   });
 
   describe('contextId', function() {
     it('should be the context ID passed to the constructor', function() {
       var brandId = 4985,
-          brandOrders = new Orders('brand', brandId),
+          brandOrders = RO.brand(brandId).orders,
           programId = 309248,
-          programOrders = new Orders('program', programId);
+          programOrders = RO.program(programId).orders;
 
       expect(brandOrders.contextId).to.be.a('number').and.to.equal(brandId);
       expect(programOrders.contextId).to.be.a('number').and.to.equal(programId);
@@ -25,9 +25,7 @@ describe('Orders', function() {
 
   describe('getAll()', function() {
     it('should return an array to the callback', function(done) {
-      var programOrders = new Orders('program', 67);
-
-      programOrders.getAll(function(error, data) {
+      RO.program(67).orders.getAll(function(error, data) {
         expect(data).to.be.an('array');
 
         done();
@@ -37,9 +35,7 @@ describe('Orders', function() {
 
   describe('get()', function() {
     it('should return an object to the callback', function(done) {
-      var brandOrders = new Orders('brand', 3209);
-
-      brandOrders.get(1654, function(error, data) {
+      RO.brand(398).orders.get(1654, function(error, data) {
         expect(error).to.equal(null);
 
         expect(data).to.be.an('object');
@@ -51,9 +47,7 @@ describe('Orders', function() {
 
   describe('create()', function() {
     it('should return an object to the callback', function(done) {
-      var programOrders = new Orders('program', 2994);
-
-      programOrders.create({}, function(error, response) {
+      RO.program(2994).orders.create({}, function(error, response) {
         expect(error).to.equal(null);
 
         expect(response).to.be.an('object');
