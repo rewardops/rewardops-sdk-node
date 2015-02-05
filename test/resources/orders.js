@@ -4,7 +4,7 @@ var chai    = require('chai'),
     expect  = chai.expect,
     RO      = require('../..');
 
-describe('Orders', function() {
+describe('orders', function() {
   it('should create an orders object for a program', function() {
     var programOrders = RO.program(488).orders;
 

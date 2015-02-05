@@ -28,12 +28,13 @@ gulp.task('lint', function() {
   return gulp
     .src(paths.scripts)
       .pipe(jshint('.jshintrc'))
-      .pipe(jshint.reporter(stylish));
+      .pipe(jshint.reporter(stylish))
+      .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('test', function() {
   return gulp
     .src(paths.tests)
-    .pipe(mocha({reporter: 'spec'}));
+    .pipe(mocha({reporter: 'min'}));
 });
 
