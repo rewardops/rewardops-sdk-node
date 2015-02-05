@@ -13,12 +13,9 @@ describe('orders', function() {
 
   describe('contextId', function() {
     it('should be the context ID passed to the constructor', function() {
-      var brandId = 4985,
-          brandOrders = RO.brand(brandId).orders,
-          programId = 309248,
+      var programId = 309248,
           programOrders = RO.program(programId).orders;
 
-      expect(brandOrders.contextId).to.be.a('number').and.to.equal(brandId);
       expect(programOrders.contextId).to.be.a('number').and.to.equal(programId);
     });
   });
@@ -35,7 +32,7 @@ describe('orders', function() {
 
   describe('get()', function() {
     it('should return an object to the callback', function(done) {
-      RO.brand(398).orders.get(1654, function(error, data) {
+      RO.program(398).orders.get(1654, function(error, data) {
         expect(error).to.equal(null);
 
         expect(data).to.be.an('object');
