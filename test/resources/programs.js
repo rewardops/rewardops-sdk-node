@@ -2,9 +2,16 @@
 
 var chai    = require('chai'),
     expect  = chai.expect,
+    nock    = require('nock'),
+    api     = require('../../lib/api'),
     RO      = require('../../lib/rewardops.js');
 
 describe('RO.programs', function() {
+  before(function() {
+    RO.config.clientId = 'abcd1234';
+    RO.config.clientSecret = 'abcd1234';
+  });
+
   it('should be an object', function() {
     expect(RO.programs).to.be.an('object');
   });
@@ -15,6 +22,18 @@ describe('RO.programs', function() {
         expect(error).to.equal(null);
 
         expect(programList).to.be.an('array');
+
+        done();
+      });
+    });
+
+    it('should make an HTTP get request to the correct URL', function(done) {
+      var apiCall = nock(api.baseUrl)
+        .get('/programs')
+        .reply(200);
+
+      RO.programs.getAll(function(error, programList) {
+        expect(apiCall.isDone()).to.be.ok();
 
         done();
       });

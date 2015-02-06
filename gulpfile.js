@@ -1,11 +1,11 @@
 /* Copyright 2015 RewardOps */
 'use strict';
 
-var gulp            = require('gulp'),
-    jshint          = require('gulp-jshint'),
-    stylish  = require('jshint-stylish'),
-    mocha           = require('gulp-mocha'),
-    paths           = {
+var gulp    = require('gulp'),
+    jshint  = require('gulp-jshint'),
+    stylish = require('jshint-stylish'),
+    mocha   = require('gulp-mocha'),
+    paths   = {
       scripts: [
         'gulpfile.js',
         'index.js',
