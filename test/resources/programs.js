@@ -18,9 +18,9 @@ describe('RO.programs', function() {
   });
 
   describe('getAll()', function() {
-    it('should return an array', function(done) {
-      fixtures();
+    fixtures();
 
+    it('should return an array', function(done) {
       RO.programs.getAll(function(error, programList) {
         expect(error).to.equal(null);
 
@@ -36,6 +36,8 @@ describe('RO.programs', function() {
         .reply(200);
 
       RO.programs.getAll(function(error, programList) {
+        expect(error).to.equal(null);
+
         expect(apiCall.isDone()).to.be.ok();
 
         done();

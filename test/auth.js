@@ -11,10 +11,6 @@ describe('RO.auth', function() {
     fixtures();
   });
 
-  after(function() {
-    nock.restore();
-  });
-
   it('should pass an AuthenticationError to the callback when config.clientId isn\'t present', function(done) {
     var config = {
       clientId: null,
