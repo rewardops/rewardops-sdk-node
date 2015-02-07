@@ -1,10 +1,11 @@
 'use strict';
 
-var chai    = require('chai'),
-    expect  = chai.expect,
-    nock    = require('nock'),
-    api     = require('../../lib/api'),
-    RO      = require('../../lib/rewardops.js');
+var chai      = require('chai'),
+    expect    = chai.expect,
+    nock      = require('nock'),
+    fixtures  = require('../fixtures/programsFixtures'),
+    api       = require('../../lib/api'),
+    RO        = require('../../lib/rewardops.js');
 
 describe('RO.programs', function() {
   before(function() {
@@ -18,6 +19,8 @@ describe('RO.programs', function() {
 
   describe('getAll()', function() {
     it('should return an array', function(done) {
+      fixtures();
+
       RO.programs.getAll(function(error, programList) {
         expect(error).to.equal(null);
 
