@@ -2,17 +2,12 @@
 
 var chai      = require('chai'),
     expect    = chai.expect,
-    nock      = require('nock'),
     api       = require('../lib/api'),
     fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {
   before(function() {
     fixtures();
-  });
-
-  after(function() {
-    nock.restore();
   });
 
   it('should be an object', function() {

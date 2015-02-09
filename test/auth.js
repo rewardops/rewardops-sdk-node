@@ -3,7 +3,6 @@
 var chai      = require('chai'),
     expect    = chai.expect,
     RO        = require('../'),
-    nock      = require('nock'),
     fixtures  = require('./fixtures/authFixtures');
 
 describe('RO.auth', function() {

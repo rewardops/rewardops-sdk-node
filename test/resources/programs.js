@@ -33,11 +33,14 @@ describe('RO.programs', function() {
     it('should make an HTTP get request to the correct URL', function(done) {
       var apiCall = nock(api.baseUrl)
         .get('/programs')
-        .reply(200);
+        .reply(200, {
+          result: []
+        });
 
       RO.programs.getAll(function(error, programList) {
         expect(error).to.equal(null);
 
+        expect(programList).to.be.an('array');
         expect(apiCall.isDone()).to.be.ok();
 
         done();
