@@ -31,7 +31,8 @@
     "gulp-mocha": "^2.0.0",
     "jshint-stylish": "^1.0.0",
     "nock": "^0.59.0",
-    "sinon": "~1.12.2"
+    "sinon": "~1.12.2",
+    "underscore": "^1.7.0"
   },
   "dependencies": {
     "request": "^2.51.0",

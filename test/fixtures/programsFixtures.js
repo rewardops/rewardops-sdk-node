@@ -6,14 +6,18 @@ var nock  = require('nock'),
 
 module.exports = function() {
   // Oauth calls
-  nock(auth.baseUrl)
-    .post(auth.oauthPath)
+  nock(auth.baseUrl, {
+      reqheaders: {
+        'client_id': 'mockedclientidforprogramstests',
+        'client_secret': 'mockedclientsecretforprogramstests'
+      }
+    })
+    .post(auth.tokenPath)
     .times(4)
     .reply(200, {
-      'status':'OK',
-      'result': {
-        'token': 'abcd1234'
-      }
+      'created_at': Math.round(+new Date()/1000),
+      'expires_in': 7200,
+      'access_token': 'abcd1234'
     });
 
   // API calls

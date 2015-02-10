@@ -8,9 +8,11 @@ var chai      = require('chai'),
     RO        = require('../../lib/rewardops.js');
 
 describe('RO.programs', function() {
+  /* jshint camelcase: false */
+
   before(function() {
-    RO.config.clientId = 'abcd1234';
-    RO.config.clientSecret = 'abcd1234';
+    RO.config.client_id = 'mockedclientidforprogramstests';
+    RO.config.client_secret = 'mockedclientsecretforprogramstests';
   });
 
   it('should be an object', function() {

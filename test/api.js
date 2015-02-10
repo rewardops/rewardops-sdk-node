@@ -6,6 +6,8 @@ var chai      = require('chai'),
     fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {
+  /* jshint camelcase: false */
+
   before(function() {
     fixtures();
   });
@@ -16,8 +18,8 @@ describe('api', function() {
   
   it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', function(done) {
     var config = {
-      clientId: null,
-      clientSecret: null 
+      client_id: null,
+      client_secret: null 
     };
 
     api.get('/testForAuthError', config, function(error, data, response) {
@@ -30,10 +32,55 @@ describe('api', function() {
     });
   });
 
+  describe('baseUrl', function() {
+    var initialEnv;
+
+    before(function() {
+      initialEnv = process.env.NODE_ENV;
+    });
+
+    after(function () {
+      process.env.NODE_ENV = initialEnv;
+
+      api.setEnv();
+    });
+
+    it('should be the correct value in the development env', function() {
+      process.env.NODE_ENV = 'development';
+      api.setEnv();
+
+      expect(api.baseUrl).to.equal('http://localhost:3000/api/v3');
+    });
+
+    it('should be the correct value in the integration env', function() {
+      process.env.NODE_ENV = 'integration';
+      api.setEnv();
+
+      expect(api.baseUrl).to.equal('https://int.rewardops.net/api/v3');
+    });
+
+    it('should be the correct value in other environments', function() {
+      process.env.NODE_ENV = 'production';
+      api.setEnv();
+
+      expect(api.baseUrl).to.equal('https://app.rewardops.net/api/v3');
+
+      process.env.NODE_ENV = 'just some arbitrary string';
+      api.setEnv();
+
+      expect(api.baseUrl).to.equal('https://app.rewardops.net/api/v3');
+
+      process.env.NODE_ENV = undefined;
+      api.setEnv();
+
+      expect(api.baseUrl).to.equal('https://app.rewardops.net/api/v3');
+    });
+  });
+
   describe('get', function() {
     var config = {
-      clientId: 'abcdefg1234567',
-      clientSecret: 'abcdefg1234567'
+      client_id: 'abcdefg1234567',
+      client_secret: 'abcdefg1234567'
     };
 
     it('should be a function', function() {
@@ -52,8 +99,8 @@ describe('api', function() {
 
     it('should pass a third argument to the callback that is the full JSON body of the API response', function(done) {
       var config = {
-        clientId: 'abcdefg1234567',
-        clientSecret: 'abcdefg1234567'
+        client_id: 'abcdefg1234567',
+        client_secret: 'abcdefg1234567'
       };
 
       api.get('/someTestPath', config, function(error, programs, response) {
