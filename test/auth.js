@@ -1,11 +1,12 @@
 'use strict';
 
-var chai    = require('chai'),
-    expect  = chai.expect,
-    _       = require('underscore'),
-    nock    = require('nock'),
-    emitter = require('../lib/emitter'),
-    RO      = require('../');
+var chai          = require('chai'),
+    expect        = chai.expect,
+    _             = require('underscore'),
+    async         = require('async'),
+    nock          = require('nock'),
+    emitter       = require('../lib/emitter'),
+    RO            = require('../');
 
 describe('RO.auth', function() {
   /* jshint camelcase: false */
@@ -17,11 +18,11 @@ describe('RO.auth', function() {
   });
 
   describe('getToken()', function() {
-    beforeEach(function() {
+    before(function() {
       RO.auth.token = {};
     });
 
-    after(function() {
+    afterEach(function() {
       RO.auth.token = {};
     });
 
@@ -254,23 +255,152 @@ describe('RO.auth', function() {
       });
     });
 
-    xit('should timeout and pass an error to the callback when the server hasn\t responded in the specified amout of time', function(done) {
-      done();
+    it('should timeout and pass an error to the callback when the server hasn\'t responded before config.timeout', function(done) {
+      var config = {
+            client_id: 'asdf0987ghjk',
+            client_secret: 'asdf1234poiu',
+            timeout: 50
+          },
+          reply =  {
+            'access_token': 'time0ut',
+            'created_at': Math.round(+new Date()/1000),
+            'expires_in': 7200
+          },
+          postBody = {
+            grant_type: 'client_credentials',
+            client_id: config.client_id,
+            client_secret: config.client_secret
+          };
+
+      nock(RO.auth.baseUrl)
+        .post(RO.auth.tokenPath, _.extend(postBody))
+        .delayConnection(config.timeout + 10)
+        .times(3)
+        .reply(200, reply)
+        .post(RO.auth.tokenPath, _.extend(postBody))
+        .delayConnection(config.timeout - 10)
+        .once()
+        .reply(200, reply);
+
+      RO.auth.token = {};
+
+      RO.auth.getToken(config, function(error) {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('ETIMEDOUT');
+
+        RO.auth.getToken(config, function(error, token) {
+          expect(error).to.equal(null);
+
+          expect(token).to.equal(reply.access_token);
+
+          done();
+        });
+      });
     });
 
-    xit('should avoid race conditions when two functions request a token when no valid token is present, and pass the same new token to both of their callbacks', function(done) {
-      // TODO: Test this with a large number of concurrent requests, ex: 30
+    it('should avoid race conditions when multiple calls to getToken() are made when no valid token is present, and pass the same new token to all callbacks', function(done) {
+      // TODO: Test this with a large number of concurrent requests, ex: 100
+      //
+      // Implementation note:
+      //
+      // When the server responds to an API call that the token is invalid,
+      // the API call should fire an "invalidateToken" event. Then, call
+      // RO.auth.getToken() with the API call as the callback.
+      //
+      // Calls to RO.auth.getToken() first check whether RO.auth.tokenLocked()
+      // returns `true`. If it does, the callback passed to RO.auth.getToken() is
+      // added as a listener to the 'newToken' event.
+      //
+      // If it doesn't return true, call lockToken(),
+      // which sets the local var
+      // `tokenLocked` to true. (This is read by RO.auth.tokenLocked().
+      // Subsequent calls then wait for the new token, per the above.)
+      // Then make a call to the oauth2 server for
+      // a new token as usual.
+      //
+      // All of this is to avoid a race condition where mutiple
+      // calls for a new token happen at once, making all but
+      // the last return immediately invalidated tokens.
       //
       //
-      //
-      //
-      //
-      //
-      done();
+      var config = {
+            client_id: 'raceConditionsSuck',
+            client_secret: 'StopRaceConditions'
+          },
+          reply =  {
+            'access_token': 'wonTheRace',
+            'created_at': Math.round(+new Date()/1000),
+            'expires_in': 7200
+          },
+          badReply =  {
+            'access_token': 'youMessedUp',
+            'created_at': Math.round(+new Date()/1000),
+            'expires_in': 7200
+          },
+          n = 5000,
+          arr = [];
+
+      emitter.setMaxListeners(n + 1);
+
+      nock(RO.auth.baseUrl)
+        .post(RO.auth.tokenPath, _.extend({grant_type: 'client_credentials'}, config))
+        .delayConnection(100)
+        .once()
+        .reply(200, reply)
+        .post(RO.auth.tokenPath, _.extend({grant_type: 'client_credentials'}, config))
+        .times(n - 1)
+        .reply(200, badReply);
+
+      for (var i = 0; i < n; i++) {
+        arr.push(null);
+      }
+
+      async.map(arr, function(item, callback) {
+        RO.auth.getToken(config, function(error, token) {
+          callback(error, token);
+        });
+      }, function(error, results) {
+        expect(error).to.not.be.ok();
+
+        for (var i = 0; i < results.length; i++) {
+          expect(results[i]).to.equal(reply.access_token);
+        }
+
+        expect(process.EventEmitter.listenerCount(emitter, 'unlockToken')).to.equal(1);
+
+        emitter.setMaxListeners(RO.config.maxListeners);
+
+        done();
+      });
     });
 
-    xit('should fire a "newToken" event on success', function(done) {
-      done();
+    it('should fire a "unlockToken" event on success, passing the new access_token as an argument', function(done) {
+      var config = {
+            client_id: '0987ghjk',
+            client_secret: '1234poiu'
+          },
+          reply =  {
+            'access_token': 'itWorkedForYou',
+            'created_at': Math.round(+new Date()/1000),
+            'expires_in': 7200
+          },
+          listenerFiredToken = null;
+
+      nock(RO.auth.baseUrl)
+        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+        .reply(200, reply);
+
+      RO.auth.token = {};
+
+      emitter.once('unlockToken', function(error, token) {listenerFiredToken = token;});
+
+      RO.auth.getToken(config, function(error, token) {
+        expect(error).to.equal(null);
+        expect(token).to.equal(reply.access_token);
+        expect(listenerFiredToken).to.equal(reply.access_token);
+
+        done();
+      });
     });
   });
 
