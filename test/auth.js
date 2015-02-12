@@ -141,8 +141,28 @@ describe('RO.auth', function() {
       });
     });
 
-    xit('should set the correct expires time', function(done) {
-      done();
+    it('should set the correct expires Date object', function(done) {
+      var config = {
+            client_id: '123456',
+            client_secret: '0987654'
+          },
+          reply =  {
+            'access_token': 'asdfghjkl',
+            'created_at': Math.round((+new Date()/1000)),
+            'expires_in': 7200,
+          };
+
+      nock(RO.auth.baseUrl)
+        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+        .reply(200, reply);
+
+      RO.auth.token = {};
+
+      RO.auth.getToken(config, function() {
+        expect(RO.auth.token.expires.getTime()).to.equal(new Date((reply.created_at + reply.expires_in) * 1000).getTime());
+
+        done();
+      });
     });
 
     it('should request a new token from the server if the existing token has expired', function(done) {
@@ -232,10 +252,6 @@ describe('RO.auth', function() {
 
         done();
       });
-    });
-
-    xit('should check to see if a new token has been received already when the server gives a token error', function(done) {
-      done();
     });
 
     xit('should timeout and pass an error to the callback when the server hasn\t responded in the specified amout of time', function(done) {

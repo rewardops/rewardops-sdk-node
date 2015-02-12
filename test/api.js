@@ -34,12 +34,16 @@ describe('api', function() {
     });
   });
 
+  xit('should check to see if a new token has been received already when the server gives a token error', function(done) {
+    done();
+  });
+
   it('should request a new token and retry when the server responds that the attempted token is invalid', function(done) {
     // Implementation note:
     //
-    // When the server responds that the token is invalid,
-    // fire an "invalidateToken" event. Then, call RO.auth.getToken()
-    // with the API call as the callback.
+    // When the server responds to an API call that the token is invalid,
+    // the API call should fire an "invalidateToken" event. Then, call
+    // RO.auth.getToken() with the API call as the callback.
     //
     // Calls to RO.auth.getToken() first check whether RO.auth.tokenLocked()
     // returns `true`. If it does, the callback passed to RO.auth.getToken() is
@@ -55,7 +59,6 @@ describe('api', function() {
     // All of this is to avoid a race condition where mutiple
     // calls for a new token happen at once, making all but
     // the last return immediately invalidated tokens.
-    //
     var expires = new Date(),
         badToken = 'HeresAToken123456789',
         goodToken = 'apiTestToken1234',
