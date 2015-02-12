@@ -11,10 +11,6 @@ var chai      = require('chai'),
 describe('api', function() {
   /* jshint camelcase: false */
 
-  before(function() {
-    fixtures();
-  });
-
   it('should be an object', function() {
     expect(RO.api).to.be.an('object');
   });
@@ -60,7 +56,7 @@ describe('api', function() {
     var expires = new Date(),
         badToken = 'HeresAToken123456789',
         goodToken = 'apiTestToken1234',
-        config = {client_id: 'mockedclientidforprogramstests', client_secret: 'mockedclientsecretforprogramstests'},
+        config = {client_id: 'abc', client_secret: '123'},
         badScope = nock(RO.urls.baseUrl + '/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + badToken
@@ -79,9 +75,11 @@ describe('api', function() {
           .get('/arbitrary-path')
           .reply(200, {result: 'OK'}),
         authScope = nock(RO.auth.baseUrl)
-          .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+          .post(RO.auth.tokenPath, _.extend({}, config, {grant_type: 'client_credentials'}))
+          .once()
           .reply(200, {
             'access_token': goodToken,
+            'token_type': 'bearer',
             'created_at': Math.round(+new Date()/1000),
             'expires_in': 7200
           }),
@@ -93,7 +91,8 @@ describe('api', function() {
       listenerWasFired = true;
     });
 
-    RO.config = config;
+    RO.config.client_id = config.client_id;
+    RO.config.client_secret = config.client_secret;
 
     RO.auth.token = {
       access_token: badToken,
@@ -104,10 +103,10 @@ describe('api', function() {
       expect(error).to.equal(null);
       expect(result).to.equal('OK');
 
+      expect(authScope.isDone()).to.be.ok();
       expect(badScope.isDone()).to.be.ok();
       expect(goodScope.isDone()).to.be.ok();
-      expect(authScope.isDone()).to.be.ok();
-      expect(RO.auth.token.access_token).to.equal('apiTestToken1234');
+      expect(RO.auth.token.access_token).to.equal(goodToken);
       expect(listenerWasFired).to.equal(true);
 
       done();
@@ -115,6 +114,11 @@ describe('api', function() {
   });
 
   describe('get', function() {
+    before(function() {
+      fixtures();
+      RO.auth.token = {};
+    });
+
     it('should be a function', function() {
       expect(RO.api.get).to.be.a('function');
     });

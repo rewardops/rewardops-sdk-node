@@ -12,15 +12,15 @@ module.exports = function() {
     })
     .twice()
     .reply(200, {
-      'access_token': 'abcd1234',
+      'access_token': 'abcdefg1234',
       'token_type': 'bearer',
       'expires_in': 7200,
-      'created_at': 1423250138
+      'created_at': Math.round(+new Date()/1000)
     });
 
     nock(RO.urls.baseUrl, {
       reqheaders: {
-        'Authorization': 'Bearer abcd1234'
+        'Authorization': 'Bearer abcdefg1234'
       }
     })
     .get('/someTestPath')
