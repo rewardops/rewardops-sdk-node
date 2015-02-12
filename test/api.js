@@ -2,7 +2,10 @@
 
 var chai      = require('chai'),
     expect    = chai.expect,
-    api       = require('../lib/api'),
+    _         = require('underscore'),
+    emitter   = require('../lib/emitter'),
+    nock      = require('nock'),
+    RO        = require('../'),
     fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {

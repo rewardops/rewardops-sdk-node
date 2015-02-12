@@ -4,7 +4,7 @@ var chai      = require('chai'),
     expect    = chai.expect,
     nock      = require('nock'),
     fixtures  = require('../fixtures/programsFixtures'),
-    RO        = require('../../lib/rewardops.js');
+    RO        = require('../../');
 
 describe('RO.programs', function() {
   /* jshint camelcase: false */
