@@ -21,7 +21,7 @@ describe('RO.programs', function() {
       RO.config.client_secret = 'mockedclientsecretforprogramstests';
     });
 
-    it('should return an array', function(done) {
+    it('should pass an array to the callback', function(done) {
       RO.programs.getAll(function(error, programList) {
         expect(error).to.equal(null);
 
@@ -47,9 +47,39 @@ describe('RO.programs', function() {
         done();
       });
     });
+
+    it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
+      var body = {
+            page: 7,
+            per_page_count: 50
+          },
+          scope = nock(RO.urls.baseUrl, {
+            reqHeaders: {
+              'Authorization': 'Bearer abcd1234programs'
+            }
+          })
+          .get('/programs', body)
+          .reply(200, {
+            result: []
+          });
+
+      RO.programs.getAll(body, function(error, programsList) {
+        expect(error).to.equal(null);
+
+        expect(programsList).to.be.an('array');
+        expect(scope.isDone()).to.be.ok();
+
+        done();
+      });
+    });
   });
 
   describe('get()', function() {
+    beforeEach(function() {
+      RO.config.client_id = 'mockedclientidforprogramstests';
+      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+    });
+
     it('should pass an object to the callback', function(done) {
       var id = 555;
 
@@ -62,8 +92,25 @@ describe('RO.programs', function() {
       });
     });
 
-    xit('should accept an optional options object and pass it on to the RO.api.get() call', function(done) {
-       done();
+    it('should make an HTTP get request to the correct URL', function(done) {
+      var scope = nock(RO.urls.baseUrl, {
+            reqHeaders: {
+              'Authorization': 'Bearer abcd1234programs'
+            }
+          })
+            .get('/programs/567')
+            .reply(200, {
+              result: {}
+            });
+
+      RO.programs.get('567', function(error, program) {
+        expect(error).to.equal(null);
+
+        expect(program).to.be.an('object');
+        expect(scope.isDone()).to.be.ok();
+
+        done();
+      });
     });
   });
 });

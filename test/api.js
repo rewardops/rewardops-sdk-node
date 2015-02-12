@@ -21,7 +21,10 @@ describe('api', function() {
       client_secret: null 
     };
 
-    RO.api.get('/testForAuthError', config, function(error, data, response) {
+    RO.api.get({
+      path: '/testForAuthError',
+      config: config
+    }, function(error, data, response) {
       expect(error.name).to.equal('AuthenticationError');
 
       expect(data).to.equal(undefined);
@@ -99,7 +102,10 @@ describe('api', function() {
       expires: expires
     };
 
-    RO.api.get('/some/arbitrary-path', config, function(error, result) {
+    RO.api.get({
+      path: '/some/arbitrary-path',
+      config: config
+    }, function(error, result) {
       expect(error).to.equal(null);
       expect(result).to.equal('OK');
 
@@ -129,7 +135,10 @@ describe('api', function() {
         client_secret: 'abcdefg1234567'
       };
 
-      RO.api.get('/someTestPath', config, function(error, programs) {
+      RO.api.get({
+        path: '/someTestPath',
+        config: config
+      }, function(error, programs) {
         expect(error).to.equal(null);
 
         expect(programs).to.be.an('array');
@@ -138,8 +147,38 @@ describe('api', function() {
       });
     });
 
-    xit('should accept an optional options object and pass it on to the request() call', function(done) {
-       done();
+    it('should accept a body property and pass it on to the request() call', function(done) {
+    var token = 'ccccvvvv5555',
+        config = {client_id: 'abc', client_secret: '123'},
+        body = {
+          toppings: ['pepperoni', 'cheese', 'mushrooms'],
+          customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
+        };
+
+        nock(RO.urls.baseUrl, {
+          reqheaders: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .post('/pizzas/44/orders', body)
+          .reply(200, {result: 'OK'});
+
+      RO.auth.token = {access_token: token, expires: new Date()};
+      RO.auth.token.expires.setHours(RO.auth.token.expires.getHours() + 2);
+
+      RO.api.post({
+        path: '/pizzas/44/orders',
+        body: body,
+        config: config
+      }, function(error, result, response) {
+        expect(error).to.equal(null);
+
+        expect(result).to.equal('OK');
+
+        expect(response).to.be.an('object');
+
+        done();
+      });
     });
 
     it('should pass a third argument to the callback that is the full JSON body of the API response', function(done) {
@@ -148,7 +187,12 @@ describe('api', function() {
         client_secret: 'abcdefg1234567'
       };
 
-      RO.api.get('/someTestPath', config, function(error, programs, response) {
+      RO.auth.token = {};
+
+      RO.api.get({
+        path: '/someTestPath',
+        config: config
+      }, function(error, programs, response) {
         expect(error).to.equal(null);
 
         expect(response).to.be.an('object');
