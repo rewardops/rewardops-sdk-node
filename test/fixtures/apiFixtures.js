@@ -1,18 +1,15 @@
 'use strict';
 
 var nock    = require('nock'),
-    api     = require('../../lib/api'),
-    auth    = require('../../lib/auth');
+    RO      = require('../../');
 
 module.exports = function() {
-  nock(auth.baseUrl, {
-    reqheaders: {
+  nock(RO.auth.baseUrl)
+    .post(RO.auth.tokenPath, {
       'grant_type': 'client_credentials',
       'client_id': 'abcdefg1234567',
       'client_secret': 'abcdefg1234567'
-    }
-  })
-    .post(auth.tokenPath)
+    })
     .twice()
     .reply(200, {
       'access_token': 'abcd1234',
@@ -21,9 +18,9 @@ module.exports = function() {
       'created_at': 1423250138
     });
 
-    nock(api.baseUrl, {
+    nock(RO.urls.baseUrl, {
       reqheaders: {
-        Authorization: 'Bearer abcd1234'
+        'Authorization': 'Bearer abcd1234'
       }
     })
     .get('/someTestPath')

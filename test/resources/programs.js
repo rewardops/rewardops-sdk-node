@@ -4,16 +4,10 @@ var chai      = require('chai'),
     expect    = chai.expect,
     nock      = require('nock'),
     fixtures  = require('../fixtures/programsFixtures'),
-    api       = require('../../lib/api'),
     RO        = require('../../lib/rewardops.js');
 
 describe('RO.programs', function() {
   /* jshint camelcase: false */
-
-  before(function() {
-    RO.config.client_id = 'mockedclientidforprogramstests';
-    RO.config.client_secret = 'mockedclientsecretforprogramstests';
-  });
 
   it('should be an object', function() {
     expect(RO.programs).to.be.an('object');
@@ -21,6 +15,11 @@ describe('RO.programs', function() {
 
   describe('getAll()', function() {
     fixtures();
+
+    beforeEach(function() {
+      RO.config.client_id = 'mockedclientidforprogramstests';
+      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+    });
 
     it('should return an array', function(done) {
       RO.programs.getAll(function(error, programList) {
@@ -33,7 +32,7 @@ describe('RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var apiCall = nock(api.baseUrl)
+      var apiCall = nock(RO.urls.baseUrl)
         .get('/programs')
         .reply(200, {
           result: []
@@ -51,7 +50,7 @@ describe('RO.programs', function() {
   });
 
   describe('get()', function() {
-    it('should return an object', function(done) {
+    it('should pass an object to the callback', function(done) {
       var id = 555;
 
       RO.programs.get(id, function(error, data) {
@@ -61,6 +60,10 @@ describe('RO.programs', function() {
 
         done();
       });
+    });
+
+    xit('should accept an optional options object and pass it on to the RO.api.get() call', function(done) {
+       done();
     });
   });
 });

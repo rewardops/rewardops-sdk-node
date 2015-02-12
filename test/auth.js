@@ -4,14 +4,15 @@ var chai    = require('chai'),
     expect  = chai.expect,
     _       = require('underscore'),
     nock    = require('nock'),
+    emitter = require('../lib/emitter'),
     RO      = require('../');
 
 describe('RO.auth', function() {
   /* jshint camelcase: false */
 
   describe('baseUrl', function() {
-    it('should be correct', function() {
-      expect(RO.auth.baseUrl).to.equal('https://app.rewardops.net/api/v3/oauth2');
+    it('should be the correct value', function() {
+      expect(RO.auth.baseUrl).to.equal(RO.urls.baseUrl + '/oauth2');
     });
   });
 
@@ -83,10 +84,10 @@ describe('RO.auth', function() {
           reply =  {
             'access_token': '1111dddd',
             'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200,
+            'expires_in': 7200
           },
-          scope = nock(RO.auth.baseUrl, {reqheaders: config})
-            .post(RO.auth.tokenPath)
+          scope = nock(RO.auth.baseUrl)
+            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
             .reply(200, reply);
 
       RO.auth.getToken(config, function() {
@@ -101,10 +102,8 @@ describe('RO.auth', function() {
             client_id: 'clientIdForTestingRequestHeaders',
             client_secret: 'someFakeValueForHeaderTesting'
           },
-          scope = nock(RO.auth.baseUrl, {
-            reqheaders: _.extend(config, {grant_type: 'client_credentials'})
-          })
-            .post(RO.auth.tokenPath)
+          scope = nock(RO.auth.baseUrl)
+            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
             .reply(200, {
               access_token: 'g0t1T',
               created_at: Math.round(+new Date()/1000),
@@ -158,8 +157,8 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.baseUrl, {reqheaders: config})
-            .post(RO.auth.tokenPath)
+          scope = nock(RO.auth.baseUrl)
+            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
             .reply(200, reply);
 
       RO.auth.token = {
@@ -188,8 +187,8 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.baseUrl, {reqheaders: config})
-            .post(RO.auth.tokenPath)
+          scope = nock(RO.auth.baseUrl)
+            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
             .twice()
             .reply(401, null, {
           'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
@@ -215,12 +214,12 @@ describe('RO.auth', function() {
         client_secret: 'someSecretOrAnother'
       };
 
-      nock(RO.auth.baseUrl, {reqheaders: config})
+      nock(RO.auth.baseUrl)
         .defaultReplyHeaders({
           'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
           'Content-Type': 'text/html'
         })
-        .post(RO.auth.tokenPath)
+        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
         .thrice()
         .reply(401);
 
@@ -233,6 +232,10 @@ describe('RO.auth', function() {
 
         done();
       });
+    });
+
+    xit('should check to see if a new token has been received already when the server gives a token error', function(done) {
+      done();
     });
 
     xit('should timeout and pass an error to the callback when the server hasn\t responded in the specified amout of time', function(done) {
@@ -248,6 +251,28 @@ describe('RO.auth', function() {
       //
       //
       done();
+    });
+
+    xit('should fire a "newToken" event on success', function(done) {
+      done();
+    });
+  });
+
+  describe('invalidateToken()', function() {
+    it('should set auth.token to an empty object', function() {
+      RO.auth.token = {imA: 'token'};
+
+      RO.auth.invalidateToken();
+
+      expect(RO.auth.token).to.deep.equal({});
+    });
+
+    it('should listen to the invalidateToken event', function() {
+      RO.auth.token = {imStillA: 'token'};
+
+      emitter.emit('invalidateToken');
+
+      expect(RO.auth.token).to.deep.equal({});
     });
   });
 });
