@@ -1,11 +1,18 @@
 'use strict';
 
-var chai    = require('chai'),
-    expect  = chai.expect,
-    sinon   = require('sinon'),
-    RO      = require('../');
+var chai      = require('chai'),
+    expect    = chai.expect,
+    sinon     = require('sinon'),
+    RO        = require('../'),
+    fixtures  = require('./fixtures/programFixtures');
 
 describe('RO.program()', function() {
+  /* jshint camelcase: false */
+
+  before(function() {
+    fixtures();
+  });
+
   it('should return an object', function() {
     var program = RO.program(1);
 
@@ -36,57 +43,6 @@ describe('RO.program()', function() {
         RO.programs.get.restore();
 
         done();
-      });
-    });
-  });
-
-  describe('orders', function() {
-    var id = 33,
-        program = RO.program(id);
-
-    it('should be an object', function() {
-      expect(program.orders).to.be.an('object');
-    });
-
-    it('should have the correct context ID', function() {
-      expect(program.orders.contextId).to.equal(id);
-    });
-
-    it('should have the correct context', function() {
-      expect(program.orders.context).to.equal('program');
-    });
-
-    describe('getAll()', function() {
-      it('should return an array to the callback', function(done) {
-        program.orders.getAll(function(error, data) {
-          expect(data).to.be.an('array');
-
-          done();
-        });
-      });
-    });
-
-    describe('get()', function() {
-      it('should return an object to the callback', function(done) {
-        program.orders.get(1654, function(error, data) {
-          expect(error).to.equal(null);
-
-          expect(data).to.be.an('object');
-
-          done();
-        });
-      });
-    });
-
-    describe('create()', function() {
-      it('should return an object to the callback', function(done) {
-        program.orders.create({}, function(error, response) {
-          expect(error).to.equal(null);
-
-          expect(response).to.be.an('object');
-
-          done();
-        });
       });
     });
   });
