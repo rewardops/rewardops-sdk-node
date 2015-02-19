@@ -13,41 +13,41 @@ describe('urls', function() {
     var initialEnv;
 
     before(function() {
-      initialEnv = process.env.NODE_ENV;
+      initialEnv = process.env.REWARDOPS_ENV;
     });
 
     after(function () {
-      process.env.NODE_ENV = initialEnv;
+      process.env.REWARDOPS_ENV = initialEnv;
 
       urls.setEnv();
     });
 
     it('should be the correct value in the development env', function() {
-      process.env.NODE_ENV = 'development';
+      process.env.REWARDOPS_ENV = 'development';
       urls.setEnv();
 
       expect(urls.baseUrl).to.equal('http://localhost:3000/api/v3');
     });
 
     it('should be the correct value in the integration env', function() {
-      process.env.NODE_ENV = 'integration';
+      process.env.REWARDOPS_ENV = 'integration';
       urls.setEnv();
 
       expect(urls.baseUrl).to.equal('https://int.rewardops.net/api/v3');
     });
 
     it('should be the correct value in other environments', function() {
-      process.env.NODE_ENV = 'production';
+      process.env.REWARDOPS_ENV = 'production';
       urls.setEnv();
 
       expect(urls.baseUrl).to.equal('https://app.rewardops.net/api/v3');
 
-      process.env.NODE_ENV = 'just some arbitrary string';
+      process.env.REWARDOPS_ENV = 'just some arbitrary string';
       urls.setEnv();
 
       expect(urls.baseUrl).to.equal('https://app.rewardops.net/api/v3');
 
-      process.env.NODE_ENV = undefined;
+      process.env.REWARDOPS_ENV = undefined;
       urls.setEnv();
 
       expect(urls.baseUrl).to.equal('https://app.rewardops.net/api/v3');

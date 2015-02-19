@@ -1,6 +1,6 @@
 {
   "name": "rewardops-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": "true",
   "description": "Node.js SDK for the RewardOps API",
   "author": "RewardOps",
