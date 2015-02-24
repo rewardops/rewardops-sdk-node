@@ -5,11 +5,13 @@ var nock  = require('nock'),
 
 module.exports = function() {
   // Oauth calls
-  nock(RO.auth.baseUrl)
+  nock(RO.auth.baseUrl, {
+    reqheaders: {
+      'Authorization': 'Basic ' + new Buffer('mockedclientidforprogramstests:mockedclientsecretforprogramstests').toString('base64')
+    }
+  })
     .post(RO.auth.tokenPath, {
-        'grant_type': 'client_credentials',
-        'client_id': 'mockedclientidforprogramstests',
-        'client_secret': 'mockedclientsecretforprogramstests'
+        'grant_type': 'client_credentials'
       })
     .times(5)
     .reply(200, {

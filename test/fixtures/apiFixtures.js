@@ -4,11 +4,13 @@ var nock    = require('nock'),
     RO      = require('../../');
 
 module.exports = function() {
-  nock(RO.auth.baseUrl)
+  nock(RO.auth.baseUrl, {
+    reqheaders: {
+      'Authorization': 'Basic ' + new Buffer('abcdefg1234567:abcdefg1234567').toString('base64')
+    }
+  })
     .post(RO.auth.tokenPath, {
-      'grant_type': 'client_credentials',
-      'client_id': 'abcdefg1234567',
-      'client_secret': 'abcdefg1234567'
+      'grant_type': 'client_credentials'
     })
     .twice()
     .reply(200, {

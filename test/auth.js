@@ -13,7 +13,7 @@ describe('RO.auth', function() {
 
   describe('baseUrl', function() {
     it('should be the correct value', function() {
-      expect(RO.auth.baseUrl).to.equal(RO.urls.baseUrl + '/oauth2');
+      expect(RO.auth.baseUrl).to.equal(RO.urls.baseUrl + '/auth');
     });
   });
 
@@ -87,8 +87,12 @@ describe('RO.auth', function() {
             'created_at': Math.round(+new Date()/1000),
             'expires_in': 7200
           },
-          scope = nock(RO.auth.baseUrl)
-            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+          scope = nock(RO.auth.baseUrl, {
+            reqheaders: {
+              'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+            }
+          })
+            .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
             .reply(200, reply);
 
       RO.auth.getToken(config, function() {
@@ -103,8 +107,12 @@ describe('RO.auth', function() {
             client_id: 'clientIdForTestingRequestHeaders',
             client_secret: 'someFakeValueForHeaderTesting'
           },
-          scope = nock(RO.auth.baseUrl)
-            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+          scope = nock(RO.auth.baseUrl, {
+            reqheaders: {
+              'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+            }
+          })
+            .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
             .reply(200, {
               access_token: 'g0t1T',
               created_at: Math.round(+new Date()/1000),
@@ -153,8 +161,12 @@ describe('RO.auth', function() {
             'expires_in': 7200,
           };
 
-      nock(RO.auth.baseUrl)
-        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+      nock(RO.auth.baseUrl, {
+        reqheaders: {
+          'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+        }
+      })
+        .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
         .reply(200, reply);
 
       RO.auth.token = {};
@@ -178,8 +190,12 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.baseUrl)
-            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+          scope = nock(RO.auth.baseUrl, {
+            reqheaders: {
+              'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+            }
+          })
+            .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
             .reply(200, reply);
 
       RO.auth.token = {
@@ -208,8 +224,12 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.baseUrl)
-            .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+          scope = nock(RO.auth.baseUrl, {
+            reqheaders: {
+              'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+            }
+          })
+            .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
             .twice()
             .reply(401, null, {
           'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
@@ -235,12 +255,16 @@ describe('RO.auth', function() {
         client_secret: 'someSecretOrAnother'
       };
 
-      nock(RO.auth.baseUrl)
+      nock(RO.auth.baseUrl, {
+          reqheaders: {
+            'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+          }
+        })
         .defaultReplyHeaders({
           'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
           'Content-Type': 'text/html'
         })
-        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+        .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
         .thrice()
         .reply(401);
 
@@ -267,12 +291,14 @@ describe('RO.auth', function() {
             'expires_in': 7200
           },
           postBody = {
-            grant_type: 'client_credentials',
-            client_id: config.client_id,
-            client_secret: config.client_secret
+            grant_type: 'client_credentials'
           };
 
-      nock(RO.auth.baseUrl)
+      nock(RO.auth.baseUrl, {
+          reqheaders: {
+            'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+          }
+        })
         .post(RO.auth.tokenPath, _.extend(postBody))
         .delayConnection(config.timeout + 10)
         .times(3)
@@ -342,12 +368,16 @@ describe('RO.auth', function() {
 
       emitter.setMaxListeners(n + 1);
 
-      nock(RO.auth.baseUrl)
-        .post(RO.auth.tokenPath, _.extend({grant_type: 'client_credentials'}, config))
+      nock(RO.auth.baseUrl, {
+        reqheaders: {
+          'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+        }
+      })
+        .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
         .delayConnection(100)
         .once()
         .reply(200, reply)
-        .post(RO.auth.tokenPath, _.extend({grant_type: 'client_credentials'}, config))
+        .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
         .times(n - 1)
         .reply(200, badReply);
 
@@ -386,8 +416,12 @@ describe('RO.auth', function() {
           },
           listenerFiredToken = null;
 
-      nock(RO.auth.baseUrl)
-        .post(RO.auth.tokenPath, _.extend(config, {grant_type: 'client_credentials'}))
+      nock(RO.auth.baseUrl, {
+        reqheaders: {
+          'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+        }
+      })
+        .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
         .reply(200, reply);
 
       RO.auth.token = {};

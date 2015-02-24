@@ -2,7 +2,6 @@
 
 var chai      = require('chai'),
     expect    = chai.expect,
-    _         = require('underscore'),
     emitter   = require('../lib/emitter'),
     nock      = require('nock'),
     RO        = require('../'),
@@ -115,8 +114,12 @@ describe('api', function() {
         })
           .get('/arbitrary-path')
           .reply(200, {result: 'OK'}),
-        authScope = nock(RO.auth.baseUrl)
-          .post(RO.auth.tokenPath, _.extend({}, config, {grant_type: 'client_credentials'}))
+        authScope = nock(RO.auth.baseUrl, {
+          reqheaders: {
+            'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+          }
+        })
+          .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
           .once()
           .reply(200, {
             'access_token': goodToken,
