@@ -13,6 +13,17 @@ describe('RO.program()', function() {
     fixtures();
   });
 
+  it('should return an error when passed with a non-number', function() {
+    var program1 = RO.program('1'),
+        program2 = RO.program([]);
+
+    expect(program1).to.be.an.instanceOf(Error);
+    expect(program1.message).to.equal('Program ID must be a number');
+
+    expect(program2).to.be.an.instanceOf(Error);
+    expect(program2.message).to.equal('Program ID must be a number');
+  });
+
   it('should return an object', function() {
     var program = RO.program(1);
 

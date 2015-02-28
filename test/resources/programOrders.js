@@ -156,6 +156,27 @@ describe('RO.program()', function() {
     });
 
     describe('create()', function() {
+      it('should fire the callback with an error when a non-number is passed as the reward ID', function(done) {
+        var options = {
+              reward_id: '131313', // A string, not a number
+              member: {id: 'anything'}
+            },
+            scope = nock(RO.urls.baseUrl)
+              .post('/programs/33/orders', options)
+              .reply(200);
+
+        program.orders.create(options, function(error, data) {
+          expect(error).to.be.an.instanceOf(Error);
+          expect(error.message).to.equal('reward_id must be a number');
+
+          expect(data).to.equal(undefined);
+
+          expect(scope.isDone()).to.not.be.ok();
+
+          done();
+        });
+      });
+
       it('should pass an object to the callback', function(done) {
         var newOrder = {
               reward_id: 1234,
