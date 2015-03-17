@@ -67,6 +67,8 @@ You can optionally set the environment variable `REWARDOPS_ENV` before starting 
 
 ## API
 
+*Note: Arguments in [square brackets] are optional.*
+
 `options` objects are passed directly to the RewardOps API. Available parameters can be viewed on the [API console](https://app.rewardops.net/api_docs/console?version=v3).
 
 Callbacks receive three arguments:
@@ -77,13 +79,13 @@ Callbacks receive three arguments:
 
 ### Programs
 
-##### rewardops.programs.getAll([options,] callback)
+#### rewardops.programs.getAll([options,] callback)
 
-##### rewardops.programs.get(id, callback)
+#### rewardops.programs.get(id, callback)
 
 ### Program objects
 
-##### rewardops.program(id)
+#### rewardops.program(id)
 
 Returns a program object for the program with the specified `id`.
 
@@ -103,19 +105,19 @@ myProgram.details(function(error, result, body) {
 });
 ```
 
-#### Rewards
+### Rewards
 
-##### program.rewards.getAll([options,] callback)
+#### program.rewards.getAll([options,] callback)
 
-##### program.rewards.get(id, [options,] callback)
+#### program.rewards.get(id, [options,] callback)
 
-#### Orders
+### Orders
 
-##### program.orders.getAll([options,] callback)
+#### program.orders.getAll([options,] callback)
 
-##### program.orders.get(id, [options,] callback)
+#### program.orders.get(id, [options,] callback)
 
-##### program.orders.create(options, callback)
+#### program.orders.create(options, callback)
 
 ## Maintainer
 
