@@ -37,7 +37,7 @@ describe('RO.program()', function() {
 
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
-        nock(RO.urls.baseUrl, {
+        nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -55,7 +55,7 @@ describe('RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.baseUrl, {
+        var apiCall = nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -80,7 +80,7 @@ describe('RO.program()', function() {
               page: 7,
               per_page_count: 50
             },
-            scope = nock(RO.urls.baseUrl, {
+            scope = nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -103,7 +103,7 @@ describe('RO.program()', function() {
 
     describe('get()', function() {
       it('should pass an object to the callback', function(done) {
-        nock(RO.urls.baseUrl, {
+        nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -122,7 +122,7 @@ describe('RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.baseUrl, {
+        var apiCall = nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -147,7 +147,7 @@ describe('RO.program()', function() {
         var body = {
               member_id: '5432'
             },
-            scope = nock(RO.urls.baseUrl, {
+            scope = nock(RO.urls.getBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }

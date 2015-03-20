@@ -5,12 +5,12 @@ var nock  = require('nock'),
 
 module.exports = function() {
   // Oauth calls
-  nock(RO.auth.baseUrl, {
+  nock(RO.auth.getBaseUrl(), {
     reqheaders: {
       'Authorization': 'Basic ' + new Buffer('mockedclientidforprogramstests:mockedclientsecretforprogramstests').toString('base64')
     }
   })
-    .post(RO.auth.tokenPath, {
+    .post(RO.auth.getTokenPath(), {
         'grant_type': 'client_credentials'
       })
     .times(5)
@@ -21,7 +21,7 @@ module.exports = function() {
     });
 
   // API calls
-    nock(RO.urls.baseUrl, {
+    nock(RO.urls.getBaseUrl(), {
       reqHeaders: {
         'Authorization': 'Bearer abcd1234programs'
       }
