@@ -13,7 +13,7 @@ describe('RO.auth', function() {
 
   describe('baseUrl', function() {
     it('should be the correct value', function() {
-      expect(RO.auth.baseUrl).to.equal(RO.urls.baseUrl + '/auth');
+      expect(RO.auth.baseUrl).to.equal(RO.urls.getBaseUrl() + '/auth');
     });
   });
 

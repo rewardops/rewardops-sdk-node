@@ -39,7 +39,7 @@ describe('api', function() {
         secondToken = 'apiTestToken1234',
         config = {client_id: 'bamabc', client_secret: 'boom123'};
 
-    nock(RO.urls.baseUrl + '/another', {
+    nock(RO.urls.getBaseUrl() + '/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + firstToken
       }
@@ -62,7 +62,7 @@ describe('api', function() {
         'Content-Type': 'text/html'
       });
 
-    nock(RO.urls.baseUrl + '/another', {
+    nock(RO.urls.getBaseUrl() + '/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + secondToken
       }
@@ -97,7 +97,7 @@ describe('api', function() {
         badToken = 'HeresAToken123456789',
         goodToken = 'apiTestToken1234',
         config = {client_id: 'abc', client_secret: '123'},
-        badScope = nock(RO.urls.baseUrl + '/some', {
+        badScope = nock(RO.urls.getBaseUrl() + '/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + badToken
           }
@@ -107,7 +107,7 @@ describe('api', function() {
             'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token expired\"',
             'Content-Type': 'text/html'
           }),
-        goodScope = nock(RO.urls.baseUrl + '/some', {
+        goodScope = nock(RO.urls.getBaseUrl() + '/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + goodToken
           } 
@@ -196,7 +196,7 @@ describe('api', function() {
           customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
         };
 
-        nock(RO.urls.baseUrl, {
+        nock(RO.urls.getBaseUrl(), {
           reqheaders: {
             'Authorization': 'Bearer ' + token
           }

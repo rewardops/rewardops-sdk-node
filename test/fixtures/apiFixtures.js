@@ -20,7 +20,7 @@ module.exports = function() {
       'created_at': Math.round(+new Date()/1000)
     });
 
-    nock(RO.urls.baseUrl, {
+    nock(RO.urls.getBaseUrl(), {
       reqheaders: {
         'Authorization': 'Bearer abcdefg1234'
       }

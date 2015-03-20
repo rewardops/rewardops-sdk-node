@@ -32,7 +32,7 @@ describe('RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var apiCall = nock(RO.urls.baseUrl)
+      var apiCall = nock(RO.urls.getBaseUrl())
         .get('/programs')
         .reply(200, {
           result: []
@@ -53,7 +53,7 @@ describe('RO.programs', function() {
             page: 7,
             per_page_count: 50
           },
-          scope = nock(RO.urls.baseUrl, {
+          scope = nock(RO.urls.getBaseUrl(), {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }
@@ -93,7 +93,7 @@ describe('RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var scope = nock(RO.urls.baseUrl, {
+      var scope = nock(RO.urls.getBaseUrl(), {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }

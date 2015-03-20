@@ -21,7 +21,7 @@ module.exports = function() {
     });
 
 //  // API calls
-//    nock(RO.urls.baseUrl, {
+//    nock(RO.urls.getBaseUrl(), {
 //      reqHeaders: {
 //        'Authorization': 'Bearer abcd1234programs'
 //      }
