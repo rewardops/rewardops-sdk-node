@@ -114,12 +114,12 @@ describe('api', function() {
         })
           .get('/arbitrary-path')
           .reply(200, {result: 'OK'}),
-        authScope = nock(RO.auth.baseUrl, {
+        authScope = nock(RO.auth.getBaseUrl(), {
           reqheaders: {
             'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
           }
         })
-          .post(RO.auth.tokenPath, {grant_type: 'client_credentials'})
+          .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
           .once()
           .reply(200, {
             'access_token': goodToken,

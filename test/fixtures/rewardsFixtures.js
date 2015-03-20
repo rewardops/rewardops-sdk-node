@@ -5,12 +5,12 @@ var nock  = require('nock'),
 
 module.exports = function() {
   // Oauth calls
-  nock(RO.auth.baseUrl, {
+  nock(RO.auth.getBaseUrl(), {
     reqheaders: {
       'Authorization': 'Basic ' + new Buffer('rewardTest123:itsATestGetUsedToIt').toString('base64')
     }
   })
-    .post(RO.auth.tokenPath, {
+    .post(RO.auth.getTokenPath(), {
         'grant_type': 'client_credentials'
       })
     .times(6)
