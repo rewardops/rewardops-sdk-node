@@ -9,13 +9,13 @@ Note: The SDK currently only uses v3 of the RewardOps API.
 To use the SDK in your Node.js project:
 
 ```
-npm install --save git+ssh://git@bitbucket.org:RewardOps/rewardops-sdk-node.git
+npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git
 ```
 
 To install and save a specific version of the SDK in your package.json, use a version tag in the Git URL:
 
 ```
-npm install --save git+ssh://git@bitbucket.org:RewardOps/rewardops-sdk-node.git#v0.3.1
+npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.0
 ```
 
 ### Git
@@ -23,7 +23,7 @@ npm install --save git+ssh://git@bitbucket.org:RewardOps/rewardops-sdk-node.git#
 If you just want to get the SDK repo without adding it to a project:
 
 ```
-git clone git@bitbucket.org:RewardOps/rewardops-sdk-node.git
+git clone https://github.com/rewardops/rewardops-sdk-node.git
 
 cd rewardops-sdk-node
 
