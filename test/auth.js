@@ -398,7 +398,7 @@ describe('RO.auth', function() {
 
         expect(process.EventEmitter.listenerCount(emitter, 'unlockToken')).to.equal(1);
 
-        emitter.setMaxListeners(RO.config.maxListeners);
+        emitter.setMaxListeners(RO.config.maxListeners || 10);
 
         done();
       });
