@@ -15,7 +15,7 @@ npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git
 To install and save a specific version of the SDK in your package.json, use a version tag in the Git URL:
 
 ```
-npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.1
+npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.2
 ```
 
 ### Git
@@ -80,6 +80,18 @@ Callbacks receive three arguments:
 - `error`: `null` if there's no error, or an `Error` object otherwise
 - `result`: The 'result' object from the API response body
 - `body`: The full body of the response from the API. This includes pagination details, if present.
+
+### URLs
+
+#### RO.urls.getBaseUrl()
+
+Returns the current RewardOps API base URL.
+
+#### RO.urls.setBaseUrl(url)
+
+Set the RewardOps API base URL for subsequent API calls.
+
+(This can be helpful if the API base URL you need is not set automatically by using the `REWARDOPS_ENV` environment variable.)
 
 ### Programs
 
@@ -186,7 +198,7 @@ myProgram.rewards.get(1234, function(error, result, body) {
 
 Get a list of all orders for a member in a program.
 
-*Note:* The options object must include a member_id.
+*Note:* The `options` object is required and must include a `member_id`.
 
 ```js
 // Gets the orders for member abc987
@@ -220,9 +232,9 @@ myProgram.orders.get('qwerty1234', function(error, result, body) {
 
 #### program.orders.create(options, callback)
 
-Creates an order.
+Create an order.
 
-*Note:* The options object must include a reward_id and a member object.
+*Note:* The `options` object is required and must include a `reward_id` and a `member` object.
 
 ```js
 // Posts a new order for the reward with id 45231 for member 'bbdd0987'
