@@ -1,6 +1,8 @@
 # RewardOps Node.js SDK
 
-Note: The SDK currently only uses v3 of the RewardOps API.
+Note: The SDK currently uses v3 of the RewardOps API.
+
+To see an example implementation of the SDK, see the [RewardOps sample JavaScript app](https://github.com/rewardops/rewardops-sample-javascript), which uses the SDK in its Express server.
 
 ## Installation
 
