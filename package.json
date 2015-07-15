@@ -1,6 +1,6 @@
 {
   "name": "rewardops-sdk",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "private": "true",
   "description": "Node.js SDK for the RewardOps API",
   "author": "RewardOps",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "request": "^2.51.0",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "winston": "^1.0.1"
   }
 }
