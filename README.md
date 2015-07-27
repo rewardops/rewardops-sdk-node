@@ -17,7 +17,7 @@ npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git
 To install and save a specific version of the SDK in your package.json, use a version tag in the Git URL:
 
 ```
-npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.2
+npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.6
 ```
 
 ### Git
