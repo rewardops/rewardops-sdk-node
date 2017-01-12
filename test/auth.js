@@ -279,7 +279,53 @@ describe('RO.auth', function() {
       });
     });
 
-    it('should timeout and pass an error to the callback when the server hasn\'t responded before config.timeout', function(done) {
+    it('should timeout and pass an error to the callback when the server times out', function(done) {
+      var config = {
+            client_id: 'asdf0987ghjk',
+            client_secret: 'asdf1234poiu',
+            timeout: 50
+          },
+          reply =  {
+            'access_token': 'time0ut',
+            'created_at': Math.round(+new Date()/1000),
+            'expires_in': 7200
+          },
+          postBody = {
+            grant_type: 'client_credentials'
+          },
+          timeoutError = new Error();
+
+      timeoutError.message = 'ETIMEDOUT';
+
+      nock(RO.auth.getBaseUrl(), {
+          reqheaders: {
+            'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+          }
+        })
+        .post(RO.auth.getTokenPath(), _.extend(postBody))
+        .times(3)
+        .replyWithError(timeoutError)
+        .post(RO.auth.getTokenPath(), _.extend(postBody))
+        .once()
+        .reply(200, reply);
+
+      RO.auth.token = {};
+
+      RO.auth.getToken(config, function(error) {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('ETIMEDOUT');
+
+        RO.auth.getToken(config, function(error, token) {
+          expect(error).to.equal(null);
+
+          expect(token).to.equal(reply.access_token);
+
+          done();
+        });
+      });
+    });
+
+    it('should timeout and pass an error to the callback when there is a socket timeout', function(done) {
       var config = {
             client_id: 'asdf0987ghjk',
             client_secret: 'asdf1234poiu',
@@ -300,11 +346,11 @@ describe('RO.auth', function() {
           }
         })
         .post(RO.auth.getTokenPath(), _.extend(postBody))
-        .delayConnection(config.timeout + 10)
+        .socketDelay(config.timeout + 10)
         .times(3)
         .reply(200, reply)
         .post(RO.auth.getTokenPath(), _.extend(postBody))
-        .delayConnection(config.timeout - 10)
+        .socketDelay(config.timeout - 10)
         .once()
         .reply(200, reply);
 
@@ -312,7 +358,7 @@ describe('RO.auth', function() {
 
       RO.auth.getToken(config, function(error) {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('ETIMEDOUT');
+        expect(error.message).to.equal('ESOCKETTIMEDOUT');
 
         RO.auth.getToken(config, function(error, token) {
           expect(error).to.equal(null);
