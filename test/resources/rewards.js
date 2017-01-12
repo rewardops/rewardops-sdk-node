@@ -69,7 +69,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(rewardList).to.be.an('array');
-          expect(apiCall.isDone()).to.be.ok();
+          expect(apiCall.isDone()).to.be.true;
 
           done();
         });
@@ -94,7 +94,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          expect(scope.isDone()).to.be.true;
 
           done();
         });
@@ -137,7 +137,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(rewardList).to.be.an('object');
-          expect(apiCall.isDone()).to.be.ok();
+          expect(apiCall.isDone()).to.be.true;
 
           done();
         });
@@ -161,7 +161,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          expect(scope.isDone()).to.be.true;
 
           done();
         });

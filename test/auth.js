@@ -33,7 +33,7 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        expect(error).to.be.an('object');
+        expect(error).to.be.an('error');
         expect(response).to.equal(undefined);
 
         expect(error.name).to.equal('AuthenticationError');
@@ -50,7 +50,7 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        expect(error).to.be.an('object');
+        expect(error).to.be.an('error');
         expect(response).to.equal(undefined);
 
         expect(error.name).to.equal('AuthenticationError');
@@ -67,7 +67,7 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        expect(error).to.be.an('object');
+        expect(error).to.be.an('error');
         expect(response).to.equal(undefined);
 
         expect(error.name).to.equal('AuthenticationError');
@@ -96,7 +96,7 @@ describe('RO.auth', function() {
             .reply(200, reply);
 
       RO.auth.getToken(config, function() {
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         done();
       });
@@ -120,7 +120,7 @@ describe('RO.auth', function() {
             });
 
       RO.auth.getToken(config, function() {
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         done();
       });
@@ -204,7 +204,7 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, token) {
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         expect(error).to.equal(null);
 
@@ -239,7 +239,7 @@ describe('RO.auth', function() {
             .reply(200, reply);
 
       RO.auth.getToken(config, function(error, token) {
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         expect(error).to.equal(null);
 
@@ -269,7 +269,7 @@ describe('RO.auth', function() {
         .reply(401);
 
       RO.auth.getToken(config, function(error, response) {
-        expect(error).to.be.an('object');
+        expect(error).to.be.an('error');
         expect(response).to.equal(undefined);
 
         expect(error.name).to.equal('AuthenticationError');
@@ -390,7 +390,7 @@ describe('RO.auth', function() {
           callback(error, token);
         });
       }, function(error, results) {
-        expect(error).to.not.be.ok();
+        expect(error).to.be.null;
 
         for (var i = 0; i < results.length; i++) {
           expect(results[i]).to.equal(reply.access_token);

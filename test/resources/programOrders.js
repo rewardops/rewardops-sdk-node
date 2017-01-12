@@ -78,7 +78,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(orderList).to.be.an('array');
-          expect(apiCall.isDone()).to.be.ok();
+          expect(apiCall.isDone()).to.be.true;
 
           done();
         });
@@ -105,7 +105,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(programsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          expect(scope.isDone()).to.be.true;
 
           done();
         });
@@ -148,7 +148,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(orderList).to.be.an('object');
-          expect(apiCall.isDone()).to.be.ok();
+          expect(apiCall.isDone()).to.be.true;
 
           done();
         });
@@ -171,7 +171,7 @@ describe('RO.program()', function() {
 
           expect(data).to.equal(undefined);
 
-          expect(scope.isDone()).to.not.be.ok();
+          expect(scope.isDone()).to.be.false;
 
           done();
         });
@@ -233,7 +233,7 @@ describe('RO.program()', function() {
           expect(error).to.equal(null);
 
           expect(result).to.deep.equal({status: 'OK'});
-          expect(apiCall.isDone()).to.be.ok();
+          expect(apiCall.isDone()).to.be.true;
 
           done();
         });
@@ -257,7 +257,7 @@ describe('RO.program()', function() {
 
           expect(result).to.equal(undefined);
 
-          expect(scope.isDone()).to.not.be.ok();
+          expect(scope.isDone()).to.be.false;
 
           done();
         });

@@ -150,9 +150,9 @@ describe('api', function() {
       expect(error).to.equal(null);
       expect(result).to.equal('OK');
 
-      expect(authScope.isDone()).to.be.ok();
-      expect(badScope.isDone()).to.be.ok();
-      expect(goodScope.isDone()).to.be.ok();
+      expect(authScope.isDone()).to.be.true;
+      expect(badScope.isDone()).to.be.true;
+      expect(goodScope.isDone()).to.be.true;
       expect(RO.auth.token.access_token).to.equal(goodToken);
       expect(listenerWasFired).to.equal(true);
 

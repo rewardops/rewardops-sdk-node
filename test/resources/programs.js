@@ -42,7 +42,7 @@ describe('RO.programs', function() {
         expect(error).to.equal(null);
 
         expect(programList).to.be.an('array');
-        expect(apiCall.isDone()).to.be.ok();
+        expect(apiCall.isDone()).to.be.true;
 
         done();
       });
@@ -67,7 +67,7 @@ describe('RO.programs', function() {
         expect(error).to.equal(null);
 
         expect(programsList).to.be.an('array');
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         done();
       });
@@ -107,7 +107,7 @@ describe('RO.programs', function() {
         expect(error).to.equal(null);
 
         expect(program).to.be.an('object');
-        expect(scope.isDone()).to.be.ok();
+        expect(scope.isDone()).to.be.true;
 
         done();
       });
