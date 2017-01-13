@@ -1,7 +1,7 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     nock      = require('nock'),
     RO        = require('../..'),
     fixtures  = require('../fixtures/rewardsFixtures');
@@ -18,21 +18,20 @@ describe('RO.program()', function() {
         program = RO.program(id);
 
     before(function() {
-      RO.config.client_id = 'rewardTest123';
-      RO.config.client_secret = 'itsATestGetUsedToIt';
+      RO.config.set('clientId', 'rewardTest123');
+      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
     after(function() {
-      RO.config.client_id = undefined;
-      RO.config.client_secret = undefined;
+      RO.config.reset();
     });
 
     it('should be an object', function() {
-      expect(program.rewards).to.be.an('object');
+      assert.typeOf(program.rewards, 'object');
     });
 
     it('should have the correct program ID', function() {
-      expect(program.rewards.programId).to.equal(id);
+      assert.equal(program.rewards.programId, id);
     });
 
     describe('getAll()', function() {
@@ -48,7 +47,7 @@ describe('RO.program()', function() {
           });
 
         program.rewards.getAll(function(error, data) {
-          expect(data).to.be.an('array');
+          assert.typeOf(data, 'array');
 
           done();
         });
@@ -66,10 +65,10 @@ describe('RO.program()', function() {
           });
 
         RO.program(12).rewards.getAll(function(error, rewardList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardList).to.be.an('array');
-          expect(apiCall.isDone()).to.be.true;
+          assert.typeOf(rewardList, 'array');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -91,10 +90,10 @@ describe('RO.program()', function() {
             });
 
         RO.program(55).rewards.getAll(body, function(error, rewardsList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.true;
+          assert.typeOf(rewardsList, 'array');
+          assert.equal(scope.isDone(), true);
 
           done();
         });
@@ -115,7 +114,7 @@ describe('RO.program()', function() {
           });
 
         program.rewards.get(555, function(error, data) {
-          expect(data).to.be.an('object');
+          assert.typeOf(data, 'object');
 
           done();
         });
@@ -134,10 +133,10 @@ describe('RO.program()', function() {
               });
 
         RO.program(12).rewards.get(929, function(error, rewardList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardList).to.be.an('object');
-          expect(apiCall.isDone()).to.be.true;
+          assert.typeOf(rewardList, 'object');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -158,10 +157,10 @@ describe('RO.program()', function() {
             });
 
         RO.program(55).rewards.get(234, body, function(error, rewardsList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.true;
+          assert.typeOf(rewardsList, 'array');
+          assert.equal(scope.isDone(), true);
 
           done();
         });

@@ -1,7 +1,7 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     nock      = require('nock'),
     fixtures  = require('../fixtures/programsFixtures'),
     RO        = require('../../');
@@ -10,22 +10,26 @@ describe('RO.programs', function() {
   /* jshint camelcase: false */
 
   it('should be an object', function() {
-    expect(RO.programs).to.be.an('object');
+    assert.typeOf(RO.programs, 'object');
   });
 
   describe('getAll()', function() {
     fixtures();
 
     beforeEach(function() {
-      RO.config.client_id = 'mockedclientidforprogramstests';
-      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+      RO.config.set('clientId', 'mockedclientidforprogramstests');
+      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
+    });
+
+    afterEach(function() {
+      RO.config.reset();
     });
 
     it('should pass an array to the callback', function(done) {
       RO.programs.getAll(function(error, programList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programList).to.be.an('array');
+        assert.typeOf(programList, 'array');
 
         done();
       });
@@ -39,10 +43,10 @@ describe('RO.programs', function() {
         });
 
       RO.programs.getAll(function(error, programList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programList).to.be.an('array');
-        expect(apiCall.isDone()).to.be.true;
+        assert.typeOf(programList, 'array');
+        assert.equal(apiCall.isDone(), true);
 
         done();
       });
@@ -64,10 +68,10 @@ describe('RO.programs', function() {
           });
 
       RO.programs.getAll(body, function(error, programsList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programsList).to.be.an('array');
-        expect(scope.isDone()).to.be.true;
+        assert.typeOf(programsList, 'array');
+        assert.equal(scope.isDone(), true);
 
         done();
       });
@@ -76,17 +80,17 @@ describe('RO.programs', function() {
 
   describe('get()', function() {
     beforeEach(function() {
-      RO.config.client_id = 'mockedclientidforprogramstests';
-      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+      RO.config.set('clientId', 'mockedclientidforprogramstests');
+      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
     it('should pass an object to the callback', function(done) {
       var id = 555;
 
       RO.programs.get(id, function(error, data) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(data).to.be.an('object');
+        assert.typeOf(data, 'object');
 
         done();
       });
@@ -104,10 +108,10 @@ describe('RO.programs', function() {
             });
 
       RO.programs.get('567', function(error, program) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(program).to.be.an('object');
-        expect(scope.isDone()).to.be.true;
+        assert.typeOf(program, 'object');
+        assert.equal(scope.isDone(), true);
 
         done();
       });

@@ -36,16 +36,16 @@ npm install
 
 ### Required
 
-- `client_id`: Your RewardOps API v3 OAuth client_id.
-- `client_secret`: Your RewardOps API v3 OAuth client_secret.
+- `clientId`: Your RewardOps API OAuth client_id.
+- `clientSecret`: Your RewardOps API OAuth client_secret.
 
-You must set `RO.config.client_id` and `RO.config.client_secret` before making any API calls using the SDK.
+You must set `RO.config.clientId` and `RO.config.clientSecret` before making any API calls using the SDK.
 
 ```js
 var RO = require('rewardops-sdk');
 
-RO.config.client_id = 'abcdefg1234567';
-RO.config.client_secret = '9876543poiuytr';
+RO.config.set('clientId', 'abcdefg1234567');
+RO.config.set('clientSecret', '9876543poiuytr');
 ```
 
 ### Optional
@@ -68,7 +68,7 @@ You can also change the base API URL after loading the SDK using `RO.urls.setBas
 
 ## OAuth
 
-The SDK dramatically simplifies OAuth. You only need to add your `client_id` and `client_secret` to the config and you're ready to go. When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and store it for later use.
+The SDK dramatically simplifies OAuth. You only need to add your `clientId` and `clientSecret` to the config and you're ready to go. When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and store it for later use.
 
 ## Sample
 
