@@ -11,7 +11,7 @@ describe('config', function() {
       config.reset();
 
       assert.deepEqual(config.getAll(), {
-        apiVersion:   'v3',
+        apiVersion:   'v4',
         clientId:     undefined,
         clientSecret: undefined,
         logFilePath:  path.resolve(__dirname, '../logs/ro.log'),
@@ -26,7 +26,7 @@ describe('config', function() {
     it('should return a config value', function() {
       config.reset();
 
-      assert.equal(config.get('apiVersion'), 'v3');
+      assert.equal(config.get('apiVersion'), 'v4');
       assert.equal(config.get('verbose'), true);
     });
   });

@@ -5,7 +5,7 @@ var assert           = require('chai').assert,
     path             = require('path'),
     RO               = require('../'),
     expectedDefaults = {
-      apiVersion:   'v3',
+      apiVersion:   'v4',
       clientId:     undefined,
       clientSecret: undefined,
       logFilePath:  path.resolve(__dirname, '../logs/ro.log'),

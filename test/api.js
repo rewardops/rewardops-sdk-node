@@ -8,6 +8,9 @@ var chai      = require('chai'),
     fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {
+  before(function() {
+    RO.config.set('apiVersion', 'v4');
+  });
 
   after(function() {
     RO.config.reset();
@@ -43,7 +46,7 @@ describe('api', function() {
         secondToken = 'apiTestToken1234',
         config = {clientId: 'bamabc', clientSecret: 'boom123'};
 
-    nock(RO.urls.getBaseUrl() + '/another', {
+    nock('https://app.rewardops.net/api/v4/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + firstToken
       }
@@ -66,7 +69,7 @@ describe('api', function() {
         'Content-Type': 'text/html'
       });
 
-    nock(RO.urls.getBaseUrl() + '/another', {
+    nock('https://app.rewardops.net/api/v4/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + secondToken
       }
@@ -101,7 +104,7 @@ describe('api', function() {
         badToken = 'HeresAToken123456789',
         goodToken = 'apiTestToken1234',
         config = {clientId: 'abc', clientSecret: '123'},
-        badScope = nock(RO.urls.getBaseUrl() + '/some', {
+        badScope = nock('https://app.rewardops.net/api/v4/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + badToken
           }
@@ -111,7 +114,7 @@ describe('api', function() {
             'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token expired\"',
             'Content-Type': 'text/html'
           }),
-        goodScope = nock(RO.urls.getBaseUrl() + '/some', {
+        goodScope = nock('https://app.rewardops.net/api/v4/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + goodToken
           }
@@ -166,8 +169,9 @@ describe('api', function() {
 
   describe('get', function() {
     before(function() {
-      fixtures();
       RO.auth.token = {};
+
+      fixtures();
     });
 
     it('should be a function', function() {
@@ -200,7 +204,7 @@ describe('api', function() {
           customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
         };
 
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
           reqheaders: {
             'Authorization': 'Bearer ' + token
           }

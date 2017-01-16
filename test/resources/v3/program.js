@@ -3,14 +3,20 @@
 var chai      = require('chai'),
     assert    = chai.assert,
     sinon     = require('sinon'),
-    RO        = require('../'),
-    fixtures  = require('./fixtures/programFixtures');
+    RO        = require('../../..'),
+    fixtures  = require('../../fixtures/v3/programFixtures');
 
 describe('RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
+    RO.config.set('apiVersion', 'v3');
+
     fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   it('should return an error when passed with a non-number', function() {

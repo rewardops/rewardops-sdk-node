@@ -3,26 +3,35 @@
 var chai      = require('chai'),
     assert    = chai.assert,
     nock      = require('nock'),
-    fixtures  = require('../fixtures/programsFixtures'),
-    RO        = require('../../');
+    fixtures  = require('../../fixtures/v3/programsFixtures'),
+    RO        = require('../../..');
 
-describe('RO.programs', function() {
+describe('v3 RO.programs', function() {
   /* jshint camelcase: false */
+
+  before(function() {
+    RO.config.set('apiVersion', 'v3');
+
+    fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
+  });
 
   it('should be an object', function() {
     assert.typeOf(RO.programs, 'object');
   });
 
   describe('getAll()', function() {
-    fixtures();
-
-    beforeEach(function() {
+    before(function() {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
-    afterEach(function() {
-      RO.config.reset();
+    after(function() {
+      RO.config.set('clientId', undefined);
+      RO.config.set('clientSecret', undefined);
     });
 
     it('should pass an array to the callback', function(done) {
@@ -36,12 +45,12 @@ describe('RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var apiCall = nock(RO.urls.getBaseUrl())
+      var apiCall = nock(RO.urls.apiServerUrl() + '/api/v3')
         .get('/programs')
         .reply(200, {
           result: []
         });
-
+console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(function(error, programList) {
         assert.equal(error, null);
 
@@ -57,7 +66,7 @@ describe('RO.programs', function() {
             page: 7,
             per_page_count: 50
           },
-          scope = nock(RO.urls.getBaseUrl(), {
+          scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }
@@ -79,9 +88,14 @@ describe('RO.programs', function() {
   });
 
   describe('get()', function() {
-    beforeEach(function() {
+    before(function() {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
+    });
+
+    after(function() {
+      RO.config.set('clientId', undefined);
+      RO.config.set('clientSecret', undefined);
     });
 
     it('should pass an object to the callback', function(done) {
@@ -97,7 +111,7 @@ describe('RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var scope = nock(RO.urls.getBaseUrl(), {
+      var scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }

@@ -1,15 +1,14 @@
 'use strict';
 
-var nock    = require('nock'),
-    RO      = require('../../');
+var nock = require('nock');
 
 module.exports = function() {
-  nock(RO.auth.getBaseUrl(), {
+  nock('https://app.rewardops.net/api/v4/auth', {
     reqheaders: {
       'Authorization': 'Basic ' + new Buffer('abcdefg1234567:abcdefg1234567').toString('base64')
     }
   })
-    .post(RO.auth.getTokenPath(), {
+    .post('/token', {
       'grant_type': 'client_credentials'
     })
     .twice()
@@ -20,7 +19,7 @@ module.exports = function() {
       'created_at': Math.round(+new Date()/1000)
     });
 
-    nock(RO.urls.getBaseUrl(), {
+    nock('https://app.rewardops.net/api/v4', {
       reqheaders: {
         'Authorization': 'Bearer abcdefg1234'
       }

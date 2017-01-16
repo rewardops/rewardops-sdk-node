@@ -50,11 +50,12 @@ RO.config.set('clientSecret', '9876543poiuytr');
 
 ### Optional
 
-- `timeout`: Timeout for HTTP requests (used by Request)
-- `maxListeners`: Sets maxListeners for the RO.emitter eventEmitter. (See [Node.js docs](https://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n).)
-- `verbose`: If true, logs output to console (and optionally to file). (Default: `true`)
-- `logToFile`: If true and if verbose is true, saves log messages to file. (Default: `false`)
+- `apiVersion`: The version of the RewardOps API to use. This affects the SDK methods available and the API baseUrl. (Default: `v4`)
 - `logFilePath`: The file path where the log file should be saved. *NOTE:* This must be set using the method `RO.setLogFilePath(path)`. (Default: `'logs/ro.log'`)
+- `logToFile`: If true and if verbose is true, saves log messages to file. (Default: `false`)
+- `maxListeners`: Sets maxListeners for the RO.emitter eventEmitter. (See [Node.js docs](https://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n).)
+- `timeout`: Timeout for HTTP requests (used by Request)
+- `verbose`: If true, logs output to console (and optionally to file). (Default: `true`)
 
 ### Environment variables
 
@@ -88,7 +89,7 @@ Callbacks receive three arguments:
 
 ### URLs
 
-#### RO.urls.getBaseUrl()
+#### RO.urls.apiBaseUrl()
 
 Returns the current RewardOps API base URL.
 

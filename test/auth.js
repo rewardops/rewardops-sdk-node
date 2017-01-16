@@ -13,7 +13,7 @@ describe('RO.auth', function() {
 
   describe('getBaseUrl()', function() {
     it('should return the correct value', function() {
-      assert.equal(RO.auth.getBaseUrl(), RO.urls.getBaseUrl() + '/auth');
+      assert.equal(RO.auth.getBaseUrl(), RO.urls.apiBaseUrl() + '/auth');
     });
   });
 
@@ -87,7 +87,7 @@ describe('RO.auth', function() {
             'created_at': Math.round(+new Date()/1000),
             'expires_in': 7200
           },
-          scope = nock(RO.auth.getBaseUrl(), {
+          scope = nock('https://app.rewardops.net/api/v4/auth', {
             reqheaders: {
               'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
             }
@@ -107,7 +107,7 @@ describe('RO.auth', function() {
             clientId: 'clientIdForTestingRequestHeaders',
             clientSecret: 'someFakeValueForHeaderTesting'
           },
-          scope = nock(RO.auth.getBaseUrl(), {
+          scope = nock('https://app.rewardops.net/api/v4/auth', {
             reqheaders: {
               'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
             }
@@ -161,7 +161,7 @@ describe('RO.auth', function() {
             'expires_in': 7200,
           };
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
           'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
         }
@@ -190,7 +190,7 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.getBaseUrl(), {
+          scope = nock('https://app.rewardops.net/api/v4/auth', {
             reqheaders: {
               'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
             }
@@ -225,7 +225,7 @@ describe('RO.auth', function() {
             'created_at': Math.round((+new Date()/1000)),
             'expires_in': 7200,
           },
-          scope = nock(RO.auth.getBaseUrl(), {
+          scope = nock('https://app.rewardops.net/api/v4/auth', {
             reqheaders: {
               'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
             }
@@ -257,7 +257,7 @@ describe('RO.auth', function() {
         clientSecret: 'someSecretOrAnother'
       };
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
           reqheaders: {
             'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
           }
@@ -299,7 +299,7 @@ describe('RO.auth', function() {
 
       timeoutError.message = 'ETIMEDOUT';
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
           reqheaders: {
             'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
           }
@@ -342,7 +342,7 @@ describe('RO.auth', function() {
             grant_type: 'client_credentials'
           };
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
           reqheaders: {
             'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
           }
@@ -416,7 +416,7 @@ describe('RO.auth', function() {
 
       emitter.setMaxListeners(n + 1);
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
           'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
         }
@@ -464,7 +464,7 @@ describe('RO.auth', function() {
           },
           listenerFiredToken = null;
 
-      nock(RO.auth.getBaseUrl(), {
+      nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
           'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
         }

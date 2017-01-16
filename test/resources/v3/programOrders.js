@@ -4,14 +4,20 @@ var chai      = require('chai'),
     assert    = chai.assert,
     _         = require('underscore'),
     nock      = require('nock'),
-    RO        = require('../..'),
-    fixtures  = require('../fixtures/programOrdersFixtures');
+    RO        = require('../../..'),
+    fixtures  = require('../../fixtures/v3/programOrdersFixtures');
 
 describe('RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
+    RO.config.set('apiVersion', 'v3');
+
     fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   describe('orders', function() {
@@ -41,7 +47,7 @@ describe('RO.program()', function() {
 
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -61,7 +67,7 @@ describe('RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -88,7 +94,7 @@ describe('RO.program()', function() {
               page: 7,
               per_page_count: 50
             },
-            scope = nock(RO.urls.getBaseUrl(), {
+            scope = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -113,7 +119,7 @@ describe('RO.program()', function() {
 
     describe('get()', function() {
       it('should pass an object to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -132,7 +138,7 @@ describe('RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -160,7 +166,7 @@ describe('RO.program()', function() {
               reward_id: '131313', // A string, not a number
               member: {id: 'anything'}
             },
-            scope = nock(RO.urls.getBaseUrl())
+            scope = nock(RO.urls.apiBaseUrl())
               .post('/programs/33/orders', options)
               .reply(200);
 
@@ -184,7 +190,7 @@ describe('RO.program()', function() {
               }
             };
 
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -218,7 +224,7 @@ describe('RO.program()', function() {
                 }
               }
             },
-            apiCall = nock(RO.urls.getBaseUrl(), {
+            apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -239,7 +245,7 @@ describe('RO.program()', function() {
       });
 
       it('should pass an error to the callback when a body isn\'t passed', function(done) {
-        var scope = nock(RO.urls.getBaseUrl(), {
+        var scope = nock(RO.urls.apiBaseUrl(), {
           reqHeaders: {
             'Authorization': 'Bearer abcd1234programTime'
           }

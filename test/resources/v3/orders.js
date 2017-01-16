@@ -2,9 +2,17 @@
 
 var chai    = require('chai'),
     assert  = chai.assert,
-    RO      = require('../..');
+    RO      = require('../../..');
 
 describe('orders', function() {
+  before(function() {
+    RO.config.set('apiVersion', 'v3');
+  });
+
+  after(function() {
+    RO.config.reset();
+  });
+
   it('should create an orders object for a program', function() {
     var programOrders = RO.program(488).orders;
 
