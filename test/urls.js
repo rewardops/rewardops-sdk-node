@@ -19,19 +19,23 @@ describe('urls', function() {
   });
 
   describe('apiServerUrl()', function() {
-    it('should have the correct root path in the development env', function() {
+    after(function () {
+      config.set('apiServerUrl', undefined);
+    });
+
+    it('should have the correct server url in the development env', function() {
       process.env.REWARDOPS_ENV = 'development';
 
       assert.equal(urls.apiServerUrl(), 'http://localhost:3000');
     });
 
-    it('should have the correct root path in the integration env', function() {
+    it('should have the correct server url in the integration env', function() {
       process.env.REWARDOPS_ENV = 'integration';
 
       assert.equal(urls.apiServerUrl(), 'https://int.rewardops.net');
     });
 
-    it('should have the correct root path in other environments', function() {
+    it('should have the correct server url in other environments', function() {
       process.env.REWARDOPS_ENV = 'production';
 
       assert.equal(urls.apiServerUrl(), 'https://app.rewardops.net');
@@ -43,6 +47,14 @@ describe('urls', function() {
       process.env.REWARDOPS_ENV = undefined;
 
       assert.equal(urls.apiServerUrl(), 'https://app.rewardops.net');
+    });
+
+    it('should return the apiServerUrl from the config if it is set', function() {
+      process.env.REWARDOPS_ENV = 'development';
+      config.set('apiServerUrl', 'http://example.com/test');
+
+      assert.equal(urls.apiServerUrl(), 'http://example.com/test');
+      assert.equal(urls.apiBaseUrl(), 'http://example.com/test/api/' + config.get('apiVersion'));
     });
   });
 

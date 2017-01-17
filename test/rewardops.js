@@ -5,6 +5,7 @@ var assert           = require('chai').assert,
     path             = require('path'),
     RO               = require('../'),
     expectedDefaults = {
+      apiServerUrl: undefined,
       apiVersion:   'v4',
       clientId:     undefined,
       clientSecret: undefined,

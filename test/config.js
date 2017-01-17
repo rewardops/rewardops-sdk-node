@@ -11,6 +11,7 @@ describe('config', function() {
       config.reset();
 
       assert.deepEqual(config.getAll(), {
+        apiServerUrl: undefined,
         apiVersion:   'v4',
         clientId:     undefined,
         clientSecret: undefined,
