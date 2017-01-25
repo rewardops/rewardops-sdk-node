@@ -5,15 +5,21 @@ var chai      = require('chai'),
     _         = require('underscore'),
     nock      = require('nock'),
     RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v3/programOrdersFixtures');
+    fixtures  = require('../../fixtures/v4/programOrdersFixtures');
 
-describe('v3 RO.program()', function() {
+describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
-    RO.config.set('apiVersion', 'v3');
+    RO.config.set('apiVersion', 'v4');
+  });
 
+  beforeEach(function() {
     fixtures();
+  });
+
+  afterEach(function() {
+    nock.cleanAll();
   });
 
   after(function() {
@@ -44,10 +50,10 @@ describe('v3 RO.program()', function() {
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
-              }
-            })
+            reqHeaders: {
+              'Authorization': 'Bearer abcd1234rewardTime'
+            }
+          })
           .get('/programs/33/orders', {
             member_id: 38
           })
@@ -65,7 +71,7 @@ describe('v3 RO.program()', function() {
       it('should make an HTTP get request to the correct URL', function(done) {
         var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
         .get('/programs/12/orders', {
@@ -92,7 +98,7 @@ describe('v3 RO.program()', function() {
             },
             scope = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
             .get('/programs/55/orders', _.extend(body, {
@@ -117,7 +123,7 @@ describe('v3 RO.program()', function() {
       it('should pass an object to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
           .get('/programs/33/orders/555')
@@ -136,7 +142,7 @@ describe('v3 RO.program()', function() {
       it('should make an HTTP get request to the correct URL', function(done) {
         var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
               .get('/programs/12/orders/929')
@@ -157,10 +163,9 @@ describe('v3 RO.program()', function() {
     });
 
     describe('create()', function() {
-      it('should fire the callback with an error when a non-number is passed as the reward ID', function(done) {
+      it('should fire the callback with an error when the options object is missing a member object', function(done) {
         var options = {
-              reward_id: '131313', // A string, not a number
-              member: {id: 'anything'}
+              items: [{}]
             },
             scope = nock(RO.urls.apiBaseUrl())
               .post('/programs/33/orders', options)
@@ -168,11 +173,31 @@ describe('v3 RO.program()', function() {
 
         program.orders.create(options, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'reward_id must be a number');
+          assert.equal(error.message, 'must pass a member object in the options object to `orders.create()`');
 
           assert.equal(data, undefined);
 
-          assert.equal(scope.isDone(), false);
+          assert.equal(scope.isDone(), false, 'no API call was made');
+
+          done();
+        });
+      });
+
+      it('should fire the callback with an error when the options object is missing an items array', function(done) {
+        var options = {
+              member: {id: 'hoo_ah'}
+            },
+            scope = nock(RO.urls.apiBaseUrl())
+              .post('/programs/33/orders', options)
+              .reply(200);
+
+        program.orders.create(options, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'must pass an items array in the options object to `orders.create()`');
+
+          assert.equal(data, undefined);
+
+          assert.equal(scope.isDone(), false, 'no API call was made');
 
           done();
         });
@@ -180,15 +205,15 @@ describe('v3 RO.program()', function() {
 
       it('should pass an object to the callback', function(done) {
         var newOrder = {
-              reward_id: 1234,
               member: {
                 'id': 'abc123ppp'
-              }
+              },
+              items: [{}]
             };
 
         nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
           .post('/programs/33/orders', newOrder)
@@ -197,6 +222,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.orders.create(newOrder, function(error, result) {
+          assert.equal(error, null);
           assert.typeOf(result, 'object');
 
           done();
@@ -205,8 +231,6 @@ describe('v3 RO.program()', function() {
 
       it('should make an HTTP get request to the correct URL', function(done) {
         var newOrder = {
-              reward_id: 1234,
-              retail_value: 4,
               member: {
                 'id': 'ab098765',
                 'full_name': 'Prit Kaur',
@@ -218,11 +242,25 @@ describe('v3 RO.program()', function() {
                   'country_code': 'UK',
                   'postal_code': 'S32 5N9'
                 }
-              }
+              },
+              items: [{
+                'item_order_token': '3o2u4902u3joo4',
+                'quantity': 2,
+                'member_spend': [
+                  {
+                    'currency_code': 'XRO-ABC',
+                    'amount': '1000'
+                  }
+                ],
+                'retail_value': {
+                  'currency_code': 'USD',
+                  'amount': '20'
+                }
+              }]
             },
             apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
+                'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
               .post('/programs/33/orders', newOrder)
@@ -243,7 +281,7 @@ describe('v3 RO.program()', function() {
       it('should pass an error to the callback when a body isn\'t passed', function(done) {
         var scope = nock(RO.urls.apiBaseUrl(), {
           reqHeaders: {
-            'Authorization': 'Bearer abcd1234programTime'
+            'Authorization': 'Bearer abcd1234rewardTime'
           }
         })
           .post('/programs/133000/orders')
@@ -251,14 +289,13 @@ describe('v3 RO.program()', function() {
             result: {}
           });
 
-
         RO.program(133000).orders.create(function(error, result) {
           assert.instanceOf(error, Error);
           assert.equal(error.message, 'A body object is required');
 
           assert.equal(result, undefined);
 
-          assert.equal(scope.isDone(), false);
+          assert.equal(scope.isDone(), false, 'no API call was made');
 
           done();
         });

@@ -6,7 +6,7 @@ var chai      = require('chai'),
     RO        = require('../../..'),
     fixtures  = require('../../fixtures/v4/itemsFixtures');
 
-describe('RO.program()', function() {
+describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
@@ -30,10 +30,6 @@ describe('RO.program()', function() {
 
     after(function() {
       RO.config.reset();
-    });
-
-    it('should be an object', function() {
-      assert.typeOf(program.items, 'object');
     });
 
     it('should have the correct program ID', function() {

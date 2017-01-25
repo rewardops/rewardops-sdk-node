@@ -6,7 +6,7 @@ var chai      = require('chai'),
     RO        = require('../../..'),
     fixtures  = require('../../fixtures/v4/programFixtures');
 
-describe('RO.program()', function() {
+describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
@@ -28,12 +28,6 @@ describe('RO.program()', function() {
 
     assert.instanceOf(program2, Error);
     assert.equal(program2.message, 'Program ID must be a number');
-  });
-
-  it('should return an object', function() {
-    var program = RO.program(1);
-
-    assert.typeOf(program, 'object');
   });
 
   describe('id', function() {

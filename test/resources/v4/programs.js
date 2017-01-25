@@ -6,7 +6,7 @@ var chai      = require('chai'),
     fixtures  = require('../../fixtures/v3/programsFixtures'),
     RO        = require('../../..');
 
-describe('v3 RO.programs', function() {
+describe('v4 RO.programs', function() {
   /* jshint camelcase: false */
 
   before(function() {
@@ -17,10 +17,6 @@ describe('v3 RO.programs', function() {
 
   after(function() {
     RO.config.reset();
-  });
-
-  it('should be an object', function() {
-    assert.typeOf(RO.programs, 'object');
   });
 
   describe('getAll()', function() {

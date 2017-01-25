@@ -19,10 +19,6 @@ describe('v3 RO.programs', function() {
     RO.config.reset();
   });
 
-  it('should be an object', function() {
-    assert.typeOf(RO.programs, 'object');
-  });
-
   describe('getAll()', function() {
     before(function() {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
