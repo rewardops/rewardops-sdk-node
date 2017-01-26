@@ -27,8 +27,9 @@ describe('v4 RO.program()', function() {
   });
 
   describe('orders', function() {
-    var id = 33,
-        program = RO.program(id);
+    var programId        = 33,
+        program          = RO.program(programId),
+        programOrdersUrl = '/programs/' + programId + '/orders';
 
     before(function() {
       RO.config.set('clientId', 'programTest123');
@@ -40,7 +41,7 @@ describe('v4 RO.program()', function() {
     });
 
     it('should have the correct context ID', function() {
-      assert.equal(program.orders.contextId, id);
+      assert.equal(program.orders.contextId, programId);
     });
 
     it('should have the correct context', function() {
@@ -54,7 +55,7 @@ describe('v4 RO.program()', function() {
               'Authorization': 'Bearer abcd1234rewardTime'
             }
           })
-          .get('/programs/33/orders', {
+          .get(programOrdersUrl, {
             member_id: 38
           })
           .reply(200, {
@@ -126,7 +127,7 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-          .get('/programs/33/orders/555')
+          .get('/programs/' + programId + '/orders/555')
           .once()
           .reply(200, {
             result: {}
@@ -163,41 +164,31 @@ describe('v4 RO.program()', function() {
     });
 
     describe('create()', function() {
-      it('should fire the callback with an error when the options object is missing a member object', function(done) {
-        var options = {
-              items: [{}]
-            },
-            scope = nock(RO.urls.apiBaseUrl())
-              .post('/programs/33/orders', options)
-              .reply(200);
+      it('should fire the callback with an error when the body object is missing a member object', function(done) {
+        var body = {
+          items: [{}]
+        };
 
-        program.orders.create(options, function(error, data) {
+        program.orders.create(body, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass a member object in the options object to `orders.create()`');
+          assert.equal(error.message, 'must pass a member object in the body object to `orders.create()`');
 
           assert.equal(data, undefined);
-
-          assert.equal(scope.isDone(), false, 'no API call was made');
 
           done();
         });
       });
 
-      it('should fire the callback with an error when the options object is missing an items array', function(done) {
-        var options = {
-              member: {id: 'hoo_ah'}
-            },
-            scope = nock(RO.urls.apiBaseUrl())
-              .post('/programs/33/orders', options)
-              .reply(200);
+      it('should fire the callback with an error when the body object is missing an items array', function(done) {
+        var body = {
+          member: {id: 'hoo_ah'}
+        };
 
-        program.orders.create(options, function(error, data) {
+        program.orders.create(body, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass an items array in the options object to `orders.create()`');
+          assert.equal(error.message, 'must pass an items array in the body object to `orders.create()`');
 
           assert.equal(data, undefined);
-
-          assert.equal(scope.isDone(), false, 'no API call was made');
 
           done();
         });
@@ -216,7 +207,7 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-          .post('/programs/33/orders', newOrder)
+          .post(programOrdersUrl, newOrder)
           .reply(200, {
             result: {}
           });
@@ -263,12 +254,12 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-              .post('/programs/33/orders', newOrder)
+              .post(programOrdersUrl, newOrder)
               .reply(200, {
                 result: {status: 'OK'}
               });
 
-        RO.program(33).orders.create(newOrder, function(error, result) {
+        RO.program(programId).orders.create(newOrder, function(error, result) {
           assert.equal(error, null);
 
           assert.deepEqual(result, { status: 'OK' });
@@ -279,23 +270,92 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an error to the callback when a body isn\'t passed', function(done) {
-        var scope = nock(RO.urls.apiBaseUrl(), {
-          reqHeaders: {
-            'Authorization': 'Bearer abcd1234rewardTime'
-          }
-        })
-          .post('/programs/133000/orders')
-          .reply(200, {
-            result: {}
-          });
-
         RO.program(133000).orders.create(function(error, result) {
           assert.instanceOf(error, Error);
           assert.equal(error.message, 'A body object is required');
 
           assert.equal(result, undefined);
 
-          assert.equal(scope.isDone(), false, 'no API call was made');
+          done();
+        });
+      });
+    });
+
+    describe('update()', function() {
+      var orderId        = 'abcd1234asdf0987',
+          orderUpdateUrl = '/programs/' + programId + '/orders/' + orderId;
+
+      it('should fire the callback with an error when no id is passed as the first argument', function(done) {
+        var body = {
+          payment_status: 'PAID',
+          payment_status_notes: 'The user paid, and we thank them for it.'
+        };
+
+        program.orders.update(body, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'must pass an order (external) ID as the first argument to `orders.update()`');
+
+          assert.equal(data, undefined);
+
+          done();
+        });
+      });
+
+      it('should fire the callback with an error when no body object is passed', function(done) {
+        program.orders.update(orderId, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'A body object is required');
+
+          assert.equal(data, undefined);
+
+          done();
+        });
+      });
+
+      it('should pass an object to the callback', function(done) {
+        var body = {
+          payment_status: 'PAID',
+          payment_status_notes: 'The user paid, and we thank them for it.'
+        };
+
+        nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234rewardTime'
+              }
+            })
+          .patch(orderUpdateUrl, body)
+          .reply(200, {
+            result: {}
+          });
+
+        program.orders.update(orderId, body, function(error, result) {
+          assert.equal(error, null);
+          assert.typeOf(result, 'object');
+
+          done();
+        });
+      });
+
+      it('should make an HTTP get request to the correct URL', function(done) {
+        var body = {
+          payment_status: 'PAID',
+          payment_status_notes: 'The user paid, and we thank them for it.'
+        },
+        apiCall = nock(RO.urls.apiBaseUrl(), {
+            reqHeaders: {
+              'Authorization': 'Bearer abcd1234rewardTime'
+            }
+          })
+          .patch(orderUpdateUrl, body)
+          .reply(200, {
+            result: {status: 'OK'}
+          });
+
+        RO.program(programId).orders.update(orderId, body, function(error, result) {
+          assert.equal(error, null);
+
+          assert.deepEqual(result, { status: 'OK' });
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
