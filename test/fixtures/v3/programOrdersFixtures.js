@@ -1,16 +1,15 @@
 'use strict';
 
-var nock  = require('nock'),
-    RO    = require('../..');
+var nock = require('nock');
 
 module.exports = function() {
   // Oauth calls
-  nock(RO.auth.getBaseUrl(), {
+  nock('https://app.rewardops.net/api/v3/auth', {
     reqheaders: {
       'Authorization': 'Basic ' + new Buffer('programTest123:itsATestGetUsedToIt').toString('base64')
     }
   })
-    .post(RO.auth.getTokenPath(), {
+    .post('/token', {
         'grant_type': 'client_credentials'
       })
     .times(6)

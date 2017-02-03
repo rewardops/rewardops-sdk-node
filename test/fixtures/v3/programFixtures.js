@@ -1,11 +1,11 @@
 'use strict';
 
 var nock  = require('nock'),
-    RO    = require('../..');
+    RO    = require('../../..');
 
 module.exports = function() {
   // Oauth calls
-  nock(RO.auth.getBaseUrl(), {
+  nock('https://app.rewardops.net/api/v3/auth', {
     reqheaders: {
       'Authorization': 'Basic ' + new Buffer('programTest123:itsATestGetUsedToIt').toString('base64')
     }

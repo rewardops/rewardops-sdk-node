@@ -1,17 +1,23 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     _         = require('underscore'),
     nock      = require('nock'),
-    RO        = require('../..'),
-    fixtures  = require('../fixtures/programOrdersFixtures');
+    RO        = require('../../..'),
+    fixtures  = require('../../fixtures/v3/programOrdersFixtures');
 
-describe('RO.program()', function() {
+describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
+    RO.config.set('apiVersion', 'v3');
+
     fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   describe('orders', function() {
@@ -19,30 +25,25 @@ describe('RO.program()', function() {
         program = RO.program(id);
 
     before(function() {
-      RO.config.client_id = 'programTest123';
-      RO.config.client_secret = 'itsATestGetUsedToIt';
+      RO.config.set('clientId', 'programTest123');
+      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
     after(function() {
-      RO.config.client_id = undefined;
-      RO.config.client_secret = undefined;
-    });
-
-    it('should be an object', function() {
-      expect(program.orders).to.be.an('object');
+      RO.config.reset();
     });
 
     it('should have the correct context ID', function() {
-      expect(program.orders.contextId).to.equal(id);
+      assert.equal(program.orders.contextId, id);
     });
 
     it('should have the correct context', function() {
-      expect(program.orders.context).to.equal('program');
+      assert.equal(program.orders.contextTypeName, 'programs');
     });
 
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -55,14 +56,14 @@ describe('RO.program()', function() {
           });
 
         program.orders.getAll(38, function(error, data) {
-          expect(data).to.be.an('array');
+          assert.typeOf(data, 'array');
 
           done();
         });
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -75,10 +76,10 @@ describe('RO.program()', function() {
           });
 
         RO.program(12).orders.getAll(3, function(error, orderList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(orderList).to.be.an('array');
-          expect(apiCall.isDone()).to.be.ok();
+          assert.typeOf(orderList, 'array');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -89,7 +90,7 @@ describe('RO.program()', function() {
               page: 7,
               per_page_count: 50
             },
-            scope = nock(RO.urls.getBaseUrl(), {
+            scope = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -102,10 +103,10 @@ describe('RO.program()', function() {
             });
 
         RO.program(55).orders.getAll(777, body, function(error, programsList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(programsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          assert.typeOf(programsList, 'array');
+          assert.equal(scope.isDone(), true);
 
           done();
         });
@@ -114,7 +115,7 @@ describe('RO.program()', function() {
 
     describe('get()', function() {
       it('should pass an object to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -126,14 +127,14 @@ describe('RO.program()', function() {
           });
 
         program.orders.get(555, function(error, data) {
-          expect(data).to.be.an('object');
+          assert.typeOf(data, 'object');
 
           done();
         });
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -145,10 +146,10 @@ describe('RO.program()', function() {
               });
 
         RO.program(12).orders.get(929, function(error, orderList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(orderList).to.be.an('object');
-          expect(apiCall.isDone()).to.be.ok();
+          assert.typeOf(orderList, 'object');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -161,17 +162,17 @@ describe('RO.program()', function() {
               reward_id: '131313', // A string, not a number
               member: {id: 'anything'}
             },
-            scope = nock(RO.urls.getBaseUrl())
+            scope = nock(RO.urls.apiBaseUrl())
               .post('/programs/33/orders', options)
               .reply(200);
 
         program.orders.create(options, function(error, data) {
-          expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.equal('reward_id must be a number');
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'reward_id must be a number');
 
-          expect(data).to.equal(undefined);
+          assert.equal(data, undefined);
 
-          expect(scope.isDone()).to.not.be.ok();
+          assert.equal(scope.isDone(), false);
 
           done();
         });
@@ -185,7 +186,7 @@ describe('RO.program()', function() {
               }
             };
 
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -196,7 +197,7 @@ describe('RO.program()', function() {
           });
 
         program.orders.create(newOrder, function(error, result) {
-          expect(result).to.be.an('object');
+          assert.typeOf(result, 'object');
 
           done();
         });
@@ -219,7 +220,7 @@ describe('RO.program()', function() {
                 }
               }
             },
-            apiCall = nock(RO.urls.getBaseUrl(), {
+            apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234programTime'
               }
@@ -230,17 +231,17 @@ describe('RO.program()', function() {
               });
 
         RO.program(33).orders.create(newOrder, function(error, result) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(result).to.deep.equal({status: 'OK'});
-          expect(apiCall.isDone()).to.be.ok();
+          assert.deepEqual(result, { status: 'OK' });
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
       });
 
       it('should pass an error to the callback when a body isn\'t passed', function(done) {
-        var scope = nock(RO.urls.getBaseUrl(), {
+        var scope = nock(RO.urls.apiBaseUrl(), {
           reqHeaders: {
             'Authorization': 'Bearer abcd1234programTime'
           }
@@ -252,12 +253,12 @@ describe('RO.program()', function() {
 
 
         RO.program(133000).orders.create(function(error, result) {
-          expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.equal('A body object is required');
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'A body object is required');
 
-          expect(result).to.equal(undefined);
+          assert.equal(result, undefined);
 
-          expect(scope.isDone()).to.not.be.ok();
+          assert.equal(scope.isDone(), false);
 
           done();
         });

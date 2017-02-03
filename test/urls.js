@@ -1,78 +1,76 @@
 'use strict';
 
 var chai    = require('chai'),
-    expect  = chai.expect,
+    assert  = chai.assert,
+    config  = require('../lib/config'),
     urls    = require('../lib/urls');
 
 describe('urls', function() {
-  it('should be an object', function() {
-    expect(urls).to.be.an('object');
+  var initialEnv;
+
+  before(function() {
+    initialEnv = process.env.REWARDOPS_ENV;
   });
 
-  describe('getBaseUrl()', function() {
-    var initialEnv;
+  after(function () {
+    process.env.REWARDOPS_ENV = initialEnv;
 
-    before(function() {
-      initialEnv = process.env.REWARDOPS_ENV;
-    });
+    config.reset();
+  });
 
+  describe('apiServerUrl()', function() {
     after(function () {
-      process.env.REWARDOPS_ENV = initialEnv;
-
-      urls.setEnv();
+      config.set('apiServerUrl', undefined);
     });
 
-    it('should be the correct value in the development env', function() {
+    it('should have the correct server url in the development env', function() {
       process.env.REWARDOPS_ENV = 'development';
-      urls.setEnv();
 
-      expect(urls.getBaseUrl()).to.equal('http://localhost:3000/api/v3');
+      assert.equal(urls.apiServerUrl(), 'http://localhost:3000');
     });
 
-    it('should be the correct value in the integration env', function() {
+    it('should have the correct server url in the integration env', function() {
       process.env.REWARDOPS_ENV = 'integration';
-      urls.setEnv();
 
-      expect(urls.getBaseUrl()).to.equal('https://int.rewardops.net/api/v3');
+      assert.equal(urls.apiServerUrl(), 'https://int.rewardops.net');
     });
 
-    it('should be the correct value in other environments', function() {
+    it('should have the correct server url in other environments', function() {
       process.env.REWARDOPS_ENV = 'production';
-      urls.setEnv();
 
-      expect(urls.getBaseUrl()).to.equal('https://app.rewardops.net/api/v3');
+      assert.equal(urls.apiServerUrl(), 'https://app.rewardops.net');
 
       process.env.REWARDOPS_ENV = 'just some arbitrary string';
-      urls.setEnv();
 
-      expect(urls.getBaseUrl()).to.equal('https://app.rewardops.net/api/v3');
+      assert.equal(urls.apiServerUrl(), 'https://app.rewardops.net');
 
       process.env.REWARDOPS_ENV = undefined;
-      urls.setEnv();
 
-      expect(urls.getBaseUrl()).to.equal('https://app.rewardops.net/api/v3');
+      assert.equal(urls.apiServerUrl(), 'https://app.rewardops.net');
+    });
+
+    it('should return the apiServerUrl from the config if it is set', function() {
+      process.env.REWARDOPS_ENV = 'development';
+      config.set('apiServerUrl', 'http://example.com/test');
+
+      assert.equal(urls.apiServerUrl(), 'http://example.com/test');
+      assert.equal(urls.apiBaseUrl(), 'http://example.com/test/api/' + config.get('apiVersion'));
     });
   });
 
-  describe('setBaseUrl()', function() {
-    var initialEnv;
+  describe('version', function() {
+    it('should have the correct version at the end of the path', function() {
+      config.set('apiVersion', 'v3');
 
-    before(function() {
-      initialEnv = process.env.REWARDOPS_ENV;
-    });
+      assert.equal(urls.apiBaseUrl(), urls.apiServerUrl() + '/api/v3');
 
-    after(function () {
-      process.env.REWARDOPS_ENV = initialEnv;
+      config.set('apiVersion', 'v5');
 
-      urls.setEnv();
-    });
+      assert.equal(urls.apiBaseUrl(), urls.apiServerUrl() + '/api/v5');
 
-    it('should correctly set the baseUrl', function() {
-      var url = 'http://someDomain.com/api/whatev';
+      config.set('apiVersion', 'v6-beta');
 
-      urls.setBaseUrl(url);
-
-      expect(urls.getBaseUrl()).to.equal(url);
+      assert.equal(urls.apiBaseUrl(), urls.apiServerUrl() + '/api/v6-beta');
     });
   });
 });

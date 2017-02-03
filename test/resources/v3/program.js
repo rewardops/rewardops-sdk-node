@@ -1,33 +1,33 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     sinon     = require('sinon'),
-    RO        = require('../'),
-    fixtures  = require('./fixtures/programFixtures');
+    RO        = require('../../..'),
+    fixtures  = require('../../fixtures/v3/programFixtures');
 
-describe('RO.program()', function() {
+describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
+    RO.config.set('apiVersion', 'v3');
+
     fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   it('should return an error when passed with a non-number', function() {
     var program1 = RO.program('1'),
         program2 = RO.program([]);
 
-    expect(program1).to.be.an.instanceOf(Error);
-    expect(program1.message).to.equal('Program ID must be a number');
+    assert.instanceOf(program1, Error);
+    assert.equal(program1.message, 'Program ID must be a number');
 
-    expect(program2).to.be.an.instanceOf(Error);
-    expect(program2.message).to.equal('Program ID must be a number');
-  });
-
-  it('should return an object', function() {
-    var program = RO.program(1);
-
-    expect(program).to.be.an('object');
+    assert.instanceOf(program2, Error);
+    assert.equal(program2.message, 'Program ID must be a number');
   });
 
   describe('id', function() {
@@ -35,7 +35,7 @@ describe('RO.program()', function() {
       var id = Math.floor(Math.random() * (1000000 - 1)) + 1,
           program = RO.program(id);
 
-      expect(program.id).to.be.a('number').and.to.equal(id);
+      assert.equal(program.id, id);
     });
   });
 
@@ -49,7 +49,7 @@ describe('RO.program()', function() {
       sinon.spy(RO.programs, 'get').withArgs(id);
 
       program.details(function() {
-        expect(RO.programs.get.calledWith(id)).to.equal(true);
+        assert.equal(RO.programs.get.calledWith(id), true);
 
         RO.programs.get.restore();
 

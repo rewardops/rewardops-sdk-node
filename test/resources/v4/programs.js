@@ -1,48 +1,57 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     nock      = require('nock'),
-    fixtures  = require('../fixtures/programsFixtures'),
-    RO        = require('../../');
+    fixtures  = require('../../fixtures/v3/programsFixtures'),
+    RO        = require('../../..');
 
-describe('RO.programs', function() {
+describe('v4 RO.programs', function() {
   /* jshint camelcase: false */
 
-  it('should be an object', function() {
-    expect(RO.programs).to.be.an('object');
+  before(function() {
+    RO.config.set('apiVersion', 'v3');
+
+    fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   describe('getAll()', function() {
-    fixtures();
+    before(function() {
+      RO.config.set('clientId', 'mockedclientidforprogramstests');
+      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
+    });
 
-    beforeEach(function() {
-      RO.config.client_id = 'mockedclientidforprogramstests';
-      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+    after(function() {
+      RO.config.set('clientId', undefined);
+      RO.config.set('clientSecret', undefined);
     });
 
     it('should pass an array to the callback', function(done) {
       RO.programs.getAll(function(error, programList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programList).to.be.an('array');
+        assert.typeOf(programList, 'array');
 
         done();
       });
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var apiCall = nock(RO.urls.getBaseUrl())
+      var apiCall = nock(RO.urls.apiServerUrl() + '/api/v3')
         .get('/programs')
         .reply(200, {
           result: []
         });
-
+console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(function(error, programList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programList).to.be.an('array');
-        expect(apiCall.isDone()).to.be.ok();
+        assert.typeOf(programList, 'array');
+        assert.equal(apiCall.isDone(), true);
 
         done();
       });
@@ -53,7 +62,7 @@ describe('RO.programs', function() {
             page: 7,
             per_page_count: 50
           },
-          scope = nock(RO.urls.getBaseUrl(), {
+          scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }
@@ -64,10 +73,10 @@ describe('RO.programs', function() {
           });
 
       RO.programs.getAll(body, function(error, programsList) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programsList).to.be.an('array');
-        expect(scope.isDone()).to.be.ok();
+        assert.typeOf(programsList, 'array');
+        assert.equal(scope.isDone(), true);
 
         done();
       });
@@ -75,25 +84,30 @@ describe('RO.programs', function() {
   });
 
   describe('get()', function() {
-    beforeEach(function() {
-      RO.config.client_id = 'mockedclientidforprogramstests';
-      RO.config.client_secret = 'mockedclientsecretforprogramstests';
+    before(function() {
+      RO.config.set('clientId', 'mockedclientidforprogramstests');
+      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
+    });
+
+    after(function() {
+      RO.config.set('clientId', undefined);
+      RO.config.set('clientSecret', undefined);
     });
 
     it('should pass an object to the callback', function(done) {
       var id = 555;
 
       RO.programs.get(id, function(error, data) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(data).to.be.an('object');
+        assert.typeOf(data, 'object');
 
         done();
       });
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var scope = nock(RO.urls.getBaseUrl(), {
+      var scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
             reqHeaders: {
               'Authorization': 'Bearer abcd1234programs'
             }
@@ -104,10 +118,10 @@ describe('RO.programs', function() {
             });
 
       RO.programs.get('567', function(error, program) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(program).to.be.an('object');
-        expect(scope.isDone()).to.be.ok();
+        assert.typeOf(program, 'object');
+        assert.equal(scope.isDone(), true);
 
         done();
       });

@@ -1,33 +1,40 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     emitter   = require('../lib/emitter'),
     nock      = require('nock'),
     RO        = require('../'),
     fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {
+  before(function() {
+    RO.config.set('apiVersion', 'v4');
+  });
+
+  after(function() {
+    RO.config.reset();
+  });
   /* jshint camelcase: false */
 
   it('should be an object', function() {
-    expect(RO.api).to.be.an('object');
+    assert.typeOf(RO.api, 'object');
   });
-  
+
   it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', function(done) {
     var config = {
-      client_id: null,
-      client_secret: null 
+      clientId: null,
+      clientSecret: null
     };
 
     RO.api.get({
       path: '/testForAuthError',
       config: config
     }, function(error, data, response) {
-      expect(error.name).to.equal('AuthenticationError');
+      assert.equal(error.name, 'AuthenticationError');
 
-      expect(data).to.equal(undefined);
-      expect(response).to.equal(undefined);
+      assert.equal(data, undefined);
+      assert.equal(response, undefined);
 
       done();
     });
@@ -37,9 +44,9 @@ describe('api', function() {
     var expires = new Date(),
         firstToken = 'HeresAToken123456789',
         secondToken = 'apiTestToken1234',
-        config = {client_id: 'bamabc', client_secret: 'boom123'};
+        config = {clientId: 'bamabc', clientSecret: 'boom123'};
 
-    nock(RO.urls.getBaseUrl() + '/another', {
+    nock('https://app.rewardops.net/api/v4/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + firstToken
       }
@@ -62,7 +69,7 @@ describe('api', function() {
         'Content-Type': 'text/html'
       });
 
-    nock(RO.urls.getBaseUrl() + '/another', {
+    nock('https://app.rewardops.net/api/v4/another', {
       reqheaders: {
         'Authorization': 'Bearer ' + secondToken
       }
@@ -73,8 +80,8 @@ describe('api', function() {
 
     expires.setHours(expires.getHours() + 2);
 
-    RO.config.client_id = config.client_id;
-    RO.config.client_secret = config.client_secret;
+    RO.config.set('clientId', config.clientId);
+    RO.config.set('clientSecret', config.clientSecret);
 
     RO.auth.token = {
       access_token: firstToken,
@@ -85,8 +92,8 @@ describe('api', function() {
       path: '/another/arbitrary-path',
       config: config
     }, function(error, result) {
-      expect(error).to.equal(null);
-      expect(result).to.equal('OK');
+      assert.equal(error, null);
+      assert.equal(result, 'OK');
 
       done();
     });
@@ -96,8 +103,8 @@ describe('api', function() {
     var expires = new Date(),
         badToken = 'HeresAToken123456789',
         goodToken = 'apiTestToken1234',
-        config = {client_id: 'abc', client_secret: '123'},
-        badScope = nock(RO.urls.getBaseUrl() + '/some', {
+        config = {clientId: 'abc', clientSecret: '123'},
+        badScope = nock('https://app.rewardops.net/api/v4/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + badToken
           }
@@ -107,16 +114,16 @@ describe('api', function() {
             'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token expired\"',
             'Content-Type': 'text/html'
           }),
-        goodScope = nock(RO.urls.getBaseUrl() + '/some', {
+        goodScope = nock('https://app.rewardops.net/api/v4/some', {
           reqheaders: {
             'Authorization': 'Bearer ' + goodToken
-          } 
+          }
         })
           .get('/arbitrary-path')
           .reply(200, {result: 'OK'}),
         authScope = nock(RO.auth.getBaseUrl(), {
           reqheaders: {
-            'Authorization': 'Basic ' + new Buffer(config.client_id + ':' + config.client_secret).toString('base64')
+            'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
           }
         })
           .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
@@ -135,8 +142,8 @@ describe('api', function() {
       listenerWasFired = true;
     });
 
-    RO.config.client_id = config.client_id;
-    RO.config.client_secret = config.client_secret;
+    RO.config.set('clientId', config.clientId);
+    RO.config.set('clientSecret', config.clientSecret);
 
     RO.auth.token = {
       access_token: badToken,
@@ -147,14 +154,14 @@ describe('api', function() {
       path: '/some/arbitrary-path',
       config: config
     }, function(error, result) {
-      expect(error).to.equal(null);
-      expect(result).to.equal('OK');
+      assert.equal(error, null);
+      assert.equal(result, 'OK');
 
-      expect(authScope.isDone()).to.be.ok();
-      expect(badScope.isDone()).to.be.ok();
-      expect(goodScope.isDone()).to.be.ok();
-      expect(RO.auth.token.access_token).to.equal(goodToken);
-      expect(listenerWasFired).to.equal(true);
+      assert.equal(authScope.isDone(), true);
+      assert.equal(badScope.isDone(), true);
+      assert.equal(goodScope.isDone(), true);
+      assert.equal(RO.auth.token.access_token, goodToken);
+      assert.equal(listenerWasFired, true);
 
       done();
     });
@@ -162,27 +169,28 @@ describe('api', function() {
 
   describe('get', function() {
     before(function() {
-      fixtures();
       RO.auth.token = {};
+
+      fixtures();
     });
 
     it('should be a function', function() {
-      expect(RO.api.get).to.be.a('function');
+      assert.typeOf(RO.api.get, 'function');
     });
 
     it('should make an HTTP GET request to the url provided', function(done) {
       var config = {
-        client_id: 'abcdefg1234567',
-        client_secret: 'abcdefg1234567'
+        clientId: 'abcdefg1234567',
+        clientSecret: 'abcdefg1234567'
       };
 
       RO.api.get({
         path: '/someTestPath',
         config: config
       }, function(error, programs) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(programs).to.be.an('array');
+        assert.typeOf(programs, 'array');
 
         done();
       });
@@ -190,13 +198,13 @@ describe('api', function() {
 
     it('should accept a body property and pass it on to the request() call', function(done) {
     var token = 'ccccvvvv5555',
-        config = {client_id: 'abc', client_secret: '123'},
+        config = {clientId: 'abc', clientSecret: '123'},
         body = {
           toppings: ['pepperoni', 'cheese', 'mushrooms'],
           customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
         };
 
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
           reqheaders: {
             'Authorization': 'Bearer ' + token
           }
@@ -212,11 +220,11 @@ describe('api', function() {
         body: body,
         config: config
       }, function(error, result, response) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(result).to.equal('OK');
+        assert.equal(result, 'OK');
 
-        expect(response).to.be.an('object');
+        assert.typeOf(response, 'object');
 
         done();
       });
@@ -224,8 +232,8 @@ describe('api', function() {
 
     it('should pass a third argument to the callback that is the full JSON body of the API response', function(done) {
       var config = {
-        client_id: 'abcdefg1234567',
-        client_secret: 'abcdefg1234567'
+        clientId: 'abcdefg1234567',
+        clientSecret: 'abcdefg1234567'
       };
 
       RO.auth.token = {};
@@ -234,10 +242,10 @@ describe('api', function() {
         path: '/someTestPath',
         config: config
       }, function(error, programs, response) {
-        expect(error).to.equal(null);
+        assert.equal(error, null);
 
-        expect(response).to.be.an('object');
-        expect(response.status).to.equal('OK');
+        assert.typeOf(response, 'object');
+        assert.equal(response.status, 'OK');
 
         done();
       });

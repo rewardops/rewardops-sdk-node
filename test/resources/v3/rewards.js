@@ -1,16 +1,22 @@
 'use strict';
 
 var chai      = require('chai'),
-    expect    = chai.expect,
+    assert    = chai.assert,
     nock      = require('nock'),
-    RO        = require('../..'),
-    fixtures  = require('../fixtures/rewardsFixtures');
+    RO        = require('../../..'),
+    fixtures  = require('../../fixtures/v3/rewardsFixtures');
 
-describe('RO.program()', function() {
+describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
   before(function() {
+    RO.config.set('apiVersion', 'v3');
+
     fixtures();
+  });
+
+  after(function() {
+    RO.config.reset();
   });
 
   describe('rewards', function() {
@@ -18,26 +24,21 @@ describe('RO.program()', function() {
         program = RO.program(id);
 
     before(function() {
-      RO.config.client_id = 'rewardTest123';
-      RO.config.client_secret = 'itsATestGetUsedToIt';
+      RO.config.set('clientId', 'rewardTest123');
+      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
     after(function() {
-      RO.config.client_id = undefined;
-      RO.config.client_secret = undefined;
-    });
-
-    it('should be an object', function() {
-      expect(program.rewards).to.be.an('object');
+      RO.config.reset();
     });
 
     it('should have the correct program ID', function() {
-      expect(program.rewards.programId).to.equal(id);
+      assert.equal(program.rewards.programId, id);
     });
 
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -48,14 +49,14 @@ describe('RO.program()', function() {
           });
 
         program.rewards.getAll(function(error, data) {
-          expect(data).to.be.an('array');
+          assert.typeOf(data, 'array');
 
           done();
         });
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -66,10 +67,10 @@ describe('RO.program()', function() {
           });
 
         RO.program(12).rewards.getAll(function(error, rewardList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardList).to.be.an('array');
-          expect(apiCall.isDone()).to.be.ok();
+          assert.typeOf(rewardList, 'array');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -80,7 +81,7 @@ describe('RO.program()', function() {
               page: 7,
               per_page_count: 50
             },
-            scope = nock(RO.urls.getBaseUrl(), {
+            scope = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -91,10 +92,10 @@ describe('RO.program()', function() {
             });
 
         RO.program(55).rewards.getAll(body, function(error, rewardsList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          assert.typeOf(rewardsList, 'array');
+          assert.equal(scope.isDone(), true);
 
           done();
         });
@@ -103,7 +104,7 @@ describe('RO.program()', function() {
 
     describe('get()', function() {
       it('should pass an object to the callback', function(done) {
-        nock(RO.urls.getBaseUrl(), {
+        nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -115,14 +116,14 @@ describe('RO.program()', function() {
           });
 
         program.rewards.get(555, function(error, data) {
-          expect(data).to.be.an('object');
+          assert.typeOf(data, 'object');
 
           done();
         });
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.getBaseUrl(), {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -134,10 +135,10 @@ describe('RO.program()', function() {
               });
 
         RO.program(12).rewards.get(929, function(error, rewardList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardList).to.be.an('object');
-          expect(apiCall.isDone()).to.be.ok();
+          assert.typeOf(rewardList, 'object');
+          assert.equal(apiCall.isDone(), true);
 
           done();
         });
@@ -147,7 +148,7 @@ describe('RO.program()', function() {
         var body = {
               member_id: '5432'
             },
-            scope = nock(RO.urls.getBaseUrl(), {
+            scope = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
@@ -158,10 +159,10 @@ describe('RO.program()', function() {
             });
 
         RO.program(55).rewards.get(234, body, function(error, rewardsList) {
-          expect(error).to.equal(null);
+          assert.equal(error, null);
 
-          expect(rewardsList).to.be.an('array');
-          expect(scope.isDone()).to.be.ok();
+          assert.typeOf(rewardsList, 'array');
+          assert.equal(scope.isDone(), true);
 
           done();
         });
