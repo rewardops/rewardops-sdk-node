@@ -103,6 +103,17 @@ describe('v4 RO.program()', function() {
     });
 
     describe('get()', function() {
+
+      it('should return an error if the category code is not a string', function(done) {
+        program.customCategories.get(1406, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'must pass a string as the category code');
+          assert.equal(data, undefined);
+
+          done();
+        })
+      });
+
       it('should pass an object to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
@@ -123,23 +134,21 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var code = 'CAT_000002';
         var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-              .get('/programs/12/custom_categories/'+code)
+              .get('/programs/12/custom_categories/CAT_000002')
               .once()
               .reply(200, {
                 result: {}
               });
 
-        RO.program(12).customCategories.get(code, function(error, customCategoryList) {
+        RO.program(12).customCategories.get('CAT_000002', function(error, customCategoryList) {
           assert.equal(error, null);
 
           assert.typeOf(customCategoryList, 'object');
-          assert.typeOf(code, 'string', 'program code is of type string.');
           assert.equal(apiCall.isDone(), true);
 
           done();
