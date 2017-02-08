@@ -19,7 +19,7 @@ describe('v4 RO.program()', function() {
     RO.config.reset();
   });
 
-  describe.only('categories', function() {
+  describe('customCategories', function() {
     var id = 33,
         program = RO.program(id);
 
