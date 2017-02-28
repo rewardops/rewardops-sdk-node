@@ -37,8 +37,7 @@
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
     "nock": "^9.0.2",
-    "sinon": "^1.17.7",
-    "underscore": "^1.8.3"
+    "sinon": "^1.17.7"
   },
   "dependencies": {
     "request": "^2.79.0",
