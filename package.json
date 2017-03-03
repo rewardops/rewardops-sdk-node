@@ -1,6 +1,6 @@
 {
   "name": "@rewardops/rewardops-sdk",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "engines": {
     "node": ">=4.4"
   },
