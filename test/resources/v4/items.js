@@ -169,7 +169,7 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('parameter()', function() {
+    describe('getParameter()', function() {
       it('should pass an object to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
@@ -182,7 +182,7 @@ describe('v4 RO.program()', function() {
             result: {}
           });
 
-        program.items.parameters(function(error, data) {
+        program.items.getParameters(function(error, data) {
           assert.typeOf(data, 'object');
 
           done();
@@ -201,7 +201,7 @@ describe('v4 RO.program()', function() {
                 result: []
               });
 
-        RO.program(12).items.parameters(function(error, data) {
+        RO.program(12).items.getParameters(function(error, data) {
           assert.equal(error, null);
 
           assert.typeOf(data, 'array');
@@ -225,7 +225,7 @@ describe('v4 RO.program()', function() {
               result: []
             });
 
-        RO.program(55).items.parameters(body, function(error, data) {
+        RO.program(55).items.getParameters(body, function(error, data) {
           assert.equal(error, null);
 
           assert.typeOf(data, 'array');
