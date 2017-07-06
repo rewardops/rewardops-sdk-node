@@ -168,5 +168,72 @@ describe('v4 RO.program()', function() {
         });
       });
     });
+
+    describe('parameter()', function() {
+      it('should pass an object to the callback', function(done) {
+        nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234itemTime'
+              }
+            })
+          .get('/programs/33/items/parameters')
+          .once()
+          .reply(200, {
+            result: {}
+          });
+
+        program.items.parameters(function(error, data) {
+          assert.typeOf(data, 'object');
+
+          done();
+        });
+      });
+
+      it('should make an HTTP get request to the correct URL', function(done) {
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234itemTime'
+              }
+            })
+              .get('/programs/12/items/parameters')
+              .once()
+              .reply(200, {
+                result: []
+              });
+
+        RO.program(12).items.parameters(function(error, data) {
+          assert.equal(error, null);
+
+          assert.typeOf(data, 'array');
+          assert.equal(apiCall.isDone(), true);
+
+          done();
+        });
+      });
+
+      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
+        var body = {
+              filter: 'CCATEGORY("CAT_TEST_001")'
+            },
+            scope = nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234itemTime'
+              }
+            })
+            .get('/programs/55/items/parameters', body)
+            .reply(200, {
+              result: []
+            });
+
+        RO.program(55).items.parameters(body, function(error, data) {
+          assert.equal(error, null);
+
+          assert.typeOf(data, 'array');
+          assert.equal(scope.isDone(), true);
+
+          done();
+        });
+      });
+    });
   });
 });
