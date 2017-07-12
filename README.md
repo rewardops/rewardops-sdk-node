@@ -1,8 +1,8 @@
 # RewardOps Node.js SDK
 
-Note: The SDK currently uses v3 of the RewardOps API.
+Note: The SDK currently supports v4 and v3 of the RewardOps API.
 
-To see an example implementation of the SDK, see the [RewardOps sample JavaScript app](https://github.com/rewardops/rewardops-sample-javascript), which uses the SDK in its Express server.
+To see an application that uses the SDK to consume the RewardOps API, see the [RewardOps Angular Catalog app](https://github.com/rewardops/rewardops-angular-catalog), which uses the SDK in its Express server.
 
 ## Installation
 
@@ -65,7 +65,7 @@ You can optionally set the environment variable `REWARDOPS_ENV` before starting 
 - `integration`: 'https://int.rewardops.net/api/v3'
 - `development`: 'http://localhost:3000/api/v3'
 
-You can also change the base API URL after loading the SDK using `RO.urls.setBaseUrl()`;
+You can also change the base API URL after loading the SDK using `RO.urls.setBaseUrl()`.
 
 ## OAuth
 
@@ -273,6 +273,6 @@ Jerad Gallinger - [jerad@rewardops.com](mailto:jerad@rewardops.com)
 
 ## License
 
-Copyright (c) 2015 RewardOps
+Copyright (c) 2015-2017 RewardOps
 
 All rights reserved.
