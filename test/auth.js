@@ -6,7 +6,8 @@ var chai          = require('chai'),
     async         = require('async'),
     nock          = require('nock'),
     emitter       = require('../lib/emitter'),
-    RO            = require('../');
+    RO            = require('../'),
+    EventEmitter  = require('events');
 
 describe('RO.auth', function() {
   /* jshint camelcase: false */
@@ -133,7 +134,7 @@ describe('RO.auth', function() {
             clientId: 'clientIdForTestingExistingToken',
             clientSecret: 'someFakeValueForTestingExistingToken'
           };
-      
+
       expires.setHours(expires.getHours() + 2);
 
       RO.auth.token = {
@@ -444,7 +445,7 @@ describe('RO.auth', function() {
           assert.equal(results[i], reply.access_token);
         }
 
-        assert.equal(process.EventEmitter.listenerCount(emitter, 'unlockToken'), 1);
+        assert.equal(EventEmitter.listenerCount(emitter, 'unlockToken'), 1);
 
         emitter.setMaxListeners(RO.config.get('maxListeners') || 10);
 
