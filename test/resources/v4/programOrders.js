@@ -161,6 +161,30 @@ describe('v4 RO.program()', function() {
           done();
         });
       });
+
+      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
+        var body = {
+              use_program_order_code: false
+            },
+            scope = nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234itemTime'
+              }
+            })
+            .get('/programs/12/orders/929', body)
+            .reply(200, {
+              result: {}
+            });
+
+        RO.program(12).orders.get(929, body, function(error, data) {
+          assert.equal(error, null);
+
+          assert.typeOf(data, 'object');
+          assert.equal(scope.isDone(), true);
+
+          done();
+        });
+      });
     });
 
     describe('create()', function() {
