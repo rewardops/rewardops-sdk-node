@@ -48,6 +48,66 @@ describe('v4 RO.program()', function() {
       assert.equal(program.orders.contextTypeName, 'programs');
     });
 
+    describe('getSummary()', function() {
+      it('should fire the callback with an error when the body object is missing', function(done) {
+        var body = null;
+
+        program.orders.getSummary(function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'A body object is required');
+
+          assert.equal(data, undefined);
+
+          done();
+        });
+
+      });
+
+      it('should pass an object to the callback', function(done) {
+        var body = { member_id: 38 };
+
+        nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234rewardTime'
+              }
+            })
+          .get('/programs/' + programId + '/orders/summary')
+          .once()
+          .reply(200, {
+            result: {}
+          });
+
+        program.orders.getSummary(body, function(error, data) {
+          assert.typeOf(data, 'object');
+
+          done();
+        });
+      });
+
+      it('should make an HTTP get request to the correct URL', function(done) {
+        var body = { member_id: 38 };
+        var apiCall = nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234rewardTime'
+              }
+            })
+              .get('/programs/12/orders/summary')
+              .once()
+              .reply(200, {
+                result: {}
+              });
+
+        RO.program(12).orders.getSummary(body, function(error, orderList) {
+          assert.equal(error, null);
+
+          assert.typeOf(orderList, 'object');
+          assert.equal(apiCall.isDone(), true);
+
+          done();
+        });
+      });
+    });
+
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
