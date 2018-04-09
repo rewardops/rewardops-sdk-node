@@ -49,10 +49,10 @@ describe('v4 RO.program()', function() {
     });
 
     describe('getSummary()', function() {
-      it('should fire the callback with an error when the body object is missing', function(done) {
+      it('should fire the callback with an error when the params object is missing', function(done) {
         program.orders.getSummary(function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A body object is required');
+          assert.equal(error.message, 'A params object is required');
 
           assert.equal(data, undefined);
 
@@ -62,7 +62,7 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an object to the callback', function(done) {
-        var body = { member_id: 38 };
+        var params = { member_id: 38 };
 
         nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
@@ -70,12 +70,13 @@ describe('v4 RO.program()', function() {
               }
             })
           .get('/programs/' + programId + '/orders/summary')
+          .query(params)
           .once()
           .reply(200, {
             result: {}
           });
 
-        program.orders.getSummary(body, function(error, data) {
+        program.orders.getSummary(params, function(error, data) {
           assert.typeOf(data, 'object');
 
           done();
@@ -83,19 +84,20 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var body = { member_id: 38 };
+        var params = { member_id: 38 };
         var apiCall = nock(RO.urls.apiBaseUrl(), {
               reqHeaders: {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-              .get('/programs/12/orders/summary')
-              .once()
-              .reply(200, {
-                result: {}
-              });
+            .get('/programs/12/orders/summary')
+            .query(params)
+            .once()
+            .reply(200, {
+              result: {}
+            });
 
-        RO.program(12).orders.getSummary(body, function(error, orderList) {
+        RO.program(12).orders.getSummary(params, function(error, orderList) {
           assert.equal(error, null);
 
           assert.typeOf(orderList, 'object');
@@ -113,7 +115,8 @@ describe('v4 RO.program()', function() {
               'Authorization': 'Bearer abcd1234rewardTime'
             }
           })
-          .get(programOrdersUrl, {
+          .get(programOrdersUrl)
+          .query({
             member_id: 38
           })
           .reply(200, {
@@ -133,7 +136,8 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-        .get('/programs/12/orders', {
+          .get('/programs/12/orders')
+          .query({
             member_id: 3
           })
           .reply(200, {
@@ -150,8 +154,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               page: 7,
               per_page_count: 50
             },
@@ -160,14 +164,15 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-            .get('/programs/55/orders', _.extend(body, {
+            .get('/programs/55/orders')
+            .query(_.extend(params, {
               member_id: 777
             }))
             .reply(200, {
               result: []
             });
 
-        RO.program(55).orders.getAll(777, body, function(error, programsList) {
+        RO.program(55).orders.getAll(777, params, function(error, programsList) {
           assert.equal(error, null);
 
           assert.typeOf(programsList, 'array');
@@ -220,8 +225,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               use_program_order_code: false
             },
             scope = nock(RO.urls.apiBaseUrl(), {
@@ -229,12 +234,13 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234itemTime'
               }
             })
-            .get('/programs/12/orders/929', body)
+            .get('/programs/12/orders/929')
+            .query(params)
             .reply(200, {
               result: {}
             });
 
-        RO.program(12).orders.get(929, body, function(error, data) {
+        RO.program(12).orders.get(929, params, function(error, data) {
           assert.equal(error, null);
 
           assert.typeOf(data, 'object');
@@ -246,14 +252,14 @@ describe('v4 RO.program()', function() {
     });
 
     describe('create()', function() {
-      it('should fire the callback with an error when the body object is missing a member object', function(done) {
-        var body = {
+      it('should fire the callback with an error when the params object is missing a member object', function(done) {
+        var params = {
           items: [{}]
         };
 
-        program.orders.create(body, function(error, data) {
+        program.orders.create(params, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass a member object in the body object to `orders.create()`');
+          assert.equal(error.message, 'must pass a member object in the params object to `orders.create()`');
 
           assert.equal(data, undefined);
 
@@ -261,14 +267,14 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should fire the callback with an error when the body object is missing an items array', function(done) {
-        var body = {
+      it('should fire the callback with an error when the params object is missing an items array', function(done) {
+        var params = {
           member: {id: 'hoo_ah'}
         };
 
-        program.orders.create(body, function(error, data) {
+        program.orders.create(params, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass an items array in the body object to `orders.create()`');
+          assert.equal(error.message, 'must pass an items array in the params object to `orders.create()`');
 
           assert.equal(data, undefined);
 
@@ -351,10 +357,10 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an error to the callback when a body isn\'t passed', function(done) {
+      it('should pass an error to the callback when a params object isn\'t passed', function(done) {
         RO.program(133000).orders.create(function(error, result) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A body object is required');
+          assert.equal(error.message, 'A params object is required');
 
           assert.equal(result, undefined);
 
@@ -368,12 +374,12 @@ describe('v4 RO.program()', function() {
           orderUpdateUrl = '/programs/' + programId + '/orders/' + orderId;
 
       it('should fire the callback with an error when no id is passed as the first argument', function(done) {
-        var body = {
+        var params = {
           payment_status: 'PAID',
           payment_status_notes: 'The user paid, and we thank them for it.'
         };
 
-        program.orders.update(body, function(error, data) {
+        program.orders.update(params, function(error, data) {
           assert.instanceOf(error, Error);
           assert.equal(error.message, 'must pass an order (external) ID as the first argument to `orders.update()`');
 
@@ -383,10 +389,10 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should fire the callback with an error when no body object is passed', function(done) {
+      it('should fire the callback with an error when no params object is passed', function(done) {
         program.orders.update(orderId, function(error, data) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A body object is required');
+          assert.equal(error.message, 'A params object is required');
 
           assert.equal(data, undefined);
 
@@ -395,7 +401,7 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an object to the callback', function(done) {
-        var body = {
+        var params = {
           payment_status: 'PAID',
           payment_status_notes: 'The user paid, and we thank them for it.'
         };
@@ -405,12 +411,12 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-          .patch(orderUpdateUrl, body)
+          .patch(orderUpdateUrl, params)
           .reply(200, {
             result: {}
           });
 
-        program.orders.update(orderId, body, function(error, result) {
+        program.orders.update(orderId, params, function(error, result) {
           assert.equal(error, null);
           assert.typeOf(result, 'object');
 
@@ -419,7 +425,7 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var body = {
+        var params = {
           payment_status: 'PAID',
           payment_status_notes: 'The user paid, and we thank them for it.'
         },
@@ -428,12 +434,12 @@ describe('v4 RO.program()', function() {
               'Authorization': 'Bearer abcd1234rewardTime'
             }
           })
-          .patch(orderUpdateUrl, body)
+          .patch(orderUpdateUrl, params)
           .reply(200, {
             result: {status: 'OK'}
           });
 
-        RO.program(programId).orders.update(orderId, body, function(error, result) {
+        RO.program(programId).orders.update(orderId, params, function(error, result) {
           assert.equal(error, null);
 
           assert.deepEqual(result, { status: 'OK' });

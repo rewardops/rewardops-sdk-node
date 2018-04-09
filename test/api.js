@@ -196,10 +196,10 @@ describe('api', function() {
       });
     });
 
-    it('should accept a body property and pass it on to the request() call', function(done) {
+    it('should accept a params property and pass it on to the request() call', function(done) {
       var token = 'ccccvvvv5555',
           config = {clientId: 'abc', clientSecret: '123'},
-          body = {
+          params = {
             toppings: ['pepperoni', 'cheese', 'mushrooms'],
             customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
           };
@@ -209,7 +209,8 @@ describe('api', function() {
               'Authorization': 'Bearer ' + token
             }
           })
-          .get('/pizzas/44/orders', body)
+          .get('/pizzas/44/orders')
+          .query(params)
           .reply(200, {result: 'OK'});
 
       RO.auth.token = {access_token: token, expires: new Date()};
@@ -217,7 +218,7 @@ describe('api', function() {
 
       RO.api.get({
         path: '/pizzas/44/orders',
-        body: body,
+        params: params,
         config: config
       }, function(error, result, response) {
         assert.equal(error, null);

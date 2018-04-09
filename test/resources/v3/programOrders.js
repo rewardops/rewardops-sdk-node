@@ -44,11 +44,12 @@ describe('v3 RO.program()', function() {
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234programTime'
-              }
-            })
-          .get('/programs/33/orders', {
+          reqHeaders: {
+            'Authorization': 'Bearer abcd1234programTime'
+          }
+        })
+          .get('/programs/33/orders')
+          .query({
             member_id: 38
           })
           .reply(200, {
@@ -68,12 +69,13 @@ describe('v3 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234programTime'
               }
             })
-        .get('/programs/12/orders', {
-            member_id: 3
-          })
-          .reply(200, {
-            result: []
-          });
+            .get('/programs/12/orders')
+            .query({
+              member_id: 3
+            })
+            .reply(200, {
+              result: []
+            });
 
         RO.program(12).orders.getAll(3, function(error, orderList) {
           assert.equal(error, null);
@@ -85,8 +87,8 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               page: 7,
               per_page_count: 50
             },
@@ -95,14 +97,15 @@ describe('v3 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234programTime'
               }
             })
-            .get('/programs/55/orders', _.extend(body, {
+            .get('/programs/55/orders')
+            .query(_.extend(params, {
               member_id: 777
             }))
             .reply(200, {
               result: []
             });
 
-        RO.program(55).orders.getAll(777, body, function(error, programsList) {
+        RO.program(55).orders.getAll(777, params, function(error, programsList) {
           assert.equal(error, null);
 
           assert.typeOf(programsList, 'array');
@@ -240,7 +243,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should pass an error to the callback when a body isn\'t passed', function(done) {
+      it('should pass an error to the callback when a params object isn\'t passed', function(done) {
         var scope = nock(RO.urls.apiBaseUrl(), {
           reqHeaders: {
             'Authorization': 'Bearer abcd1234programTime'
@@ -254,7 +257,7 @@ describe('v3 RO.program()', function() {
 
         RO.program(133000).orders.create(function(error, result) {
           assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A body object is required');
+          assert.equal(error.message, 'A params object is required');
 
           assert.equal(result, undefined);
 
