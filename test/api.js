@@ -197,25 +197,25 @@ describe('api', function() {
     });
 
     it('should accept a body property and pass it on to the request() call', function(done) {
-    var token = 'ccccvvvv5555',
-        config = {clientId: 'abc', clientSecret: '123'},
-        body = {
-          toppings: ['pepperoni', 'cheese', 'mushrooms'],
-          customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
-        };
+      var token = 'ccccvvvv5555',
+          config = {clientId: 'abc', clientSecret: '123'},
+          body = {
+            toppings: ['pepperoni', 'cheese', 'mushrooms'],
+            customer: {name: 'J-rad', address: '123 Something St', phone: '123-456-7890'}
+          };
 
-        nock(RO.urls.apiBaseUrl(), {
-          reqheaders: {
-            'Authorization': 'Bearer ' + token
-          }
-        })
-        .post('/pizzas/44/orders', body)
+          nock(RO.urls.apiBaseUrl(), {
+            reqheaders: {
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .get('/pizzas/44/orders', body)
           .reply(200, {result: 'OK'});
 
       RO.auth.token = {access_token: token, expires: new Date()};
       RO.auth.token.expires.setHours(RO.auth.token.expires.getHours() + 2);
 
-      RO.api.post({
+      RO.api.get({
         path: '/pizzas/44/orders',
         body: body,
         config: config
