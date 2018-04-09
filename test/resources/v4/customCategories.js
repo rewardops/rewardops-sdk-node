@@ -61,10 +61,10 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-        .get('/programs/12/custom_categories')
-          .reply(200, {
-            result: []
-          });
+            .get('/programs/12/custom_categories')
+            .reply(200, {
+              result: []
+            });
 
         RO.program(12).customCategories.getAll(function(error, customCategoryList) {
           assert.equal(error, null);
@@ -76,8 +76,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               page: 7,
               per_page_count: 50
             },
@@ -87,11 +87,12 @@ describe('v4 RO.program()', function() {
               }
             })
             .get('/programs/55/custom_categories')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).customCategories.getAll(body, function(error, customCategoriesList) {
+        RO.program(55).customCategories.getAll(params, function(error, customCategoriesList) {
           assert.equal(error, null);
 
           assert.typeOf(customCategoriesList, 'array');
@@ -111,7 +112,7 @@ describe('v4 RO.program()', function() {
           assert.equal(data, undefined);
 
           done();
-        })
+        });
       });
 
       it('should pass an object to the callback', function(done) {
@@ -139,11 +140,11 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-              .get('/programs/12/custom_categories/CAT_000002')
-              .once()
-              .reply(200, {
-                result: {}
-              });
+            .get('/programs/12/custom_categories/CAT_000002')
+            .once()
+            .reply(200, {
+              result: {}
+            });
 
         RO.program(12).customCategories.get('CAT_000002', function(error, customCategoryList) {
           assert.equal(error, null);
@@ -155,8 +156,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               member_id: '5432'
             },
             scope = nock(RO.urls.apiBaseUrl(), {
@@ -164,12 +165,13 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-            .get('/programs/55/custom_categories/RAT_000002', body)
+            .get('/programs/55/custom_categories/RAT_000002')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).customCategories.get('RAT_000002', body, function(error, customCategoriesList) {
+        RO.program(55).customCategories.get('RAT_000002', params, function(error, customCategoriesList) {
           assert.equal(error, null);
 
           assert.typeOf(customCategoriesList, 'array');

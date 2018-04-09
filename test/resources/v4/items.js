@@ -76,8 +76,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               page: 7,
               per_page_count: 50
             },
@@ -87,11 +87,12 @@ describe('v4 RO.program()', function() {
               }
             })
             .get('/programs/55/items')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).items.getAll(body, function(error, itemsList) {
+        RO.program(55).items.getAll(params, function(error, itemsList) {
           assert.equal(error, null);
 
           assert.typeOf(itemsList, 'array');
@@ -144,8 +145,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               member_id: '5432'
             },
             scope = nock(RO.urls.apiBaseUrl(), {
@@ -153,12 +154,13 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234itemTime'
               }
             })
-            .get('/programs/55/items/234', body)
+            .get('/programs/55/items/234')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).items.get(234, body, function(error, itemsList) {
+        RO.program(55).items.get(234, params, function(error, itemsList) {
           assert.equal(error, null);
 
           assert.typeOf(itemsList, 'array');
@@ -211,8 +213,8 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               filter: 'CCATEGORY("CAT_TEST_001")'
             },
             scope = nock(RO.urls.apiBaseUrl(), {
@@ -220,12 +222,13 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234itemTime'
               }
             })
-            .get('/programs/55/items/parameters', body)
+            .get('/programs/55/items/parameters')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).items.getParameters(body, function(error, data) {
+        RO.program(55).items.getParameters(params, function(error, data) {
           assert.equal(error, null);
 
           assert.typeOf(data, 'array');

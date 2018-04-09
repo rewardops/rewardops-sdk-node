@@ -76,8 +76,8 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               page: 7,
               per_page_count: 50
             },
@@ -87,11 +87,12 @@ describe('v3 RO.program()', function() {
               }
             })
             .get('/programs/55/rewards')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).rewards.getAll(body, function(error, rewardsList) {
+        RO.program(55).rewards.getAll(params, function(error, rewardsList) {
           assert.equal(error, null);
 
           assert.typeOf(rewardsList, 'array');
@@ -144,8 +145,8 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-        var body = {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+        var params = {
               member_id: '5432'
             },
             scope = nock(RO.urls.apiBaseUrl(), {
@@ -153,12 +154,13 @@ describe('v3 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234rewardTime'
               }
             })
-            .get('/programs/55/rewards/234', body)
+            .get('/programs/55/rewards/234')
+            .query(params)
             .reply(200, {
               result: []
             });
 
-        RO.program(55).rewards.get(234, body, function(error, rewardsList) {
+        RO.program(55).rewards.get(234, params, function(error, rewardsList) {
           assert.equal(error, null);
 
           assert.typeOf(rewardsList, 'array');

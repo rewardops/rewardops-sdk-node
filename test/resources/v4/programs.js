@@ -57,8 +57,8 @@ console.log(RO.urls.apiServerUrl());
       });
     });
 
-    it('should accept an optional body object and pass it on to the RO.api.get() call', function(done) {
-      var body = {
+    it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
+      var params = {
             page: 7,
             per_page_count: 50
           },
@@ -67,12 +67,13 @@ console.log(RO.urls.apiServerUrl());
               'Authorization': 'Bearer abcd1234programs'
             }
           })
-          .get('/programs', body)
+          .get('/programs')
+          .query(params)
           .reply(200, {
             result: []
           });
 
-      RO.programs.getAll(body, function(error, programsList) {
+      RO.programs.getAll(params, function(error, programsList) {
         assert.equal(error, null);
 
         assert.typeOf(programsList, 'array');
