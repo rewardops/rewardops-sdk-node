@@ -50,8 +50,6 @@ describe('v4 RO.program()', function() {
 
     describe('getSummary()', function() {
       it('should fire the callback with an error when the body object is missing', function(done) {
-        var body = null;
-
         program.orders.getSummary(function(error, data) {
           assert.instanceOf(error, Error);
           assert.equal(error.message, 'A body object is required');

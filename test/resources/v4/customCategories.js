@@ -61,10 +61,10 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-        .get('/programs/12/custom_categories')
-          .reply(200, {
-            result: []
-          });
+            .get('/programs/12/custom_categories')
+            .reply(200, {
+              result: []
+            });
 
         RO.program(12).customCategories.getAll(function(error, customCategoryList) {
           assert.equal(error, null);
@@ -111,7 +111,7 @@ describe('v4 RO.program()', function() {
           assert.equal(data, undefined);
 
           done();
-        })
+        });
       });
 
       it('should pass an object to the callback', function(done) {
@@ -139,11 +139,11 @@ describe('v4 RO.program()', function() {
                 'Authorization': 'Bearer abcd1234customCategoryTime'
               }
             })
-              .get('/programs/12/custom_categories/CAT_000002')
-              .once()
-              .reply(200, {
-                result: {}
-              });
+            .get('/programs/12/custom_categories/CAT_000002')
+            .once()
+            .reply(200, {
+              result: {}
+            });
 
         RO.program(12).customCategories.get('CAT_000002', function(error, customCategoryList) {
           assert.equal(error, null);
