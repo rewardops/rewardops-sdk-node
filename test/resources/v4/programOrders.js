@@ -449,6 +449,87 @@ describe('v4 RO.program()', function() {
         });
       });
     });
+
+    describe('updateOrderItems()', function() {
+      var orderId        = 'abcd1234asdf0987',
+          updateOrderItemsUrl = '/programs/' + programId + '/orders/' + orderId + '/order_items';
+
+      it('should fire the callback with an error when no id is passed as the first argument', function(done) {
+        var params = {
+          order_item_payment_status: 'PAID',
+          status_notes: 'The user paid, and we thank them for it.'
+        };
+
+        program.orders.updateOrderItems(params, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`');
+
+          assert.equal(data, undefined);
+
+          done();
+        });
+      });
+
+      it('should fire the callback with an error when no params object is passed', function(done) {
+        program.orders.updateOrderItems(orderId, function(error, data) {
+          assert.instanceOf(error, Error);
+          assert.equal(error.message, 'A params object is required');
+
+          assert.equal(data, undefined);
+
+          done();
+        });
+      });
+
+      it('should pass an object to the callback', function(done) {
+        var params = {
+          order_item_payment_status: 'PAID',
+          status_notes: 'The user paid, and we thank them for it.'
+        };
+
+        nock(RO.urls.apiBaseUrl(), {
+              reqHeaders: {
+                'Authorization': 'Bearer abcd1234rewardTime'
+              }
+            })
+          .patch(updateOrderItemsUrl, params)
+          .reply(200, {
+            result: {}
+          });
+
+        program.orders.updateOrderItems(orderId, params, function(error, result) {
+          assert.equal(error, null);
+          assert.typeOf(result, 'object');
+
+          done();
+        });
+      });
+
+      it('should make an HTTP get request to the correct URL', function(done) {
+        var params = {
+          order_item_payment_status: 'PAID',
+          status_notes: 'The user paid, and we thank them for it.'
+        },
+        apiCall = nock(RO.urls.apiBaseUrl(), {
+            reqHeaders: {
+              'Authorization': 'Bearer abcd1234rewardTime'
+            }
+          })
+          .patch(updateOrderItemsUrl, params)
+          .reply(200, {
+            result: {status: 'OK'}
+          });
+
+        RO.program(programId).orders.updateOrderItems(orderId, params, function(error, result) {
+          assert.equal(error, null);
+
+          assert.deepEqual(result, { status: 'OK' });
+          assert.equal(apiCall.isDone(), true);
+
+          done();
+        });
+      });
+    });
   });
 });
 
