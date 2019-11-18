@@ -273,6 +273,6 @@ Jerad Gallinger - [jerad@rewardops.com](mailto:jerad@rewardops.com)
 
 ## License
 
-Copyright (c) 2015-2017 RewardOps
+Copyright (c) 2015-2019 RewardOps
 
 All rights reserved.
