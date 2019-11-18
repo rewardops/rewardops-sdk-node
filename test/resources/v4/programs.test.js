@@ -30,7 +30,7 @@ describe('v4 RO.programs', function() {
       RO.programs.getAll(function(error, programList) {
         expect(error).toEqual(null);
 
-        expect(typeof programList).toBe('array');
+        expect(Array.isArray(programList)).toBe(true);
 
         done();
       });
@@ -46,7 +46,7 @@ console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(function(error, programList) {
         expect(error).toEqual(null);
 
-        expect(typeof programList).toBe('array');
+        expect(Array.isArray(programList)).toBe(true);
         expect(apiCall.isDone()).toEqual(true);
 
         done();
@@ -72,7 +72,7 @@ console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(params, function(error, programsList) {
         expect(error).toEqual(null);
 
-        expect(typeof programsList).toBe('array');
+        expect(Array.isArray(programsList)).toBe(true);
         expect(scope.isDone()).toEqual(true);
 
         done();

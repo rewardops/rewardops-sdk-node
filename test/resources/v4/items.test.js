@@ -45,7 +45,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.items.getAll(function(error, data) {
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -65,7 +65,7 @@ describe('v4 RO.program()', function() {
         RO.program(12).items.getAll(function(error, itemList) {
           expect(error).toEqual(null);
 
-          expect(typeof itemList).toBe('array');
+          expect(Array.isArray(itemList)).toBe(true);
           expect(apiCall.isDone()).toEqual(true);
 
           done();
@@ -91,7 +91,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).items.getAll(params, function(error, itemsList) {
           expect(error).toEqual(null);
 
-          expect(typeof itemsList).toBe('array');
+          expect(Array.isArray(itemsList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -159,7 +159,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).items.get(234, params, function(error, itemsList) {
           expect(error).toEqual(null);
 
-          expect(typeof itemsList).toBe('array');
+          expect(Array.isArray(itemsList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -202,7 +202,7 @@ describe('v4 RO.program()', function() {
         RO.program(12).items.getParameters(function(error, data) {
           expect(error).toEqual(null);
 
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
           expect(apiCall.isDone()).toEqual(true);
 
           done();
@@ -227,7 +227,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).items.getParameters(params, function(error, data) {
           expect(error).toEqual(null);
 
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();

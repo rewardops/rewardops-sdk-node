@@ -119,7 +119,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.getAll(38, function(error, data) {
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -142,7 +142,7 @@ describe('v4 RO.program()', function() {
         RO.program(12).orders.getAll(3, function(error, orderList) {
           expect(error).toEqual(null);
 
-          expect(typeof orderList).toBe('array');
+          expect(Array.isArray(orderList)).toBe(true);
           expect(apiCall.isDone()).toEqual(true);
 
           done();
@@ -170,7 +170,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).orders.getAll(777, params, function(error, programsList) {
           expect(error).toEqual(null);
 
-          expect(typeof programsList).toBe('array');
+          expect(Array.isArray(programsList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();

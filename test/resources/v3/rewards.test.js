@@ -45,7 +45,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.rewards.getAll(function(error, data) {
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -65,7 +65,7 @@ describe('v3 RO.program()', function() {
         RO.program(12).rewards.getAll(function(error, rewardList) {
           expect(error).toEqual(null);
 
-          expect(typeof rewardList).toBe('array');
+          expect(Array.isArray(rewardList)).toBe(true);
           expect(apiCall.isDone()).toEqual(true);
 
           done();
@@ -91,7 +91,7 @@ describe('v3 RO.program()', function() {
         RO.program(55).rewards.getAll(params, function(error, rewardsList) {
           expect(error).toEqual(null);
 
-          expect(typeof rewardsList).toBe('array');
+          expect(Array.isArray(rewardsList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -159,7 +159,7 @@ describe('v3 RO.program()', function() {
         RO.program(55).rewards.get(234, params, function(error, rewardsList) {
           expect(error).toEqual(null);
 
-          expect(typeof rewardsList).toBe('array');
+          expect(Array.isArray(rewardsList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();

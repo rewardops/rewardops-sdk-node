@@ -185,7 +185,7 @@ describe('api', function() {
       }, function(error, programs) {
         expect(error).toEqual(null);
 
-        expect(typeof programs).toBe('array');
+        expect(Array.isArray(programs)).toBe(true);
 
         done();
       });

@@ -45,7 +45,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.customCategories.getAll(function(error, data) {
-          expect(typeof data).toBe('array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -65,7 +65,7 @@ describe('v4 RO.program()', function() {
         RO.program(12).customCategories.getAll(function(error, customCategoryList) {
           expect(error).toEqual(null);
 
-          expect(typeof customCategoryList).toBe('array');
+          expect(Array.isArray(customCategoryList)).toBe(true);
           expect(apiCall.isDone()).toEqual(true);
 
           done();
@@ -91,7 +91,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).customCategories.getAll(params, function(error, customCategoriesList) {
           expect(error).toEqual(null);
 
-          expect(typeof customCategoriesList).toBe('array');
+          expect(Array.isArray(customCategoriesList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -170,7 +170,7 @@ describe('v4 RO.program()', function() {
         RO.program(55).customCategories.get('RAT_000002', params, function(error, customCategoriesList) {
           expect(error).toEqual(null);
 
-          expect(typeof customCategoriesList).toBe('array');
+          expect(Array.isArray(customCategoriesList)).toBe(true);
           expect(scope.isDone()).toEqual(true);
 
           done();
