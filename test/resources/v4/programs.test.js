@@ -1,40 +1,36 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    nock      = require('nock'),
-    fixtures  = require('../../fixtures/v3/programsFixtures'),
-    RO        = require('../../..');
+var nock      = require('nock'), fixtures  = require('../../fixtures/v3/programsFixtures'), RO        = require('../../..');
 
 describe('v4 RO.programs', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
   describe('getAll()', function() {
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.set('clientId', undefined);
       RO.config.set('clientSecret', undefined);
     });
 
     it('should pass an array to the callback', function(done) {
       RO.programs.getAll(function(error, programList) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(programList, 'array');
+        expect(typeof programList).toBe('array');
 
         done();
       });
@@ -48,10 +44,10 @@ describe('v4 RO.programs', function() {
         });
 console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(function(error, programList) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(programList, 'array');
-        assert.equal(apiCall.isDone(), true);
+        expect(typeof programList).toBe('array');
+        expect(apiCall.isDone()).toEqual(true);
 
         done();
       });
@@ -74,10 +70,10 @@ console.log(RO.urls.apiServerUrl());
           });
 
       RO.programs.getAll(params, function(error, programsList) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(programsList, 'array');
-        assert.equal(scope.isDone(), true);
+        expect(typeof programsList).toBe('array');
+        expect(scope.isDone()).toEqual(true);
 
         done();
       });
@@ -85,12 +81,12 @@ console.log(RO.urls.apiServerUrl());
   });
 
   describe('get()', function() {
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.set('clientId', undefined);
       RO.config.set('clientSecret', undefined);
     });
@@ -99,9 +95,9 @@ console.log(RO.urls.apiServerUrl());
       var id = 555;
 
       RO.programs.get(id, function(error, data) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(data, 'object');
+        expect(typeof data).toBe('object');
 
         done();
       });
@@ -119,10 +115,10 @@ console.log(RO.urls.apiServerUrl());
             });
 
       RO.programs.get('567', function(error, program) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(program, 'object');
-        assert.equal(scope.isDone(), true);
+        expect(typeof program).toBe('object');
+        expect(scope.isDone()).toEqual(true);
 
         done();
       });

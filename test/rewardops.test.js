@@ -1,7 +1,6 @@
 'use strict';
 
-var assert           = require('chai').assert,
-    packageJSON      = require('../package'),
+var packageJSON      = require('../package'),
     path             = require('path'),
     RO               = require('../'),
     expectedDefaults = {
@@ -21,13 +20,13 @@ describe('RO', function() {
       RO.config.reset();
 
       // config should now deep equal the defaults
-      assert.deepEqual(RO.config.getAll(), expectedDefaults);
+      expect(RO.config.getAll()).toEqual(expectedDefaults);
     });
   });
 
   describe('config', function() {
     it('should have a config property', function() {
-      assert.typeOf(RO.config, 'object');
+      expect(typeof RO.config).toBe('object');
     });
   });
 
@@ -38,19 +37,19 @@ describe('RO', function() {
 
       RO.config.reset();
 
-      assert.deepEqual(RO.config.getAll(), expectedDefaults);
-      assert.equal(RO.config.get('foo', undefined));
-      assert.equal(RO.config.get('bar', undefined));
+      expect(RO.config.getAll()).toEqual(expectedDefaults);
+      expect(RO.config.get('foo', undefined)).toEqual();
+      expect(RO.config.get('bar', undefined)).toEqual();
     });
   });
 
   describe('version', function() {
     it('should have a version property', function() {
-      assert.typeOf(RO.version, 'string');
+      expect(typeof RO.version).toBe('string');
     });
 
     it('should be the same version number as in package.json', function() {
-      assert.equal(RO.version, packageJSON.version);
+      expect(RO.version).toEqual(packageJSON.version);
     });
   });
 });

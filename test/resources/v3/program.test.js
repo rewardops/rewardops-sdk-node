@@ -1,21 +1,17 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    sinon     = require('sinon'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v3/programFixtures');
+var sinon     = require('sinon'), RO        = require('../../..'), fixtures  = require('../../fixtures/v3/programFixtures');
 
 describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -23,11 +19,11 @@ describe('v3 RO.program()', function() {
     var program1 = RO.program('1'),
         program2 = RO.program([]);
 
-    assert.instanceOf(program1, Error);
-    assert.equal(program1.message, 'Program ID must be a number');
+    expect(program1).toBeInstanceOf(Error);
+    expect(program1.message).toEqual('Program ID must be a number');
 
-    assert.instanceOf(program2, Error);
-    assert.equal(program2.message, 'Program ID must be a number');
+    expect(program2).toBeInstanceOf(Error);
+    expect(program2.message).toEqual('Program ID must be a number');
   });
 
   describe('id', function() {
@@ -35,7 +31,7 @@ describe('v3 RO.program()', function() {
       var id = Math.floor(Math.random() * (1000000 - 1)) + 1,
           program = RO.program(id);
 
-      assert.equal(program.id, id);
+      expect(program.id).toEqual(id);
     });
   });
 
@@ -49,7 +45,7 @@ describe('v3 RO.program()', function() {
       sinon.spy(RO.programs, 'get').withArgs(id);
 
       program.details(function() {
-        assert.equal(RO.programs.get.calledWith(id), true);
+        expect(RO.programs.get.calledWith(id)).toEqual(true);
 
         RO.programs.get.restore();
 

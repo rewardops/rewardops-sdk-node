@@ -1,22 +1,17 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    _         = require('underscore'),
-    nock      = require('nock'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v3/programOrdersFixtures');
+var _         = require('underscore'), nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v3/programOrdersFixtures');
 
 describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -24,21 +19,21 @@ describe('v3 RO.program()', function() {
     var id = 33,
         program = RO.program(id);
 
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'programTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.reset();
     });
 
     it('should have the correct context ID', function() {
-      assert.equal(program.orders.contextId, id);
+      expect(program.orders.contextId).toEqual(id);
     });
 
     it('should have the correct context', function() {
-      assert.equal(program.orders.contextTypeName, 'programs');
+      expect(program.orders.contextTypeName).toEqual('programs');
     });
 
     describe('getAll()', function() {
@@ -57,7 +52,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.orders.getAll(38, function(error, data) {
-          assert.typeOf(data, 'array');
+          expect(typeof data).toBe('array');
 
           done();
         });
@@ -78,10 +73,10 @@ describe('v3 RO.program()', function() {
             });
 
         RO.program(12).orders.getAll(3, function(error, orderList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(orderList, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof orderList).toBe('array');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -106,10 +101,10 @@ describe('v3 RO.program()', function() {
             });
 
         RO.program(55).orders.getAll(777, params, function(error, programsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(programsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(typeof programsList).toBe('array');
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -130,7 +125,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.orders.get(555, function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -149,10 +144,10 @@ describe('v3 RO.program()', function() {
               });
 
         RO.program(12).orders.get(929, function(error, orderList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(orderList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof orderList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -170,12 +165,12 @@ describe('v3 RO.program()', function() {
               .reply(200);
 
         program.orders.create(options, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'reward_id must be a number');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('reward_id must be a number');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
-          assert.equal(scope.isDone(), false);
+          expect(scope.isDone()).toEqual(false);
 
           done();
         });
@@ -200,7 +195,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.orders.create(newOrder, function(error, result) {
-          assert.typeOf(result, 'object');
+          expect(typeof result).toBe('object');
 
           done();
         });
@@ -234,10 +229,10 @@ describe('v3 RO.program()', function() {
               });
 
         RO.program(33).orders.create(newOrder, function(error, result) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.deepEqual(result, { status: 'OK' });
-          assert.equal(apiCall.isDone(), true);
+          expect(result).toEqual({ status: 'OK' });
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -256,12 +251,12 @@ describe('v3 RO.program()', function() {
 
 
         RO.program(133000).orders.create(function(error, result) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A params object is required');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('A params object is required');
 
-          assert.equal(result, undefined);
+          expect(result).toEqual(undefined);
 
-          assert.equal(scope.isDone(), false);
+          expect(scope.isDone()).toEqual(false);
 
           done();
         });

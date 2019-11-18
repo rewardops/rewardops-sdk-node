@@ -1,21 +1,17 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    nock      = require('nock'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v4/itemsFixtures');
+var nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v4/itemsFixtures');
 
 describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -23,17 +19,17 @@ describe('v4 RO.program()', function() {
     var id = 33,
         program = RO.program(id);
 
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'itemTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.reset();
     });
 
     it('should have the correct program ID', function() {
-      assert.equal(program.items.programId, id);
+      expect(program.items.programId).toEqual(id);
     });
 
     describe('getAll()', function() {
@@ -49,7 +45,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.items.getAll(function(error, data) {
-          assert.typeOf(data, 'array');
+          expect(typeof data).toBe('array');
 
           done();
         });
@@ -67,10 +63,10 @@ describe('v4 RO.program()', function() {
           });
 
         RO.program(12).items.getAll(function(error, itemList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(itemList, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof itemList).toBe('array');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -93,10 +89,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).items.getAll(params, function(error, itemsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(itemsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(typeof itemsList).toBe('array');
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -117,7 +113,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.items.get(555, function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -136,10 +132,10 @@ describe('v4 RO.program()', function() {
               });
 
         RO.program(12).items.get(929, function(error, itemList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(itemList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof itemList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -161,10 +157,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).items.get(234, params, function(error, itemsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(itemsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(typeof itemsList).toBe('array');
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -185,7 +181,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.items.getParameters(function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -204,10 +200,10 @@ describe('v4 RO.program()', function() {
               });
 
         RO.program(12).items.getParameters(function(error, data) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(data, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof data).toBe('array');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -229,10 +225,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).items.getParameters(params, function(error, data) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(data, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(typeof data).toBe('array');
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
