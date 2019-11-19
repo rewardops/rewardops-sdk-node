@@ -1,10 +1,8 @@
-'use strict';
-
-var nock      = require('nock'), fixtures  = require('../../fixtures/v3/programsFixtures'), RO        = require('../../..');
+const nock = require('nock');
+const fixtures = require('../../fixtures/v3/programsFixtures');
+const RO = require('../../..');
 
 describe('v3 RO.programs', function() {
-  /* jshint camelcase: false */
-
   beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
 
@@ -37,12 +35,12 @@ describe('v3 RO.programs', function() {
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var apiCall = nock(RO.urls.apiServerUrl() + '/api/v3')
+      const apiCall = nock(`${RO.urls.apiServerUrl()}/api/v3`)
         .get('/programs')
         .reply(200, {
-          result: []
+          result: [],
         });
-console.log(RO.urls.apiServerUrl());
+      console.log(RO.urls.apiServerUrl());
       RO.programs.getAll(function(error, programList) {
         expect(error).toEqual(null);
 
@@ -54,20 +52,20 @@ console.log(RO.urls.apiServerUrl());
     });
 
     it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
-      var params = {
-            page: 7,
-            per_page_count: 50
-          },
-          scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
-            reqHeaders: {
-              'Authorization': 'Bearer abcd1234programs'
-            }
-          })
-          .get('/programs')
-          .query(params)
-          .reply(200, {
-            result: []
-          });
+      const params = {
+        page: 7,
+        per_page_count: 50,
+      };
+      const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+        reqHeaders: {
+          Authorization: 'Bearer abcd1234programs',
+        },
+      })
+        .get('/programs')
+        .query(params)
+        .reply(200, {
+          result: [],
+        });
 
       RO.programs.getAll(params, function(error, programsList) {
         expect(error).toEqual(null);
@@ -92,7 +90,7 @@ console.log(RO.urls.apiServerUrl());
     });
 
     it('should pass an object to the callback', function(done) {
-      var id = 555;
+      const id = 555;
 
       RO.programs.get(id, function(error, data) {
         expect(error).toEqual(null);
@@ -104,15 +102,15 @@ console.log(RO.urls.apiServerUrl());
     });
 
     it('should make an HTTP get request to the correct URL', function(done) {
-      var scope = nock(RO.urls.apiServerUrl() + '/api/v3', {
-            reqHeaders: {
-              'Authorization': 'Bearer abcd1234programs'
-            }
-          })
-            .get('/programs/567')
-            .reply(200, {
-              result: {}
-            });
+      const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+        reqHeaders: {
+          Authorization: 'Bearer abcd1234programs',
+        },
+      })
+        .get('/programs/567')
+        .reply(200, {
+          result: {},
+        });
 
       RO.programs.get('567', function(error, program) {
         expect(error).toEqual(null);
@@ -125,4 +123,3 @@ console.log(RO.urls.apiServerUrl());
     });
   });
 });
-

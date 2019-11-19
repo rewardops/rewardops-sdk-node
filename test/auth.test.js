@@ -1,13 +1,14 @@
-'use strict';
-
-var _             = require('underscore'), async         = require('async'), nock          = require('nock'), emitter       = require('../lib/emitter'), RO            = require('..'), EventEmitter  = require('events');
+const _ = require('underscore');
+const async = require('async');
+const nock = require('nock');
+const EventEmitter = require('events');
+const emitter = require('../lib/emitter');
+const RO = require('..');
 
 describe('RO.auth', function() {
-  /* jshint camelcase: false */
-
   describe('getBaseUrl()', function() {
     it('should return the correct value', function() {
-      expect(RO.auth.getBaseUrl()).toEqual(RO.urls.apiBaseUrl() + '/auth');
+      expect(RO.auth.getBaseUrl()).toEqual(`${RO.urls.apiBaseUrl()}/auth`);
     });
   });
 
@@ -20,10 +21,10 @@ describe('RO.auth', function() {
       RO.auth.token = {};
     });
 
-    it('should pass an AuthenticationError to the callback when config.clientId isn\'t present', function(done) {
-      var config = {
+    it("should pass an AuthenticationError to the callback when config.clientId isn't present", function(done) {
+      const config = {
         clientId: null,
-        clientSecret: 'abcdefg1234567'
+        clientSecret: 'abcdefg1234567',
       };
 
       RO.auth.getToken(config, function(error, response) {
@@ -37,10 +38,10 @@ describe('RO.auth', function() {
       });
     });
 
-    it('should pass an AuthenticationError to the callback when config.clientSecret isn\'t present', function(done) {
-      var config = {
+    it("should pass an AuthenticationError to the callback when config.clientSecret isn't present", function(done) {
+      const config = {
         clientId: '1234567abcdefg',
-        clientSecret: null
+        clientSecret: null,
       };
 
       RO.auth.getToken(config, function(error, response) {
@@ -54,10 +55,10 @@ describe('RO.auth', function() {
       });
     });
 
-    it('should pass an AuthenticationError to the callback when config.clientId and config.clientSecret aren\'t present', function(done) {
-      var config = {
+    it("should pass an AuthenticationError to the callback when config.clientId and config.clientSecret aren't present", function(done) {
+      const config = {
         clientId: null,
-        clientSecret: null
+        clientSecret: null,
       };
 
       RO.auth.getToken(config, function(error, response) {
@@ -65,29 +66,33 @@ describe('RO.auth', function() {
         expect(response).toEqual(undefined);
 
         expect(error.name).toEqual('AuthenticationError');
-        expect(error.message).toEqual('You must provide a clientId and clientSecret');
+        expect(error.message).toEqual(
+          'You must provide a clientId and clientSecret'
+        );
 
         done();
       });
     });
 
     it('should make an HTTP POST request to the correct URL', function(done) {
-      var config = {
-            clientId: '1234qwer',
-            clientSecret: 'gggg6666'
-          },
-          reply =  {
-            'access_token': '1111dddd',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          scope = nock('https://app.rewardops.net/api/v4/auth', {
-            reqheaders: {
-              'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-            }
-          })
-            .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
-            .reply(200, reply);
+      const config = {
+        clientId: '1234qwer',
+        clientSecret: 'gggg6666',
+      };
+      const reply = {
+        access_token: '1111dddd',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
+        .reply(200, reply);
 
       RO.auth.getToken(config, function() {
         expect(scope.isDone()).toEqual(true);
@@ -97,21 +102,23 @@ describe('RO.auth', function() {
     });
 
     it('should send the clientId and clientSecret in the correct header fields', function(done) {
-      var config = {
-            clientId: 'clientIdForTestingRequestHeaders',
-            clientSecret: 'someFakeValueForHeaderTesting'
-          },
-          scope = nock('https://app.rewardops.net/api/v4/auth', {
-            reqheaders: {
-              'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-            }
-          })
-            .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
-            .reply(200, {
-              access_token: 'g0t1T',
-              created_at: Math.round(+new Date()/1000),
-              expires_in: 7200
-            });
+      const config = {
+        clientId: 'clientIdForTestingRequestHeaders',
+        clientSecret: 'someFakeValueForHeaderTesting',
+      };
+      const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
+        .reply(200, {
+          access_token: 'g0t1T',
+          created_at: Math.round(+new Date() / 1000),
+          expires_in: 7200,
+        });
 
       RO.auth.getToken(config, function() {
         expect(scope.isDone()).toEqual(true);
@@ -121,18 +128,18 @@ describe('RO.auth', function() {
     });
 
     it('should pass an existing valid token to the callback', function(done) {
-      var expires = new Date(),
-          testToken = 'thisIsMy5555555Token',
-          config = {
-            clientId: 'clientIdForTestingExistingToken',
-            clientSecret: 'someFakeValueForTestingExistingToken'
-          };
+      const expires = new Date();
+      const testToken = 'thisIsMy5555555Token';
+      const config = {
+        clientId: 'clientIdForTestingExistingToken',
+        clientSecret: 'someFakeValueForTestingExistingToken',
+      };
 
       expires.setHours(expires.getHours() + 2);
 
       RO.auth.token = {
         access_token: testToken,
-        expires: expires
+        expires,
       };
 
       RO.auth.getToken(config, function(error, token) {
@@ -145,56 +152,62 @@ describe('RO.auth', function() {
     });
 
     it('should set the correct expires Date object', function(done) {
-      var config = {
-            clientId: '123456',
-            clientSecret: '0987654'
-          },
-          reply =  {
-            'access_token': 'asdfghjkl',
-            'created_at': Math.round((+new Date()/1000)),
-            'expires_in': 7200,
-          };
+      const config = {
+        clientId: '123456',
+        clientSecret: '0987654',
+      };
+      const reply = {
+        access_token: 'asdfghjkl',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
 
       nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
-          'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-        }
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
       })
-        .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .reply(200, reply);
 
       RO.auth.token = {};
 
       RO.auth.getToken(config, function() {
-        expect(RO.auth.token.expires.getTime()).toEqual(new Date((reply.created_at + reply.expires_in) * 1000).getTime());
+        expect(RO.auth.token.expires.getTime()).toEqual(
+          new Date((reply.created_at + reply.expires_in) * 1000).getTime()
+        );
 
         done();
       });
     });
 
     it('should request a new token from the server if the existing token has expired', function(done) {
-      var expires = new Date().setHours(new Date().getHours() - 3),
-          testToken = '5omeTokenWEAKRwaefrwoiejr9032',
-          config = {
-            clientId: 'clientIdForTestingNewTokenRequest',
-            clientSecret: 'someFakeValueForTestingNewTokenRequest'
-          },
-          reply =  {
-            'access_token': '1111dddd',
-            'created_at': Math.round((+new Date()/1000)),
-            'expires_in': 7200,
-          },
-          scope = nock('https://app.rewardops.net/api/v4/auth', {
-            reqheaders: {
-              'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-            }
-          })
-            .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
-            .reply(200, reply);
+      const expires = new Date().setHours(new Date().getHours() - 3);
+      const testToken = '5omeTokenWEAKRwaefrwoiejr9032';
+      const config = {
+        clientId: 'clientIdForTestingNewTokenRequest',
+        clientSecret: 'someFakeValueForTestingNewTokenRequest',
+      };
+      const reply = {
+        access_token: '1111dddd',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
+        .reply(200, reply);
 
       RO.auth.token = {
         access_token: testToken,
-        expires: expires
+        expires,
       };
 
       RO.auth.getToken(config, function(error, token) {
@@ -210,28 +223,31 @@ describe('RO.auth', function() {
     });
 
     it('should try to request a new token up to three times on server error', function(done) {
-      var config = {
-            clientId: 'clientIdForTestingErrorRetry',
-            clientSecret: 'someFakeValueForTestingErrorRetry'
-          },
-          reply =  {
-            'access_token': '1111dddd',
-            'created_at': Math.round((+new Date()/1000)),
-            'expires_in': 7200,
-          },
-          scope = nock('https://app.rewardops.net/api/v4/auth', {
-            reqheaders: {
-              'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-            }
-          })
-            .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
-            .twice()
-            .reply(401, null, {
-          'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
-          'Content-Type': 'text/html'
-            })
-            .post(RO.auth.getTokenPath())
-            .reply(200, reply);
+      const config = {
+        clientId: 'clientIdForTestingErrorRetry',
+        clientSecret: 'someFakeValueForTestingErrorRetry',
+      };
+      const reply = {
+        access_token: '1111dddd',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
+        .twice()
+        .reply(401, null, {
+          'Www-Authenticate':
+            'Bearer realm="api.rewardops.net", error="invalid_token", error_description="The access token is invalid"',
+          'Content-Type': 'text/html',
+        })
+        .post(RO.auth.getTokenPath())
+        .reply(200, reply);
 
       RO.auth.getToken(config, function(error, token) {
         expect(scope.isDone()).toEqual(true);
@@ -245,22 +261,25 @@ describe('RO.auth', function() {
       });
     });
 
-    it('should pass the server\'s error message to the callback after three failed attempts', function(done) {
-      var config = {
+    it("should pass the server's error message to the callback after three failed attempts", function(done) {
+      const config = {
         clientId: 'fakeIdForTestingErrorPassing',
-        clientSecret: 'someSecretOrAnother'
+        clientSecret: 'someSecretOrAnother',
       };
 
       nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-          }
-        })
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
         .defaultReplyHeaders({
-          'Www-Authenticate': 'Bearer realm=\"api.rewardops.net\", error=\"invalid_token\", error_description=\"The access token is invalid\"',
-          'Content-Type': 'text/html'
+          'Www-Authenticate':
+            'Bearer realm="api.rewardops.net", error="invalid_token", error_description="The access token is invalid"',
+          'Content-Type': 'text/html',
         })
-        .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .thrice()
         .reply(401);
 
@@ -269,35 +288,39 @@ describe('RO.auth', function() {
         expect(response).toEqual(undefined);
 
         expect(error.name).toEqual('AuthenticationError');
-        expect(error.message).toEqual('The access token is invalid (error 401)');
+        expect(error.message).toEqual(
+          'The access token is invalid (error 401)'
+        );
 
         done();
       });
     });
 
     it('should timeout and pass an error to the callback when the server times out', function(done) {
-      var config = {
-            clientId: 'asdf0987ghjk',
-            clientSecret: 'asdf1234poiu',
-            timeout: 50
-          },
-          reply =  {
-            'access_token': 'time0ut',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          postBody = {
-            grant_type: 'client_credentials'
-          },
-          timeoutError = new Error();
+      const config = {
+        clientId: 'asdf0987ghjk',
+        clientSecret: 'asdf1234poiu',
+        timeout: 50,
+      };
+      const reply = {
+        access_token: 'time0ut',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const postBody = {
+        grant_type: 'client_credentials',
+      };
+      const timeoutError = new Error();
 
       timeoutError.message = 'ETIMEDOUT';
 
       nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-          }
-        })
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
         .post(RO.auth.getTokenPath(), _.extend(postBody))
         .times(3)
         .replyWithError(timeoutError)
@@ -311,8 +334,8 @@ describe('RO.auth', function() {
         expect(error).toBeInstanceOf(Error);
         expect(error.message).toEqual('ETIMEDOUT');
 
-        RO.auth.getToken(config, function(error, token) {
-          expect(error).toEqual(null);
+        RO.auth.getToken(config, function(err, token) {
+          expect(err).toEqual(null);
 
           expect(token).toEqual(reply.access_token);
 
@@ -322,25 +345,27 @@ describe('RO.auth', function() {
     });
 
     it('should timeout and pass an error to the callback when there is a socket timeout', function(done) {
-      var config = {
-            clientId: 'asdf0987ghjk',
-            clientSecret: 'asdf1234poiu',
-            timeout: 50
-          },
-          reply =  {
-            'access_token': 'time0ut',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          postBody = {
-            grant_type: 'client_credentials'
-          };
+      const config = {
+        clientId: 'asdf0987ghjk',
+        clientSecret: 'asdf1234poiu',
+        timeout: 50,
+      };
+      const reply = {
+        access_token: 'time0ut',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const postBody = {
+        grant_type: 'client_credentials',
+      };
 
       nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-          }
-        })
+        reqheaders: {
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
+      })
         .post(RO.auth.getTokenPath(), _.extend(postBody))
         .socketDelay(config.timeout + 10)
         .times(3)
@@ -356,8 +381,8 @@ describe('RO.auth', function() {
         expect(error).toBeInstanceOf(Error);
         expect(error.message).toEqual('ESOCKETTIMEDOUT');
 
-        RO.auth.getToken(config, function(error, token) {
-          expect(error).toEqual(null);
+        RO.auth.getToken(config, function(err, token) {
+          expect(err).toEqual(null);
 
           expect(token).toEqual(reply.access_token);
 
@@ -391,84 +416,94 @@ describe('RO.auth', function() {
       // the last return immediately invalidated tokens.
       //
       //
-      var config = {
-            clientId: 'raceConditionsSuck',
-            clientSecret: 'StopRaceConditions'
-          },
-          reply =  {
-            'access_token': 'wonTheRace',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          badReply =  {
-            'access_token': 'youMessedUp',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          n = 5000,
-          arr = [];
+      const config = {
+        clientId: 'raceConditionsSuck',
+        clientSecret: 'StopRaceConditions',
+      };
+      const reply = {
+        access_token: 'wonTheRace',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const badReply = {
+        access_token: 'youMessedUp',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      const n = 5000;
+      const arr = [];
 
       emitter.setMaxListeners(n + 1);
 
       nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
-          'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-        }
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
       })
-        .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .delayConnection(100)
         .once()
         .reply(200, reply)
-        .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .times(n - 1)
         .reply(200, badReply);
 
-      for (var i = 0; i < n; i++) {
+      for (let i = 0; i < n; i++) {
         arr.push(null);
       }
 
-      async.map(arr, function(item, callback) {
-        RO.auth.getToken(config, function(error, token) {
-          callback(error, token);
-        });
-      }, function(error, results) {
-        expect(error).toEqual(null);
+      async.map(
+        arr,
+        function(item, callback) {
+          RO.auth.getToken(config, function(error, token) {
+            callback(error, token);
+          });
+        },
+        function(error, results) {
+          expect(error).toEqual(null);
 
-        for (var i = 0; i < results.length; i++) {
-          expect(results[i]).toEqual(reply.access_token);
+          for (let i = 0; i < results.length; i++) {
+            expect(results[i]).toEqual(reply.access_token);
+          }
+
+          expect(EventEmitter.listenerCount(emitter, 'unlockToken')).toEqual(1);
+
+          emitter.setMaxListeners(RO.config.get('maxListeners') || 10);
+
+          done();
         }
-
-        expect(EventEmitter.listenerCount(emitter, 'unlockToken')).toEqual(1);
-
-        emitter.setMaxListeners(RO.config.get('maxListeners') || 10);
-
-        done();
-      });
+      );
     });
 
     it('should fire a "unlockToken" event on success, passing the new access_token as an argument', function(done) {
-      var config = {
-            clientId: '0987ghjk',
-            clientSecret: '1234poiu'
-          },
-          reply =  {
-            'access_token': 'itWorkedForYou',
-            'created_at': Math.round(+new Date()/1000),
-            'expires_in': 7200
-          },
-          listenerFiredToken = null;
+      const config = {
+        clientId: '0987ghjk',
+        clientSecret: '1234poiu',
+      };
+      const reply = {
+        access_token: 'itWorkedForYou',
+        created_at: Math.round(+new Date() / 1000),
+        expires_in: 7200,
+      };
+      let listenerFiredToken = null;
 
       nock('https://app.rewardops.net/api/v4/auth', {
         reqheaders: {
-          'Authorization': 'Basic ' + new Buffer(config.clientId + ':' + config.clientSecret).toString('base64')
-        }
+          Authorization: `Basic ${Buffer.from(
+            `${config.clientId}:${config.clientSecret}`
+          ).toString('base64')}`,
+        },
       })
-        .post(RO.auth.getTokenPath(), {grant_type: 'client_credentials'})
+        .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .reply(200, reply);
 
       RO.auth.token = {};
 
-      emitter.once('unlockToken', function(error, token) {listenerFiredToken = token;});
+      emitter.once('unlockToken', function(error, token) {
+        listenerFiredToken = token;
+      });
 
       RO.auth.getToken(config, function(error, token) {
         expect(error).toEqual(null);
@@ -482,7 +517,7 @@ describe('RO.auth', function() {
 
   describe('invalidateToken()', function() {
     it('should set auth.token to an empty object', function() {
-      RO.auth.token = {imA: 'token'};
+      RO.auth.token = { imA: 'token' };
 
       RO.auth.invalidateToken();
 
@@ -490,7 +525,7 @@ describe('RO.auth', function() {
     });
 
     it('should listen to the invalidateToken event', function() {
-      RO.auth.token = {imStillA: 'token'};
+      RO.auth.token = { imStillA: 'token' };
 
       emitter.emit('invalidateToken');
 
@@ -498,4 +533,3 @@ describe('RO.auth', function() {
     });
   });
 });
-

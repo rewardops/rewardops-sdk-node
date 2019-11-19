@@ -1,10 +1,9 @@
-'use strict';
-
-var _         = require('underscore'), nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v4/programOrdersFixtures');
+const _ = require('underscore');
+const nock = require('nock');
+const RO = require('../../..');
+const fixtures = require('../../fixtures/v4/programOrdersFixtures');
 
 describe('v4 RO.program()', function() {
-  /* jshint camelcase: false */
-
   beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
   });
@@ -22,9 +21,9 @@ describe('v4 RO.program()', function() {
   });
 
   describe('orders', function() {
-    var programId        = 33,
-        program          = RO.program(programId),
-        programOrdersUrl = '/programs/' + programId + '/orders';
+    const programId = 33;
+    const program = RO.program(programId);
+    const programOrdersUrl = `/programs/${programId}/orders`;
 
     beforeAll(function() {
       RO.config.set('clientId', 'programTest123');
@@ -53,22 +52,21 @@ describe('v4 RO.program()', function() {
 
           done();
         });
-
       });
 
       it('should pass an object to the callback', function(done) {
-        var params = { member_id: 38 };
+        const params = { member_id: 38 };
 
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
-          .get('/programs/' + programId + '/orders/summary')
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .get(`/programs/${programId}/orders/summary`)
           .query(params)
           .once()
           .reply(200, {
-            result: {}
+            result: {},
           });
 
         program.orders.getSummary(params, function(error, data) {
@@ -79,18 +77,18 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var params = { member_id: 38 };
-        var apiCall = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
-            .get('/programs/12/orders/summary')
-            .query(params)
-            .once()
-            .reply(200, {
-              result: {}
-            });
+        const params = { member_id: 38 };
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .get('/programs/12/orders/summary')
+          .query(params)
+          .once()
+          .reply(200, {
+            result: {},
+          });
 
         RO.program(12).orders.getSummary(params, function(error, orderList) {
           expect(error).toEqual(null);
@@ -106,16 +104,16 @@ describe('v4 RO.program()', function() {
     describe('getAll()', function() {
       it('should pass an array to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
-            reqHeaders: {
-              'Authorization': 'Bearer abcd1234rewardTime'
-            }
-          })
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .get(programOrdersUrl)
           .query({
-            member_id: 38
+            member_id: 38,
           })
           .reply(200, {
-            result: []
+            result: [],
           });
 
         program.orders.getAll(38, function(error, data) {
@@ -126,17 +124,17 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .get('/programs/12/orders')
           .query({
-            member_id: 3
+            member_id: 3,
           })
           .reply(200, {
-            result: []
+            result: [],
           });
 
         RO.program(12).orders.getAll(3, function(error, orderList) {
@@ -150,24 +148,29 @@ describe('v4 RO.program()', function() {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
-        var params = {
-              page: 7,
-              per_page_count: 50
-            },
-            scope = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
+        const params = {
+          page: 7,
+          per_page_count: 50,
+        };
+        const scope = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .get('/programs/55/orders')
+          .query(
+            _.extend(params, {
+              member_id: 777,
             })
-            .get('/programs/55/orders')
-            .query(_.extend(params, {
-              member_id: 777
-            }))
-            .reply(200, {
-              result: []
-            });
+          )
+          .reply(200, {
+            result: [],
+          });
 
-        RO.program(55).orders.getAll(777, params, function(error, programsList) {
+        RO.program(55).orders.getAll(777, params, function(
+          error,
+          programsList
+        ) {
           expect(error).toEqual(null);
 
           expect(Array.isArray(programsList)).toBe(true);
@@ -181,14 +184,14 @@ describe('v4 RO.program()', function() {
     describe('get()', function() {
       it('should pass an object to the callback', function(done) {
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
-          .get('/programs/' + programId + '/orders/555')
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .get(`/programs/${programId}/orders/555`)
           .once()
           .reply(200, {
-            result: {}
+            result: {},
           });
 
         program.orders.get(555, function(error, data) {
@@ -199,16 +202,16 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var apiCall = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
-              .get('/programs/12/orders/929')
-              .once()
-              .reply(200, {
-                result: {}
-              });
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .get('/programs/12/orders/929')
+          .once()
+          .reply(200, {
+            result: {},
+          });
 
         RO.program(12).orders.get(929, function(error, orderList) {
           expect(error).toEqual(null);
@@ -221,19 +224,19 @@ describe('v4 RO.program()', function() {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
-        var params = {
-              use_program_order_code: false
-            },
-            scope = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234itemTime'
-              }
-            })
-            .get('/programs/12/orders/929')
-            .query(params)
-            .reply(200, {
-              result: {}
-            });
+        const params = {
+          use_program_order_code: false,
+        };
+        const scope = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234itemTime',
+          },
+        })
+          .get('/programs/12/orders/929')
+          .query(params)
+          .reply(200, {
+            result: {},
+          });
 
         RO.program(12).orders.get(929, params, function(error, data) {
           expect(error).toEqual(null);
@@ -248,13 +251,15 @@ describe('v4 RO.program()', function() {
 
     describe('create()', function() {
       it('should fire the callback with an error when the params object is missing a member object', function(done) {
-        var params = {
-          items: [{}]
+        const params = {
+          items: [{}],
         };
 
         program.orders.create(params, function(error, data) {
           expect(error).toBeInstanceOf(Error);
-          expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
+          expect(error.message).toEqual(
+            'must pass a member object in the params object to `orders.create()`'
+          );
 
           expect(data).toEqual(undefined);
 
@@ -263,13 +268,15 @@ describe('v4 RO.program()', function() {
       });
 
       it('should fire the callback with an error when the params object is missing an items array', function(done) {
-        var params = {
-          member: {id: 'hoo_ah'}
+        const params = {
+          member: { id: 'hoo_ah' },
         };
 
         program.orders.create(params, function(error, data) {
           expect(error).toBeInstanceOf(Error);
-          expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
+          expect(error.message).toEqual(
+            'must pass an items array in the params object to `orders.create()`'
+          );
 
           expect(data).toEqual(undefined);
 
@@ -278,21 +285,21 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an object to the callback', function(done) {
-        var newOrder = {
-              member: {
-                'id': 'abc123ppp'
-              },
-              items: [{}]
-            };
+        const newOrder = {
+          member: {
+            id: 'abc123ppp',
+          },
+          items: [{}],
+        };
 
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .post(programOrdersUrl, newOrder)
           .reply(200, {
-            result: {}
+            result: {},
           });
 
         program.orders.create(newOrder, function(error, result) {
@@ -304,43 +311,45 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var newOrder = {
-              member: {
-                'id': 'ab098765',
-                'full_name': 'Prit Kaur',
-                'email': 'prit@hotmail.co.uk',
-                'phone': '123-456-7890',
-                'address': {
-                  'address': '123 Some Town',
-                  'city': 'Sheffield',
-                  'country_code': 'UK',
-                  'postal_code': 'S32 5N9'
-                }
-              },
-              items: [{
-                'item_order_token': '3o2u4902u3joo4',
-                'quantity': 2,
-                'member_spend': [
-                  {
-                    'currency_code': 'XRO-ABC',
-                    'amount': '1000'
-                  }
-                ],
-                'retail_value': {
-                  'currency_code': 'USD',
-                  'amount': '20'
-                }
-              }]
+        const newOrder = {
+          member: {
+            id: 'ab098765',
+            full_name: 'Prit Kaur',
+            email: 'prit@hotmail.co.uk',
+            phone: '123-456-7890',
+            address: {
+              address: '123 Some Town',
+              city: 'Sheffield',
+              country_code: 'UK',
+              postal_code: 'S32 5N9',
             },
-            apiCall = nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
-              .post(programOrdersUrl, newOrder)
-              .reply(200, {
-                result: {status: 'OK'}
-              });
+          },
+          items: [
+            {
+              item_order_token: '3o2u4902u3joo4',
+              quantity: 2,
+              member_spend: [
+                {
+                  currency_code: 'XRO-ABC',
+                  amount: '1000',
+                },
+              ],
+              retail_value: {
+                currency_code: 'USD',
+                amount: '20',
+              },
+            },
+          ],
+        };
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
+          .post(programOrdersUrl, newOrder)
+          .reply(200, {
+            result: { status: 'OK' },
+          });
 
         RO.program(programId).orders.create(newOrder, function(error, result) {
           expect(error).toEqual(null);
@@ -352,7 +361,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an error to the callback when a params object isn\'t passed', function(done) {
+      it("should pass an error to the callback when a params object isn't passed", function(done) {
         RO.program(133000).orders.create(function(error, result) {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toEqual('A params object is required');
@@ -365,13 +374,13 @@ describe('v4 RO.program()', function() {
     });
 
     describe('update()', function() {
-      var orderId        = 'abcd1234asdf0987',
-          orderUpdateUrl = '/programs/' + programId + '/orders/' + orderId;
+      const orderId = 'abcd1234asdf0987';
+      const orderUpdateUrl = `/programs/${programId}/orders/${orderId}`;
 
       it('should fire the callback with an error when no id is passed as the first argument', function(done) {
-        var params = {
+        const params = {
           payment_status: 'PAID',
-          payment_status_notes: 'The user paid, and we thank them for it.'
+          payment_status_notes: 'The user paid, and we thank them for it.',
         };
 
         program.orders.update(params, function(error, data) {
@@ -398,19 +407,19 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an object to the callback', function(done) {
-        var params = {
+        const params = {
           payment_status: 'PAID',
-          payment_status_notes: 'The user paid, and we thank them for it.'
+          payment_status_notes: 'The user paid, and we thank them for it.',
         };
 
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .patch(orderUpdateUrl, params)
           .reply(200, {
-            result: {}
+            result: {},
           });
 
         program.orders.update(orderId, params, function(error, result) {
@@ -422,21 +431,24 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var params = {
+        const params = {
           payment_status: 'PAID',
-          payment_status_notes: 'The user paid, and we thank them for it.'
-        },
-        apiCall = nock(RO.urls.apiBaseUrl(), {
-            reqHeaders: {
-              'Authorization': 'Bearer abcd1234rewardTime'
-            }
-          })
+          payment_status_notes: 'The user paid, and we thank them for it.',
+        };
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .patch(orderUpdateUrl, params)
           .reply(200, {
-            result: {status: 'OK'}
+            result: { status: 'OK' },
           });
 
-        RO.program(programId).orders.update(orderId, params, function(error, result) {
+        RO.program(programId).orders.update(orderId, params, function(
+          error,
+          result
+        ) {
           expect(error).toEqual(null);
 
           expect(result).toEqual({ status: 'OK' });
@@ -448,13 +460,13 @@ describe('v4 RO.program()', function() {
     });
 
     describe('updateOrderItems()', function() {
-      var orderId        = 'abcd1234asdf0987',
-          updateOrderItemsUrl = '/programs/' + programId + '/orders/' + orderId + '/order_items';
+      const orderId = 'abcd1234asdf0987';
+      const updateOrderItemsUrl = `/programs/${programId}/orders/${orderId}/order_items`;
 
       it('should fire the callback with an error when no id is passed as the first argument', function(done) {
-        var params = {
+        const params = {
           order_item_payment_status: 'PAID',
-          status_notes: 'The user paid, and we thank them for it.'
+          status_notes: 'The user paid, and we thank them for it.',
         };
 
         program.orders.updateOrderItems(params, function(error, data) {
@@ -481,22 +493,25 @@ describe('v4 RO.program()', function() {
       });
 
       it('should pass an object to the callback', function(done) {
-        var params = {
+        const params = {
           order_item_payment_status: 'PAID',
-          status_notes: 'The user paid, and we thank them for it.'
+          status_notes: 'The user paid, and we thank them for it.',
         };
 
         nock(RO.urls.apiBaseUrl(), {
-              reqHeaders: {
-                'Authorization': 'Bearer abcd1234rewardTime'
-              }
-            })
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .patch(updateOrderItemsUrl, params)
           .reply(200, {
-            result: {}
+            result: {},
           });
 
-        program.orders.updateOrderItems(orderId, params, function(error, result) {
+        program.orders.updateOrderItems(orderId, params, function(
+          error,
+          result
+        ) {
           expect(error).toEqual(null);
           expect(typeof result).toBe('object');
 
@@ -505,21 +520,24 @@ describe('v4 RO.program()', function() {
       });
 
       it('should make an HTTP get request to the correct URL', function(done) {
-        var params = {
+        const params = {
           order_item_payment_status: 'PAID',
-          status_notes: 'The user paid, and we thank them for it.'
-        },
-        apiCall = nock(RO.urls.apiBaseUrl(), {
-            reqHeaders: {
-              'Authorization': 'Bearer abcd1234rewardTime'
-            }
-          })
+          status_notes: 'The user paid, and we thank them for it.',
+        };
+        const apiCall = nock(RO.urls.apiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234rewardTime',
+          },
+        })
           .patch(updateOrderItemsUrl, params)
           .reply(200, {
-            result: {status: 'OK'}
+            result: { status: 'OK' },
           });
 
-        RO.program(programId).orders.updateOrderItems(orderId, params, function(error, result) {
+        RO.program(programId).orders.updateOrderItems(orderId, params, function(
+          error,
+          result
+        ) {
           expect(error).toEqual(null);
 
           expect(result).toEqual({ status: 'OK' });
@@ -531,4 +549,3 @@ describe('v4 RO.program()', function() {
     });
   });
 });
-
