@@ -2,7 +2,7 @@
   "name": "@rewardops/rewardops-sdk",
   "version": "0.8.1",
   "engines": {
-    "node": ">=4.4"
+    "node": ">=8"
   },
   "description": "Node.js SDK for the RewardOps API",
   "author": "RewardOps",
