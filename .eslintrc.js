@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jest: true,
   },
   extends: ['airbnb-base', 'plugin:prettier/recommended'],
   globals: {
@@ -15,5 +16,6 @@ module.exports = {
   },
   rules: {
     'no-param-reassign': 0,
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
   },
 };
