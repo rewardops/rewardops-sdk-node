@@ -1,5 +1,5 @@
 const nock = require('nock');
-const fixtures = require('../../fixtures/v3/programsFixtures');
+const fixtures = require('../../fixtures/v3/programs.fixtures');
 const RO = require('../../..');
 
 describe('v4 RO.programs', function() {

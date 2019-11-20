@@ -1,7 +1,7 @@
 const nock = require('nock');
 const emitter = require('../lib/emitter');
 const RO = require('..');
-const fixtures = require('./fixtures/apiFixtures');
+const fixtures = require('./fixtures/api.fixtures');
 
 describe('api', function() {
   beforeAll(function() {

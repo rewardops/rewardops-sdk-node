@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v4/programFixtures');
+const fixtures = require('../../fixtures/v4/program.fixtures');
 
 describe('v4 RO.program()', function() {
   /* jshint camelcase: false */

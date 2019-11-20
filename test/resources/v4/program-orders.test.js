@@ -1,6 +1,6 @@
 const nock = require('nock');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v4/programOrdersFixtures');
+const fixtures = require('../../fixtures/v4/program-orders.fixtures');
 
 describe('v4 RO.program()', function() {
   beforeAll(function() {
