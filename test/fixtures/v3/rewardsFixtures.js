@@ -5,9 +5,7 @@ module.exports = function() {
   // Oauth calls
   nock('https://app.rewardops.net/api/v3/auth', {
     reqheaders: {
-      Authorization: `Basic ${Buffer.from(
-        'rewardTest123:itsATestGetUsedToIt'
-      ).toString('base64')}`,
+      Authorization: `Basic ${Buffer.from('rewardTest123:itsATestGetUsedToIt').toString('base64')}`,
     },
   })
     .post(RO.auth.getTokenPath(), {

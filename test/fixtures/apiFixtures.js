@@ -3,9 +3,7 @@ const nock = require('nock');
 module.exports = function() {
   nock('https://app.rewardops.net/api/v4/auth', {
     reqheaders: {
-      Authorization: `Basic ${Buffer.from(
-        'abcdefg1234567:abcdefg1234567'
-      ).toString('base64')}`,
+      Authorization: `Basic ${Buffer.from('abcdefg1234567:abcdefg1234567').toString('base64')}`,
     },
   })
     .post('/token', {

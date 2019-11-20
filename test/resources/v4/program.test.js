@@ -35,20 +35,22 @@ describe('v4 RO.program()', function() {
   });
 
   describe('details()', function() {
-    it('should be an alias for ro.programs.get(program.id)', function(done) {
-      // A random integer, per
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-      const id = Math.floor(Math.random() * (1000000 - 1)) + 1;
-      const program = RO.program(id);
+    it('should be an alias for ro.programs.get(program.id)', function() {
+      return new Promise(done => {
+        // A random integer, per
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+        const id = Math.floor(Math.random() * (1000000 - 1)) + 1;
+        const program = RO.program(id);
 
-      sinon.spy(RO.programs, 'get').withArgs(id);
+        sinon.spy(RO.programs, 'get').withArgs(id);
 
-      program.details(function() {
-        expect(RO.programs.get.calledWith(id)).toEqual(true);
+        program.details(function() {
+          expect(RO.programs.get.calledWith(id)).toEqual(true);
 
-        RO.programs.get.restore();
+          RO.programs.get.restore();
 
-        done();
+          done();
+        });
       });
     });
   });

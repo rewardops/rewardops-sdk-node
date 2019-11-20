@@ -24,56 +24,62 @@ describe('v4 RO.programs', function() {
       RO.config.set('clientSecret', undefined);
     });
 
-    it('should pass an array to the callback', function(done) {
-      RO.programs.getAll(function(error, programList) {
-        expect(error).toEqual(null);
+    it('should pass an array to the callback', function() {
+      return new Promise(done => {
+        RO.programs.getAll(function(error, programList) {
+          expect(error).toEqual(null);
 
-        expect(Array.isArray(programList)).toBe(true);
+          expect(Array.isArray(programList)).toBe(true);
 
-        done();
+          done();
+        });
       });
     });
 
-    it('should make an HTTP get request to the correct URL', function(done) {
-      const apiCall = nock(`${RO.urls.apiServerUrl()}/api/v3`)
-        .get('/programs')
-        .reply(200, {
-          result: [],
+    it('should make an HTTP get request to the correct URL', function() {
+      return new Promise(done => {
+        const apiCall = nock(`${RO.urls.apiServerUrl()}/api/v3`)
+          .get('/programs')
+          .reply(200, {
+            result: [],
+          });
+        console.log(RO.urls.apiServerUrl());
+        RO.programs.getAll(function(error, programList) {
+          expect(error).toEqual(null);
+
+          expect(Array.isArray(programList)).toBe(true);
+          expect(apiCall.isDone()).toEqual(true);
+
+          done();
         });
-      console.log(RO.urls.apiServerUrl());
-      RO.programs.getAll(function(error, programList) {
-        expect(error).toEqual(null);
-
-        expect(Array.isArray(programList)).toBe(true);
-        expect(apiCall.isDone()).toEqual(true);
-
-        done();
       });
     });
 
-    it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function(done) {
-      const params = {
-        page: 7,
-        per_page_count: 50,
-      };
-      const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
-        reqHeaders: {
-          Authorization: 'Bearer abcd1234programs',
-        },
-      })
-        .get('/programs')
-        .query(params)
-        .reply(200, {
-          result: [],
+    it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      return new Promise(done => {
+        const params = {
+          page: 7,
+          per_page_count: 50,
+        };
+        const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234programs',
+          },
+        })
+          .get('/programs')
+          .query(params)
+          .reply(200, {
+            result: [],
+          });
+
+        RO.programs.getAll(params, function(error, programsList) {
+          expect(error).toEqual(null);
+
+          expect(Array.isArray(programsList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
+
+          done();
         });
-
-      RO.programs.getAll(params, function(error, programsList) {
-        expect(error).toEqual(null);
-
-        expect(Array.isArray(programsList)).toBe(true);
-        expect(scope.isDone()).toEqual(true);
-
-        done();
       });
     });
   });
@@ -89,36 +95,40 @@ describe('v4 RO.programs', function() {
       RO.config.set('clientSecret', undefined);
     });
 
-    it('should pass an object to the callback', function(done) {
-      const id = 555;
+    it('should pass an object to the callback', function() {
+      return new Promise(done => {
+        const id = 555;
 
-      RO.programs.get(id, function(error, data) {
-        expect(error).toEqual(null);
+        RO.programs.get(id, function(error, data) {
+          expect(error).toEqual(null);
 
-        expect(typeof data).toBe('object');
+          expect(typeof data).toBe('object');
 
-        done();
+          done();
+        });
       });
     });
 
-    it('should make an HTTP get request to the correct URL', function(done) {
-      const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
-        reqHeaders: {
-          Authorization: 'Bearer abcd1234programs',
-        },
-      })
-        .get('/programs/567')
-        .reply(200, {
-          result: {},
+    it('should make an HTTP get request to the correct URL', function() {
+      return new Promise(done => {
+        const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234programs',
+          },
+        })
+          .get('/programs/567')
+          .reply(200, {
+            result: {},
+          });
+
+        RO.programs.get('567', function(error, program) {
+          expect(error).toEqual(null);
+
+          expect(typeof program).toBe('object');
+          expect(scope.isDone()).toEqual(true);
+
+          done();
         });
-
-      RO.programs.get('567', function(error, program) {
-        expect(error).toEqual(null);
-
-        expect(typeof program).toBe('object');
-        expect(scope.isDone()).toEqual(true);
-
-        done();
       });
     });
   });

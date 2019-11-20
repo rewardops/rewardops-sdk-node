@@ -50,9 +50,7 @@ describe('urls', function() {
       config.set('apiServerUrl', 'http://example.com/test');
 
       expect(urls.apiServerUrl()).toEqual('http://example.com/test');
-      expect(urls.apiBaseUrl()).toEqual(
-        `http://example.com/test/api/${config.get('apiVersion')}`
-      );
+      expect(urls.apiBaseUrl()).toEqual(`http://example.com/test/api/${config.get('apiVersion')}`);
     });
   });
 
