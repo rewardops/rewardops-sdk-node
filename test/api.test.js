@@ -221,11 +221,7 @@ describe('api', function() {
         const config = { clientId: 'abc', clientSecret: '123' };
         const params = {
           toppings: ['pepperoni', 'cheese', 'mushrooms'],
-          customer: {
-            name: 'J-rad',
-            address: '123 Something St',
-            phone: '123-456-7890',
-          },
+          customer: { name: 'J-rad', address: '123 Something St', phone: '123-456-7890' },
         };
 
         nock(RO.urls.apiBaseUrl(), {

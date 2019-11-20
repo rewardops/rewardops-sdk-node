@@ -3,6 +3,8 @@ const RO = require('../../..');
 const fixtures = require('../../fixtures/v4/programFixtures');
 
 describe('v4 RO.program()', function() {
+  /* jshint camelcase: false */
+
   beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
 

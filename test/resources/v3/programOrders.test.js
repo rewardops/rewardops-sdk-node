@@ -96,10 +96,7 @@ describe('v3 RO.program()', function() {
             },
           })
             .get('/programs/55/orders')
-            .query({
-              ...params,
-              member_id: 777,
-            })
+            .query({ ...params, member_id: 777 })
             .reply(200, {
               result: [],
             });

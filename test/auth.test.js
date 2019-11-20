@@ -1,34 +1,33 @@
 const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
-
 const emitter = require('../lib/emitter');
 const RO = require('..');
 
-describe('RO.auth', () => {
-  describe('getBaseUrl()', () => {
-    it('should return the correct value', () => {
+describe('RO.auth', function() {
+  describe('getBaseUrl()', function() {
+    it('should return the correct value', function() {
       expect(RO.auth.getBaseUrl()).toEqual(`${RO.urls.apiBaseUrl()}/auth`);
     });
   });
 
-  describe('getToken()', () => {
-    beforeAll(() => {
+  describe('getToken()', function() {
+    beforeAll(function() {
       RO.auth.token = {};
     });
 
-    afterEach(() => {
+    afterEach(function() {
       RO.auth.token = {};
     });
 
-    it("should pass an AuthenticationError to the callback when config.clientId isn't present", () => {
+    it("should pass an AuthenticationError to the callback when config.clientId isn't present", function() {
       return new Promise(done => {
         const config = {
           clientId: null,
           clientSecret: 'abcdefg1234567',
         };
 
-        RO.auth.getToken(config, (error, response) => {
+        RO.auth.getToken(config, function(error, response) {
           expect(error).toBeInstanceOf(Error);
           expect(response).toEqual(undefined);
 
@@ -40,14 +39,14 @@ describe('RO.auth', () => {
       });
     });
 
-    it("should pass an AuthenticationError to the callback when config.clientSecret isn't present", () => {
+    it("should pass an AuthenticationError to the callback when config.clientSecret isn't present", function() {
       return new Promise(done => {
         const config = {
           clientId: '1234567abcdefg',
           clientSecret: null,
         };
 
-        RO.auth.getToken(config, (error, response) => {
+        RO.auth.getToken(config, function(error, response) {
           expect(error).toBeInstanceOf(Error);
           expect(response).toEqual(undefined);
 
@@ -59,14 +58,14 @@ describe('RO.auth', () => {
       });
     });
 
-    it("should pass an AuthenticationError to the callback when config.clientId and config.clientSecret aren't present", () => {
+    it("should pass an AuthenticationError to the callback when config.clientId and config.clientSecret aren't present", function() {
       return new Promise(done => {
         const config = {
           clientId: null,
           clientSecret: null,
         };
 
-        RO.auth.getToken(config, (error, response) => {
+        RO.auth.getToken(config, function(error, response) {
           expect(error).toBeInstanceOf(Error);
           expect(response).toEqual(undefined);
 
@@ -78,7 +77,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should make an HTTP POST request to the correct URL', () => {
+    it('should make an HTTP POST request to the correct URL', function() {
       return new Promise(done => {
         const config = {
           clientId: '1234qwer',
@@ -99,7 +98,7 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
 
-        RO.auth.getToken(config, () => {
+        RO.auth.getToken(config, function() {
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -107,7 +106,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should send the clientId and clientSecret in the correct header fields', () => {
+    it('should send the clientId and clientSecret in the correct header fields', function() {
       return new Promise(done => {
         const config = {
           clientId: 'clientIdForTestingRequestHeaders',
@@ -127,7 +126,7 @@ describe('RO.auth', () => {
             expires_in: 7200,
           });
 
-        RO.auth.getToken(config, () => {
+        RO.auth.getToken(config, function() {
           expect(scope.isDone()).toEqual(true);
 
           done();
@@ -135,7 +134,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should pass an existing valid token to the callback', () => {
+    it('should pass an existing valid token to the callback', function() {
       return new Promise(done => {
         const expires = new Date();
         const testToken = 'thisIsMy5555555Token';
@@ -151,7 +150,7 @@ describe('RO.auth', () => {
           expires,
         };
 
-        RO.auth.getToken(config, (error, token) => {
+        RO.auth.getToken(config, function(error, token) {
           expect(error).toEqual(null);
 
           expect(token).toEqual(testToken);
@@ -161,7 +160,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should set the correct expires Date object', () => {
+    it('should set the correct expires Date object', function() {
       return new Promise(done => {
         const config = {
           clientId: '123456',
@@ -185,7 +184,7 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        RO.auth.getToken(config, () => {
+        RO.auth.getToken(config, function() {
           expect(RO.auth.token.expires.getTime()).toEqual(
             new Date((reply.created_at + reply.expires_in) * 1000).getTime()
           );
@@ -195,7 +194,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should request a new token from the server if the existing token has expired', () => {
+    it('should request a new token from the server if the existing token has expired', function() {
       return new Promise(done => {
         const expires = new Date().setHours(new Date().getHours() - 3);
         const testToken = '5omeTokenWEAKRwaefrwoiejr9032';
@@ -223,7 +222,7 @@ describe('RO.auth', () => {
           expires,
         };
 
-        RO.auth.getToken(config, (error, token) => {
+        RO.auth.getToken(config, function(error, token) {
           expect(scope.isDone()).toEqual(true);
 
           expect(error).toEqual(null);
@@ -236,7 +235,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should try to request a new token up to three times on server error', () => {
+    it('should try to request a new token up to three times on server error', function() {
       return new Promise(done => {
         const config = {
           clientId: 'clientIdForTestingErrorRetry',
@@ -264,7 +263,7 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath())
           .reply(200, reply);
 
-        RO.auth.getToken(config, (error, token) => {
+        RO.auth.getToken(config, function(error, token) {
           expect(scope.isDone()).toEqual(true);
 
           expect(error).toEqual(null);
@@ -277,7 +276,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it("should pass the server's error message to the callback after three failed attempts", () => {
+    it("should pass the server's error message to the callback after three failed attempts", function() {
       return new Promise(done => {
         const config = {
           clientId: 'fakeIdForTestingErrorPassing',
@@ -300,7 +299,7 @@ describe('RO.auth', () => {
           .thrice()
           .reply(401);
 
-        RO.auth.getToken(config, (error, response) => {
+        RO.auth.getToken(config, function(error, response) {
           expect(error).toBeInstanceOf(Error);
           expect(response).toEqual(undefined);
 
@@ -312,7 +311,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should timeout and pass an error to the callback when the server times out', () => {
+    it('should timeout and pass an error to the callback when the server times out', function() {
       return new Promise(done => {
         const config = {
           clientId: 'asdf0987ghjk',
@@ -347,11 +346,11 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        RO.auth.getToken(config, error => {
+        RO.auth.getToken(config, function(error) {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toEqual('ETIMEDOUT');
 
-          RO.auth.getToken(config, (err, token) => {
+          RO.auth.getToken(config, function(err, token) {
             expect(err).toEqual(null);
 
             expect(token).toEqual(reply.access_token);
@@ -362,7 +361,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should timeout and pass an error to the callback when there is a socket timeout', () => {
+    it('should timeout and pass an error to the callback when there is a socket timeout', function() {
       return new Promise(done => {
         const config = {
           clientId: 'asdf0987ghjk',
@@ -396,14 +395,14 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        RO.auth.getToken(config, error => {
+        RO.auth.getToken(config, function(error) {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toEqual('ESOCKETTIMEDOUT');
 
-          RO.auth.getToken(config, (err, tok) => {
+          RO.auth.getToken(config, function(err, token) {
             expect(err).toEqual(null);
 
-            expect(tok).toEqual(reply.access_token);
+            expect(token).toEqual(reply.access_token);
 
             done();
           });
@@ -411,7 +410,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should avoid race conditions when multiple calls to getToken() are made when no valid token is present, and pass the same new token to all callbacks', () => {
+    it('should avoid race conditions when multiple calls to getToken() are made when no valid token is present, and pass the same new token to all callbacks', function() {
       return new Promise(done => {
         // TODO: Test this with a large number of concurrent requests, ex: 100
         //
@@ -477,12 +476,12 @@ describe('RO.auth', () => {
 
         async.map(
           arr,
-          (item, callback) => {
-            RO.auth.getToken(config, (error, token) => {
+          function(item, callback) {
+            RO.auth.getToken(config, function(error, token) {
               callback(error, token);
             });
           },
-          (error, results) => {
+          function(error, results) {
             expect(error).toEqual(null);
 
             for (let i = 0; i < results.length; i++) {
@@ -499,7 +498,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should fire a "unlockToken" event on success, passing the new access_token as an argument', () => {
+    it('should fire a "unlockToken" event on success, passing the new access_token as an argument', function() {
       return new Promise(done => {
         const config = {
           clientId: '0987ghjk',
@@ -524,11 +523,11 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        emitter.once('unlockToken', (error, token) => {
+        emitter.once('unlockToken', function(error, token) {
           listenerFiredToken = token;
         });
 
-        RO.auth.getToken(config, (error, token) => {
+        RO.auth.getToken(config, function(error, token) {
           expect(error).toEqual(null);
           expect(token).toEqual(reply.access_token);
           expect(listenerFiredToken).toEqual(reply.access_token);
@@ -539,8 +538,8 @@ describe('RO.auth', () => {
     });
   });
 
-  describe('invalidateToken()', () => {
-    it('should set auth.token to an empty object', () => {
+  describe('invalidateToken()', function() {
+    it('should set auth.token to an empty object', function() {
       RO.auth.token = { imA: 'token' };
 
       RO.auth.invalidateToken();
@@ -548,7 +547,7 @@ describe('RO.auth', () => {
       expect(RO.auth.token).toEqual({});
     });
 
-    it('should listen to the invalidateToken event', () => {
+    it('should listen to the invalidateToken event', function() {
       RO.auth.token = { imStillA: 'token' };
 
       emitter.emit('invalidateToken');
