@@ -1,16 +1,11 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    _         = require('underscore'),
-    nock      = require('nock'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v4/programOrdersFixtures');
+var _         = require('underscore'), nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v4/programOrdersFixtures');
 
 describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
   });
 
@@ -22,7 +17,7 @@ describe('v4 RO.program()', function() {
     nock.cleanAll();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -31,30 +26,30 @@ describe('v4 RO.program()', function() {
         program          = RO.program(programId),
         programOrdersUrl = '/programs/' + programId + '/orders';
 
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'programTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.reset();
     });
 
     it('should have the correct context ID', function() {
-      assert.equal(program.orders.contextId, programId);
+      expect(program.orders.contextId).toEqual(programId);
     });
 
     it('should have the correct context', function() {
-      assert.equal(program.orders.contextTypeName, 'programs');
+      expect(program.orders.contextTypeName).toEqual('programs');
     });
 
     describe('getSummary()', function() {
       it('should fire the callback with an error when the params object is missing', function(done) {
         program.orders.getSummary(function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A params object is required');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('A params object is required');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -77,7 +72,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.getSummary(params, function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -98,10 +93,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(12).orders.getSummary(params, function(error, orderList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(orderList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof orderList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -124,7 +119,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.getAll(38, function(error, data) {
-          assert.typeOf(data, 'array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -145,10 +140,10 @@ describe('v4 RO.program()', function() {
           });
 
         RO.program(12).orders.getAll(3, function(error, orderList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(orderList, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(Array.isArray(orderList)).toBe(true);
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -173,10 +168,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).orders.getAll(777, params, function(error, programsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(programsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(Array.isArray(programsList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -197,7 +192,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.get(555, function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -216,10 +211,10 @@ describe('v4 RO.program()', function() {
               });
 
         RO.program(12).orders.get(929, function(error, orderList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(orderList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof orderList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -241,10 +236,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(12).orders.get(929, params, function(error, data) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(data, 'object');
-          assert.equal(scope.isDone(), true);
+          expect(typeof data).toBe('object');
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -258,10 +253,10 @@ describe('v4 RO.program()', function() {
         };
 
         program.orders.create(params, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass a member object in the params object to `orders.create()`');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -273,10 +268,10 @@ describe('v4 RO.program()', function() {
         };
 
         program.orders.create(params, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass an items array in the params object to `orders.create()`');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -301,8 +296,8 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.create(newOrder, function(error, result) {
-          assert.equal(error, null);
-          assert.typeOf(result, 'object');
+          expect(error).toEqual(null);
+          expect(typeof result).toBe('object');
 
           done();
         });
@@ -348,10 +343,10 @@ describe('v4 RO.program()', function() {
               });
 
         RO.program(programId).orders.create(newOrder, function(error, result) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.deepEqual(result, { status: 'OK' });
-          assert.equal(apiCall.isDone(), true);
+          expect(result).toEqual({ status: 'OK' });
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -359,10 +354,10 @@ describe('v4 RO.program()', function() {
 
       it('should pass an error to the callback when a params object isn\'t passed', function(done) {
         RO.program(133000).orders.create(function(error, result) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A params object is required');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('A params object is required');
 
-          assert.equal(result, undefined);
+          expect(result).toEqual(undefined);
 
           done();
         });
@@ -380,10 +375,12 @@ describe('v4 RO.program()', function() {
         };
 
         program.orders.update(params, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass an order (external) ID as the first argument to `orders.update()`');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual(
+            'must pass an order (external) ID as the first argument to `orders.update()`'
+          );
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -391,10 +388,10 @@ describe('v4 RO.program()', function() {
 
       it('should fire the callback with an error when no params object is passed', function(done) {
         program.orders.update(orderId, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A params object is required');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('A params object is required');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -417,8 +414,8 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.update(orderId, params, function(error, result) {
-          assert.equal(error, null);
-          assert.typeOf(result, 'object');
+          expect(error).toEqual(null);
+          expect(typeof result).toBe('object');
 
           done();
         });
@@ -440,10 +437,10 @@ describe('v4 RO.program()', function() {
           });
 
         RO.program(programId).orders.update(orderId, params, function(error, result) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.deepEqual(result, { status: 'OK' });
-          assert.equal(apiCall.isDone(), true);
+          expect(result).toEqual({ status: 'OK' });
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -461,10 +458,12 @@ describe('v4 RO.program()', function() {
         };
 
         program.orders.updateOrderItems(params, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual(
+            'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`'
+          );
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -472,10 +471,10 @@ describe('v4 RO.program()', function() {
 
       it('should fire the callback with an error when no params object is passed', function(done) {
         program.orders.updateOrderItems(orderId, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'A params object is required');
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('A params object is required');
 
-          assert.equal(data, undefined);
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -498,8 +497,8 @@ describe('v4 RO.program()', function() {
           });
 
         program.orders.updateOrderItems(orderId, params, function(error, result) {
-          assert.equal(error, null);
-          assert.typeOf(result, 'object');
+          expect(error).toEqual(null);
+          expect(typeof result).toBe('object');
 
           done();
         });
@@ -521,10 +520,10 @@ describe('v4 RO.program()', function() {
           });
 
         RO.program(programId).orders.updateOrderItems(orderId, params, function(error, result) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.deepEqual(result, { status: 'OK' });
-          assert.equal(apiCall.isDone(), true);
+          expect(result).toEqual({ status: 'OK' });
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });

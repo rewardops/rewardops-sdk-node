@@ -1,25 +1,18 @@
 'use strict';
 
-var chai          = require('chai'),
-    assert        = chai.assert,
-    _             = require('underscore'),
-    async         = require('async'),
-    nock          = require('nock'),
-    emitter       = require('../lib/emitter'),
-    RO            = require('../'),
-    EventEmitter  = require('events');
+var _             = require('underscore'), async         = require('async'), nock          = require('nock'), emitter       = require('../lib/emitter'), RO            = require('..'), EventEmitter  = require('events');
 
 describe('RO.auth', function() {
   /* jshint camelcase: false */
 
   describe('getBaseUrl()', function() {
     it('should return the correct value', function() {
-      assert.equal(RO.auth.getBaseUrl(), RO.urls.apiBaseUrl() + '/auth');
+      expect(RO.auth.getBaseUrl()).toEqual(RO.urls.apiBaseUrl() + '/auth');
     });
   });
 
   describe('getToken()', function() {
-    before(function() {
+    beforeAll(function() {
       RO.auth.token = {};
     });
 
@@ -34,11 +27,11 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        assert.typeOf(error, 'error');
-        assert.equal(response, undefined);
+        expect(typeof error).toBe('error');
+        expect(response).toEqual(undefined);
 
-        assert.equal(error.name, 'AuthenticationError');
-        assert.equal(error.message, 'You must provide a clientId');
+        expect(error.name).toEqual('AuthenticationError');
+        expect(error.message).toEqual('You must provide a clientId');
 
         done();
       });
@@ -51,11 +44,11 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        assert.typeOf(error, 'error');
-        assert.equal(response, undefined);
+        expect(typeof error).toBe('error');
+        expect(response).toEqual(undefined);
 
-        assert.equal(error.name, 'AuthenticationError');
-        assert.equal(error.message, 'You must provide a clientSecret');
+        expect(error.name).toEqual('AuthenticationError');
+        expect(error.message).toEqual('You must provide a clientSecret');
 
         done();
       });
@@ -68,11 +61,11 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, response) {
-        assert.typeOf(error, 'error');
-        assert.equal(response, undefined);
+        expect(typeof error).toBe('error');
+        expect(response).toEqual(undefined);
 
-        assert.equal(error.name, 'AuthenticationError');
-        assert.equal(error.message, 'You must provide a clientId and clientSecret');
+        expect(error.name).toEqual('AuthenticationError');
+        expect(error.message).toEqual('You must provide a clientId and clientSecret');
 
         done();
       });
@@ -97,7 +90,7 @@ describe('RO.auth', function() {
             .reply(200, reply);
 
       RO.auth.getToken(config, function() {
-        assert.equal(scope.isDone(), true);
+        expect(scope.isDone()).toEqual(true);
 
         done();
       });
@@ -121,7 +114,7 @@ describe('RO.auth', function() {
             });
 
       RO.auth.getToken(config, function() {
-        assert.equal(scope.isDone(), true);
+        expect(scope.isDone()).toEqual(true);
 
         done();
       });
@@ -143,9 +136,9 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, token) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.equal(token, testToken);
+        expect(token).toEqual(testToken);
 
         done();
       });
@@ -173,7 +166,7 @@ describe('RO.auth', function() {
       RO.auth.token = {};
 
       RO.auth.getToken(config, function() {
-        assert.equal(RO.auth.token.expires.getTime(), new Date((reply.created_at + reply.expires_in) * 1000).getTime());
+        expect(RO.auth.token.expires.getTime()).toEqual(new Date((reply.created_at + reply.expires_in) * 1000).getTime());
 
         done();
       });
@@ -205,12 +198,12 @@ describe('RO.auth', function() {
       };
 
       RO.auth.getToken(config, function(error, token) {
-        assert.equal(scope.isDone(), true);
+        expect(scope.isDone()).toEqual(true);
 
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.equal(token, reply.access_token);
-        assert.equal(token, RO.auth.token.access_token);
+        expect(token).toEqual(reply.access_token);
+        expect(token).toEqual(RO.auth.token.access_token);
 
         done();
       });
@@ -241,12 +234,12 @@ describe('RO.auth', function() {
             .reply(200, reply);
 
       RO.auth.getToken(config, function(error, token) {
-        assert.equal(scope.isDone(), true);
+        expect(scope.isDone()).toEqual(true);
 
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.equal(token, reply.access_token);
-        assert.equal(token, RO.auth.token.access_token);
+        expect(token).toEqual(reply.access_token);
+        expect(token).toEqual(RO.auth.token.access_token);
 
         done();
       });
@@ -272,11 +265,11 @@ describe('RO.auth', function() {
         .reply(401);
 
       RO.auth.getToken(config, function(error, response) {
-        assert.typeOf(error, 'error');
-        assert.equal(response, undefined);
+        expect(typeof error).toBe('error');
+        expect(response).toEqual(undefined);
 
-        assert.equal(error.name, 'AuthenticationError');
-        assert.equal(error.message, 'The access token is invalid (error 401)');
+        expect(error.name).toEqual('AuthenticationError');
+        expect(error.message).toEqual('The access token is invalid (error 401)');
 
         done();
       });
@@ -315,13 +308,13 @@ describe('RO.auth', function() {
       RO.auth.token = {};
 
       RO.auth.getToken(config, function(error) {
-        assert.instanceOf(error, Error);
-        assert.equal(error.message, 'ETIMEDOUT');
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toEqual('ETIMEDOUT');
 
         RO.auth.getToken(config, function(error, token) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.equal(token, reply.access_token);
+          expect(token).toEqual(reply.access_token);
 
           done();
         });
@@ -360,13 +353,13 @@ describe('RO.auth', function() {
       RO.auth.token = {};
 
       RO.auth.getToken(config, function(error) {
-        assert.instanceOf(error, Error);
-        assert.equal(error.message, 'ESOCKETTIMEDOUT');
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toEqual('ESOCKETTIMEDOUT');
 
         RO.auth.getToken(config, function(error, token) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.equal(token, reply.access_token);
+          expect(token).toEqual(reply.access_token);
 
           done();
         });
@@ -439,13 +432,13 @@ describe('RO.auth', function() {
           callback(error, token);
         });
       }, function(error, results) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
         for (var i = 0; i < results.length; i++) {
-          assert.equal(results[i], reply.access_token);
+          expect(results[i]).toEqual(reply.access_token);
         }
 
-        assert.equal(EventEmitter.listenerCount(emitter, 'unlockToken'), 1);
+        expect(EventEmitter.listenerCount(emitter, 'unlockToken')).toEqual(1);
 
         emitter.setMaxListeners(RO.config.get('maxListeners') || 10);
 
@@ -478,9 +471,9 @@ describe('RO.auth', function() {
       emitter.once('unlockToken', function(error, token) {listenerFiredToken = token;});
 
       RO.auth.getToken(config, function(error, token) {
-        assert.equal(error, null);
-        assert.equal(token, reply.access_token);
-        assert.equal(listenerFiredToken, reply.access_token);
+        expect(error).toEqual(null);
+        expect(token).toEqual(reply.access_token);
+        expect(listenerFiredToken).toEqual(reply.access_token);
 
         done();
       });
@@ -493,7 +486,7 @@ describe('RO.auth', function() {
 
       RO.auth.invalidateToken();
 
-      assert.deepEqual(RO.auth.token, {});
+      expect(RO.auth.token).toEqual({});
     });
 
     it('should listen to the invalidateToken event', function() {
@@ -501,7 +494,7 @@ describe('RO.auth', function() {
 
       emitter.emit('invalidateToken');
 
-      assert.deepEqual(RO.auth.token, {});
+      expect(RO.auth.token).toEqual({});
     });
   });
 });

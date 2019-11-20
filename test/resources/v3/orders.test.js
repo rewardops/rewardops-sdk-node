@@ -1,15 +1,13 @@
 'use strict';
 
-var chai    = require('chai'),
-    assert  = chai.assert,
-    RO      = require('../../..');
+var RO      = require('../../..');
 
 describe('v3 orders', function() {
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -18,7 +16,7 @@ describe('v3 orders', function() {
       var programId = 309248,
           programOrders = RO.program(programId).orders;
 
-      assert.equal(programOrders.contextId, programId);
+      expect(programOrders.contextId).toEqual(programId);
     });
   });
 });

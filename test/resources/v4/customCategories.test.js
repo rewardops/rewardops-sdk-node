@@ -1,21 +1,17 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    nock      = require('nock'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v4/customCategoriesFixtures');
+var nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v4/customCategoriesFixtures');
 
 describe('v4 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -23,17 +19,17 @@ describe('v4 RO.program()', function() {
     var id = 33,
         program = RO.program(id);
 
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'customCategoryTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.reset();
     });
 
     it('should have the correct program ID', function() {
-      assert.equal(program.customCategories.programId, id);
+      expect(program.customCategories.programId).toEqual(id);
     });
 
     describe('getAll()', function() {
@@ -49,7 +45,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.customCategories.getAll(function(error, data) {
-          assert.typeOf(data, 'array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -67,10 +63,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(12).customCategories.getAll(function(error, customCategoryList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(customCategoryList, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(Array.isArray(customCategoryList)).toBe(true);
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -93,10 +89,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).customCategories.getAll(params, function(error, customCategoriesList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(customCategoriesList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(Array.isArray(customCategoriesList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -107,9 +103,9 @@ describe('v4 RO.program()', function() {
 
       it('should return an error if the category code is not a string', function(done) {
         program.customCategories.get(1406, function(error, data) {
-          assert.instanceOf(error, Error);
-          assert.equal(error.message, 'must pass a string as the category code');
-          assert.equal(data, undefined);
+          expect(error).toBeInstanceOf(Error);
+          expect(error.message).toEqual('must pass a string as the category code');
+          expect(data).toEqual(undefined);
 
           done();
         });
@@ -128,7 +124,7 @@ describe('v4 RO.program()', function() {
           });
 
         program.customCategories.get('DOG_000007', function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -147,10 +143,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(12).customCategories.get('CAT_000002', function(error, customCategoryList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(customCategoryList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof customCategoryList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -172,10 +168,10 @@ describe('v4 RO.program()', function() {
             });
 
         RO.program(55).customCategories.get('RAT_000002', params, function(error, customCategoriesList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(customCategoriesList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(Array.isArray(customCategoriesList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });

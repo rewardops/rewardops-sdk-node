@@ -1,24 +1,19 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    emitter   = require('../lib/emitter'),
-    nock      = require('nock'),
-    RO        = require('../'),
-    fixtures  = require('./fixtures/apiFixtures');
+var emitter   = require('../lib/emitter'), nock      = require('nock'), RO        = require('..'), fixtures  = require('./fixtures/apiFixtures');
 
 describe('api', function() {
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v4');
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
   /* jshint camelcase: false */
 
   it('should be an object', function() {
-    assert.typeOf(RO.api, 'object');
+    expect(typeof RO.api).toBe('object');
   });
 
   it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', function(done) {
@@ -31,10 +26,10 @@ describe('api', function() {
       path: '/testForAuthError',
       config: config
     }, function(error, data, response) {
-      assert.equal(error.name, 'AuthenticationError');
+      expect(error.name).toEqual('AuthenticationError');
 
-      assert.equal(data, undefined);
-      assert.equal(response, undefined);
+      expect(data).toEqual(undefined);
+      expect(response).toEqual(undefined);
 
       done();
     });
@@ -92,8 +87,8 @@ describe('api', function() {
       path: '/another/arbitrary-path',
       config: config
     }, function(error, result) {
-      assert.equal(error, null);
-      assert.equal(result, 'OK');
+      expect(error).toEqual(null);
+      expect(result).toEqual('OK');
 
       done();
     });
@@ -154,28 +149,28 @@ describe('api', function() {
       path: '/some/arbitrary-path',
       config: config
     }, function(error, result) {
-      assert.equal(error, null);
-      assert.equal(result, 'OK');
+      expect(error).toEqual(null);
+      expect(result).toEqual('OK');
 
-      assert.equal(authScope.isDone(), true);
-      assert.equal(badScope.isDone(), true);
-      assert.equal(goodScope.isDone(), true);
-      assert.equal(RO.auth.token.access_token, goodToken);
-      assert.equal(listenerWasFired, true);
+      expect(authScope.isDone()).toEqual(true);
+      expect(badScope.isDone()).toEqual(true);
+      expect(goodScope.isDone()).toEqual(true);
+      expect(RO.auth.token.access_token).toEqual(goodToken);
+      expect(listenerWasFired).toEqual(true);
 
       done();
     });
   });
 
   describe('get', function() {
-    before(function() {
+    beforeAll(function() {
       RO.auth.token = {};
 
       fixtures();
     });
 
     it('should be a function', function() {
-      assert.typeOf(RO.api.get, 'function');
+      expect(typeof RO.api.get).toBe('function');
     });
 
     it('should make an HTTP GET request to the url provided', function(done) {
@@ -188,9 +183,9 @@ describe('api', function() {
         path: '/someTestPath',
         config: config
       }, function(error, programs) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(programs, 'array');
+        expect(Array.isArray(programs)).toBe(true);
 
         done();
       });
@@ -221,11 +216,11 @@ describe('api', function() {
         params: params,
         config: config
       }, function(error, result, response) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.equal(result, 'OK');
+        expect(result).toEqual('OK');
 
-        assert.typeOf(response, 'object');
+        expect(typeof response).toBe('object');
 
         done();
       });
@@ -243,10 +238,10 @@ describe('api', function() {
         path: '/someTestPath',
         config: config
       }, function(error, programs, response) {
-        assert.equal(error, null);
+        expect(error).toEqual(null);
 
-        assert.typeOf(response, 'object');
-        assert.equal(response.status, 'OK');
+        expect(typeof response).toBe('object');
+        expect(response.status).toEqual('OK');
 
         done();
       });

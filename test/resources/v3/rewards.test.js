@@ -1,21 +1,17 @@
 'use strict';
 
-var chai      = require('chai'),
-    assert    = chai.assert,
-    nock      = require('nock'),
-    RO        = require('../../..'),
-    fixtures  = require('../../fixtures/v3/rewardsFixtures');
+var nock      = require('nock'), RO        = require('../../..'), fixtures  = require('../../fixtures/v3/rewardsFixtures');
 
 describe('v3 RO.program()', function() {
   /* jshint camelcase: false */
 
-  before(function() {
+  beforeAll(function() {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  after(function() {
+  afterAll(function() {
     RO.config.reset();
   });
 
@@ -23,17 +19,17 @@ describe('v3 RO.program()', function() {
     var id = 33,
         program = RO.program(id);
 
-    before(function() {
+    beforeAll(function() {
       RO.config.set('clientId', 'rewardTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    after(function() {
+    afterAll(function() {
       RO.config.reset();
     });
 
     it('should have the correct program ID', function() {
-      assert.equal(program.rewards.programId, id);
+      expect(program.rewards.programId).toEqual(id);
     });
 
     describe('getAll()', function() {
@@ -49,7 +45,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.rewards.getAll(function(error, data) {
-          assert.typeOf(data, 'array');
+          expect(Array.isArray(data)).toBe(true);
 
           done();
         });
@@ -67,10 +63,10 @@ describe('v3 RO.program()', function() {
           });
 
         RO.program(12).rewards.getAll(function(error, rewardList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(rewardList, 'array');
-          assert.equal(apiCall.isDone(), true);
+          expect(Array.isArray(rewardList)).toBe(true);
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -93,10 +89,10 @@ describe('v3 RO.program()', function() {
             });
 
         RO.program(55).rewards.getAll(params, function(error, rewardsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(rewardsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(Array.isArray(rewardsList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
@@ -117,7 +113,7 @@ describe('v3 RO.program()', function() {
           });
 
         program.rewards.get(555, function(error, data) {
-          assert.typeOf(data, 'object');
+          expect(typeof data).toBe('object');
 
           done();
         });
@@ -136,10 +132,10 @@ describe('v3 RO.program()', function() {
               });
 
         RO.program(12).rewards.get(929, function(error, rewardList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(rewardList, 'object');
-          assert.equal(apiCall.isDone(), true);
+          expect(typeof rewardList).toBe('object');
+          expect(apiCall.isDone()).toEqual(true);
 
           done();
         });
@@ -161,10 +157,10 @@ describe('v3 RO.program()', function() {
             });
 
         RO.program(55).rewards.get(234, params, function(error, rewardsList) {
-          assert.equal(error, null);
+          expect(error).toEqual(null);
 
-          assert.typeOf(rewardsList, 'array');
-          assert.equal(scope.isDone(), true);
+          expect(Array.isArray(rewardsList)).toBe(true);
+          expect(scope.isDone()).toEqual(true);
 
           done();
         });
