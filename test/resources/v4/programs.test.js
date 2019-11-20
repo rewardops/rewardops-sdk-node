@@ -43,7 +43,7 @@ describe('v4 RO.programs', function() {
           .reply(200, {
             result: [],
           });
-        console.log(RO.urls.apiServerUrl());
+
         RO.programs.getAll(function(error, programList) {
           expect(error).toEqual(null);
 
