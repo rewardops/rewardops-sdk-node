@@ -1,9 +1,9 @@
 const path = require('path');
 const config = require('../lib/config');
 
-describe('config', function() {
-  describe('getAll()', function() {
-    it('should have the correct default values', function() {
+describe('config', () => {
+  describe('getAll()', () => {
+    it('should have the correct default values', () => {
       config.reset();
 
       expect(config.getAll()).toEqual({
@@ -19,8 +19,8 @@ describe('config', function() {
     });
   });
 
-  describe('get()', function() {
-    it('should return a config value', function() {
+  describe('get()', () => {
+    it('should return a config value', () => {
       config.reset();
 
       expect(config.get('apiVersion')).toEqual('v4');
@@ -28,8 +28,8 @@ describe('config', function() {
     });
   });
 
-  describe('set()', function() {
-    it('should set a config value', function() {
+  describe('set()', () => {
+    it('should set a config value', () => {
       config.reset();
 
       // Returns the new value

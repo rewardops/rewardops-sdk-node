@@ -1,37 +1,37 @@
 const config = require('../lib/config');
 const urls = require('../lib/urls');
 
-describe('urls', function() {
+describe('urls', () => {
   let initialEnv;
 
-  beforeAll(function() {
+  beforeAll(() => {
     initialEnv = process.env.REWARDOPS_ENV;
   });
 
-  afterAll(function() {
+  afterAll(() => {
     process.env.REWARDOPS_ENV = initialEnv;
 
     config.reset();
   });
 
-  describe('apiServerUrl()', function() {
-    afterAll(function() {
+  describe('apiServerUrl()', () => {
+    afterAll(() => {
       config.set('apiServerUrl', undefined);
     });
 
-    it('should have the correct server url in the development env', function() {
+    it('should have the correct server url in the development env', () => {
       process.env.REWARDOPS_ENV = 'development';
 
       expect(urls.apiServerUrl()).toEqual('http://localhost:3000');
     });
 
-    it('should have the correct server url in the integration env', function() {
+    it('should have the correct server url in the integration env', () => {
       process.env.REWARDOPS_ENV = 'integration';
 
       expect(urls.apiServerUrl()).toEqual('https://int.rewardops.net');
     });
 
-    it('should have the correct server url in other environments', function() {
+    it('should have the correct server url in other environments', () => {
       process.env.REWARDOPS_ENV = 'production';
 
       expect(urls.apiServerUrl()).toEqual('https://app.rewardops.net');
@@ -45,7 +45,7 @@ describe('urls', function() {
       expect(urls.apiServerUrl()).toEqual('https://app.rewardops.net');
     });
 
-    it('should return the apiServerUrl from the config if it is set', function() {
+    it('should return the apiServerUrl from the config if it is set', () => {
       process.env.REWARDOPS_ENV = 'development';
       config.set('apiServerUrl', 'http://example.com/test');
 
@@ -54,8 +54,8 @@ describe('urls', function() {
     });
   });
 
-  describe('version', function() {
-    it('should have the correct version at the end of the path', function() {
+  describe('version', () => {
+    it('should have the correct version at the end of the path', () => {
       config.set('apiVersion', 'v3');
 
       expect(urls.apiBaseUrl()).toEqual(`${urls.apiServerUrl()}/api/v3`);

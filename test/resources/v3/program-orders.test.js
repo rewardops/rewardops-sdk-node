@@ -2,40 +2,40 @@ const nock = require('nock');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v3/program-orders.fixtures');
 
-describe('v3 RO.program()', function() {
-  beforeAll(function() {
+describe('v3 RO.program()', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  describe('orders', function() {
+  describe('orders', () => {
     const id = 33;
     const program = RO.program(id);
 
-    beforeAll(function() {
+    beforeAll(() => {
       RO.config.set('clientId', 'programTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.reset();
     });
 
-    it('should have the correct context ID', function() {
+    it('should have the correct context ID', () => {
       expect(program.orders.contextId).toEqual(id);
     });
 
-    it('should have the correct context', function() {
+    it('should have the correct context', () => {
       expect(program.orders.contextTypeName).toEqual('programs');
     });
 
-    describe('getAll()', function() {
-      it('should pass an array to the callback', function() {
+    describe('getAll()', () => {
+      it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -50,7 +50,7 @@ describe('v3 RO.program()', function() {
               result: [],
             });
 
-          program.orders.getAll(38, function(error, data) {
+          program.orders.getAll(38, (error, data) => {
             expect(Array.isArray(data)).toBe(true);
 
             done();
@@ -58,7 +58,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -73,7 +73,7 @@ describe('v3 RO.program()', function() {
               result: [],
             });
 
-          RO.program(12).orders.getAll(3, function(error, orderList) {
+          RO.program(12).orders.getAll(3, (error, orderList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(orderList)).toBe(true);
@@ -84,7 +84,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             page: 7,
@@ -101,7 +101,7 @@ describe('v3 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).orders.getAll(777, params, function(error, programsList) {
+          RO.program(55).orders.getAll(777, params, (error, programsList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(programsList)).toBe(true);
@@ -113,8 +113,8 @@ describe('v3 RO.program()', function() {
       });
     });
 
-    describe('get()', function() {
-      it('should pass an object to the callback', function() {
+    describe('get()', () => {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -127,7 +127,7 @@ describe('v3 RO.program()', function() {
               result: {},
             });
 
-          program.orders.get(555, function(error, data) {
+          program.orders.get(555, (error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -135,7 +135,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -148,7 +148,7 @@ describe('v3 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).orders.get(929, function(error, orderList) {
+          RO.program(12).orders.get(929, (error, orderList) => {
             expect(error).toEqual(null);
 
             expect(typeof orderList).toBe('object');
@@ -160,8 +160,8 @@ describe('v3 RO.program()', function() {
       });
     });
 
-    describe('create()', function() {
-      it('should fire the callback with an error when a non-number is passed as the reward ID', function() {
+    describe('create()', () => {
+      it('should fire the callback with an error when a non-number is passed as the reward ID', () => {
         return new Promise(done => {
           const options = {
             reward_id: '131313', // A string, not a number
@@ -171,7 +171,7 @@ describe('v3 RO.program()', function() {
             .post('/programs/33/orders', options)
             .reply(200);
 
-          program.orders.create(options, function(error, data) {
+          program.orders.create(options, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('reward_id must be a number');
 
@@ -184,7 +184,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           const newOrder = {
             reward_id: 1234,
@@ -203,7 +203,7 @@ describe('v3 RO.program()', function() {
               result: {},
             });
 
-          program.orders.create(newOrder, function(error, result) {
+          program.orders.create(newOrder, (error, result) => {
             expect(typeof result).toBe('object');
 
             done();
@@ -211,7 +211,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const newOrder = {
             reward_id: 1234,
@@ -239,7 +239,7 @@ describe('v3 RO.program()', function() {
               result: { status: 'OK' },
             });
 
-          RO.program(33).orders.create(newOrder, function(error, result) {
+          RO.program(33).orders.create(newOrder, (error, result) => {
             expect(error).toEqual(null);
 
             expect(result).toEqual({ status: 'OK' });
@@ -250,7 +250,7 @@ describe('v3 RO.program()', function() {
         });
       });
 
-      it("should pass an error to the callback when a params object isn't passed", function() {
+      it("should pass an error to the callback when a params object isn't passed", () => {
         return new Promise(done => {
           const scope = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -262,7 +262,7 @@ describe('v3 RO.program()', function() {
               result: {},
             });
 
-          RO.program(133000).orders.create(function(error, result) {
+          RO.program(133000).orders.create((error, result) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
 

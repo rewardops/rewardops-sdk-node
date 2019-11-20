@@ -2,31 +2,31 @@ const nock = require('nock');
 const fixtures = require('../../fixtures/v3/programs.fixtures');
 const RO = require('../../..');
 
-describe('v3 RO.programs', function() {
-  beforeAll(function() {
+describe('v3 RO.programs', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  describe('getAll()', function() {
-    beforeAll(function() {
+  describe('getAll()', () => {
+    beforeAll(() => {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.set('clientId', undefined);
       RO.config.set('clientSecret', undefined);
     });
 
-    it('should pass an array to the callback', function() {
+    it('should pass an array to the callback', () => {
       return new Promise(done => {
-        RO.programs.getAll(function(error, programList) {
+        RO.programs.getAll((error, programList) => {
           expect(error).toEqual(null);
 
           expect(Array.isArray(programList)).toBe(true);
@@ -36,7 +36,7 @@ describe('v3 RO.programs', function() {
       });
     });
 
-    it('should make an HTTP get request to the correct URL', function() {
+    it('should make an HTTP get request to the correct URL', () => {
       return new Promise(done => {
         const apiCall = nock(`${RO.urls.apiServerUrl()}/api/v3`)
           .get('/programs')
@@ -44,7 +44,7 @@ describe('v3 RO.programs', function() {
             result: [],
           });
 
-        RO.programs.getAll(function(error, programList) {
+        RO.programs.getAll((error, programList) => {
           expect(error).toEqual(null);
 
           expect(Array.isArray(programList)).toBe(true);
@@ -55,7 +55,7 @@ describe('v3 RO.programs', function() {
       });
     });
 
-    it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+    it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
       return new Promise(done => {
         const params = {
           page: 7,
@@ -72,7 +72,7 @@ describe('v3 RO.programs', function() {
             result: [],
           });
 
-        RO.programs.getAll(params, function(error, programsList) {
+        RO.programs.getAll(params, (error, programsList) => {
           expect(error).toEqual(null);
 
           expect(Array.isArray(programsList)).toBe(true);
@@ -84,22 +84,22 @@ describe('v3 RO.programs', function() {
     });
   });
 
-  describe('get()', function() {
-    beforeAll(function() {
+  describe('get()', () => {
+    beforeAll(() => {
       RO.config.set('clientId', 'mockedclientidforprogramstests');
       RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.set('clientId', undefined);
       RO.config.set('clientSecret', undefined);
     });
 
-    it('should pass an object to the callback', function() {
+    it('should pass an object to the callback', () => {
       return new Promise(done => {
         const id = 555;
 
-        RO.programs.get(id, function(error, data) {
+        RO.programs.get(id, (error, data) => {
           expect(error).toEqual(null);
 
           expect(typeof data).toBe('object');
@@ -109,7 +109,7 @@ describe('v3 RO.programs', function() {
       });
     });
 
-    it('should make an HTTP get request to the correct URL', function() {
+    it('should make an HTTP get request to the correct URL', () => {
       return new Promise(done => {
         const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
           reqHeaders: {
@@ -121,7 +121,7 @@ describe('v3 RO.programs', function() {
             result: {},
           });
 
-        RO.programs.get('567', function(error, program) {
+        RO.programs.get('567', (error, program) => {
           expect(error).toEqual(null);
 
           expect(typeof program).toBe('object');

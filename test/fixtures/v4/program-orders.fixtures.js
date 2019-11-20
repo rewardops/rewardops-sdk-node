@@ -1,6 +1,6 @@
 const nock = require('nock');
 
-module.exports = function() {
+module.exports = () => {
   // Oauth calls
   nock('https://app.rewardops.net/api/v4/auth', {
     reqheaders: {
