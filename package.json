@@ -54,8 +54,8 @@
     "sinon": "^1.17.7"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
     "request": "^2.88.0",
-    "underscore": "^1.8.3",
     "winston": "^2.3.0"
   },
   "husky": {
