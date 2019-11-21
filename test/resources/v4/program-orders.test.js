@@ -268,9 +268,7 @@ describe('v4 RO.program()', () => {
 
           program.orders.create(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass a member object in the params object to `orders.create()`'
-            );
+            expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
 
             expect(data).toEqual(undefined);
 
@@ -287,9 +285,7 @@ describe('v4 RO.program()', () => {
 
           program.orders.create(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass an items array in the params object to `orders.create()`'
-            );
+            expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
 
             expect(data).toEqual(undefined);
 

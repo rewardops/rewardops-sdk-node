@@ -5,10 +5,7 @@ const { generateBasicAuthToken } = require('../../../lib/utils/auth');
 module.exports = () => {
   // Oauth calls
   nock('https://app.rewardops.net/api/v3/auth', {
-    reqheaders: generateBasicAuthToken(
-      'mockedclientidforprogramstests',
-      'mockedclientsecretforprogramstests'
-    ),
+    reqheaders: generateBasicAuthToken('mockedclientidforprogramstests', 'mockedclientsecretforprogramstests'),
   })
     .post('/token', {
       grant_type: 'client_credentials',
