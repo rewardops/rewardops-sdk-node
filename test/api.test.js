@@ -1,9 +1,9 @@
 const nock = require('nock');
 
-const emitter = require('../lib/emitter');
+const fixtures = require('./fixtures/api.fixtures');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 const RO = require('..');
-const fixtures = require('./fixtures/api.fixtures');
+const emitter = require('../lib/emitter');
 
 describe('api', () => {
   beforeAll(() => {
