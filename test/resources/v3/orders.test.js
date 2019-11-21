@@ -1,6 +1,4 @@
-'use strict';
-
-var RO      = require('../../..');
+const RO = require('../../..');
 
 describe('v3 orders', function() {
   beforeAll(function() {
@@ -13,11 +11,10 @@ describe('v3 orders', function() {
 
   describe('contextId', function() {
     it('should be the context ID passed to the constructor', function() {
-      var programId = 309248,
-          programOrders = RO.program(programId).orders;
+      const programId = 309248;
+      const programOrders = RO.program(programId).orders;
 
       expect(programOrders.contextId).toEqual(programId);
     });
   });
 });
-

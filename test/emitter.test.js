@@ -1,6 +1,6 @@
-'use strict';
+const { EventEmitter } = require('events');
 
-var emitter   = require('../lib/emitter');
+const emitter = require('../lib/emitter');
 
 describe('emitter', function() {
   it('should be an object', function() {
@@ -8,7 +8,6 @@ describe('emitter', function() {
   });
 
   it('should be an instance of EventEmitter', function() {
-    expect(emitter).toBeInstanceOf(require('events').EventEmitter);
+    expect(emitter).toBeInstanceOf(EventEmitter);
   });
 });
-

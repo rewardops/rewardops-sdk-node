@@ -1,18 +1,17 @@
-'use strict';
+const path = require('path');
+const packageJSON = require('../package');
+const RO = require('../');
 
-var packageJSON      = require('../package'),
-    path             = require('path'),
-    RO               = require('../'),
-    expectedDefaults = {
-      apiServerUrl: undefined,
-      apiVersion:   'v4',
-      clientId:     undefined,
-      clientSecret: undefined,
-      logFilePath:  path.resolve(__dirname, '../logs/ro.log'),
-      logToFile:    false,
-      timeout:      20000,
-      verbose:      true
-    };
+const expectedDefaults = {
+  apiServerUrl: undefined,
+  apiVersion: 'v4',
+  clientId: undefined,
+  clientSecret: undefined,
+  logFilePath: path.resolve(__dirname, '../logs/ro.log'),
+  logToFile: false,
+  timeout: 20000,
+  verbose: true,
+};
 
 describe('RO', function() {
   describe('defaults', function() {
@@ -53,4 +52,3 @@ describe('RO', function() {
     });
   });
 });
-
