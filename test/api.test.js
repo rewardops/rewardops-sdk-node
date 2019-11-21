@@ -1,5 +1,7 @@
 const nock = require('nock');
+
 const emitter = require('../lib/emitter');
+const { generateBasicAuthToken } = require('../lib/utils/auth');
 const RO = require('..');
 const fixtures = require('./fixtures/api.fixtures');
 
@@ -130,11 +132,7 @@ describe('api', () => {
         .get('/arbitrary-path')
         .reply(200, { result: 'OK' });
       const authScope = nock(RO.auth.getBaseUrl(), {
-        reqheaders: {
-          Authorization: `Basic ${Buffer.from(`${config.clientId}:${config.clientSecret}`).toString(
-            'base64'
-          )}`,
-        },
+        reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
       })
         .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .once()

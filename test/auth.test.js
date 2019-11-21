@@ -1,7 +1,9 @@
 const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
+
 const emitter = require('../lib/emitter');
+const { generateBasicAuthToken } = require('../lib/utils/auth');
 const RO = require('..');
 
 describe('RO.auth', () => {
@@ -89,11 +91,7 @@ describe('RO.auth', () => {
           expires_in: 7200,
         };
         const scope = nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
@@ -113,11 +111,7 @@ describe('RO.auth', () => {
           clientSecret: 'someFakeValueForHeaderTesting',
         };
         const scope = nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, {
@@ -173,11 +167,7 @@ describe('RO.auth', () => {
         };
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
@@ -208,11 +198,7 @@ describe('RO.auth', () => {
           expires_in: 7200,
         };
         const scope = nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
@@ -247,11 +233,7 @@ describe('RO.auth', () => {
           expires_in: 7200,
         };
         const scope = nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .twice()
@@ -284,11 +266,7 @@ describe('RO.auth', () => {
         };
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .defaultReplyHeaders({
             'Www-Authenticate':
@@ -331,11 +309,7 @@ describe('RO.auth', () => {
         timeoutError.message = 'ETIMEDOUT';
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { ...postBody })
           .times(3)
@@ -378,11 +352,7 @@ describe('RO.auth', () => {
         };
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { ...postBody })
           .socketDelay(config.timeout + 10)
@@ -456,11 +426,7 @@ describe('RO.auth', () => {
         emitter.setMaxListeners(n + 1);
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .delayConnection(100)
@@ -512,11 +478,7 @@ describe('RO.auth', () => {
         let listenerFiredToken = null;
 
         nock('https://app.rewardops.net/api/v4/auth', {
-          reqheaders: {
-            Authorization: `Basic ${Buffer.from(
-              `${config.clientId}:${config.clientSecret}`
-            ).toString('base64')}`,
-          },
+          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);

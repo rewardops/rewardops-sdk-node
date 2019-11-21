@@ -1,10 +1,10 @@
 const nock = require('nock');
 
+const { generateBasicAuthToken } = require('../../lib/utils/auth');
+
 module.exports = () => {
   nock('https://app.rewardops.net/api/v4/auth', {
-    reqheaders: {
-      Authorization: `Basic ${Buffer.from('abcdefg1234567:abcdefg1234567').toString('base64')}`,
-    },
+    reqheaders: generateBasicAuthToken('abcdefg1234567', 'abcdefg1234567'),
   })
     .post('/token', {
       grant_type: 'client_credentials',
