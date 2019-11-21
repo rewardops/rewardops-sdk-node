@@ -278,7 +278,7 @@ myProgram.orders.create(
 
 ## Maintainer
 
-Jerad Gallinger - [jerad@rewardops.com](mailto:jerad@rewardops.com)
+Shane Martin - [shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)
 
 ## License
 
