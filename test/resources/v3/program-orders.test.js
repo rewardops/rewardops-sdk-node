@@ -5,6 +5,7 @@ const fixtures = require('../../fixtures/v3/program-orders.fixtures');
 describe('v3 RO.program()', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
+    RO.config.set('verbose', false);
 
     fixtures();
   });

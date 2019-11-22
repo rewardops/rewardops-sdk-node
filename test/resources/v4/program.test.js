@@ -7,6 +7,7 @@ describe('v4 RO.program()', () => {
 
   beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
+    RO.config.set('verbose', false);
 
     fixtures();
   });
