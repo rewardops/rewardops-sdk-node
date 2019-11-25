@@ -10,5 +10,8 @@
     "template": "node_modules/docdash",
     "readme": "README.md"
   },
+  "templates": {
+    "cleverLinks": true
+  },
   "plugins": ["plugins/markdown"]
 }
