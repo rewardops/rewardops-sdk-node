@@ -2,12 +2,12 @@
   "source": {
     "include": "./lib",
     "includePattern": ".js$",
+    "exclude": "./index.js",
     "excludePattern": "(node_modules/|docs)"
   },
   "opts": {
     "destination": "docs/",
     "recurse": true,
-    "template": "node_modules/docdash",
     "readme": "README.md"
   },
   "templates": {
