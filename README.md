@@ -50,13 +50,7 @@ See [the library documentation](FIXME) for all config options.
 
 ### Environment variables
 
-<!-- TODO: ensure that this is still valid -->
-
-You can optionally set the environment variable `REWARDOPS_ENV` before starting your application to change the root RewardOps API URL to which the SDK will make requests.
-
-- `production` (default): 'https://app.rewardops.net/api/v3'
-- `integration`: 'https://int.rewardops.net/api/v3'
-- `development`: 'http://localhost:3000/api/v3'
+You can optionally set the environment variable `REWARDOPS_ENV` before starting your application to change the root RewardOps API URL to which the SDK will make requests. See
 
 You can also change the base API URL after loading the SDK using `RO.config.set('apiServerUrl', '[your-server-url]')`.
 
