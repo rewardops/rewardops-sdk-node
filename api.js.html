@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: api.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * API
+ *
+ * @module api
+ * @copyright 2015–2019 RewardOps Inc.
+ */
+
+const request = require('request');
+const { isEmpty } = require('lodash');
+
+const auth = require('./auth');
+const emitter = require('./emitter');
+const urls = require('./urls');
+const { log } = require('./utils/logger');
+
+/**
+ * Generate extended `Error` object with `message`, `status`, and `result` properties.
+ *
+ * @param {string} message Error message
+ * @param {string|number} status HTTP status code
+ * @param {object} result API response body
+ *
+ * @returns {Error} Returns extended `Error` object.
+ * @private
+ */
+function getError(message, status, result) {
+  const error = new Error();
+  error.message = message;
+  error.status = status;
+  error.result = result;
+  return error;
+}
+
+/**
+ * Makes a call to the RewardOps API
+ *
+ * @param {string} httpMethod The name of the HTTP method
+ * @param {object} options API request options.
+ * @param {string} options.path The relative path to the API endpoint.
+ * @param {object} options.config The config object to use in the API request (usually the result of `RO.config.getAll()`).
+ * @param {object} [options.params] A params object to send with the API request.
+ *   For `GET` requests these are sent as query params. For other requests they are sent as a JSON body.
+ * @param {module:api~requestCallback} callback Callback that handles the response
+ *
+ * @protected
+ */
+function apiCall(httpMethod, options, callback) {
+  if (options.params &amp;&amp; isEmpty(options.params)) {
+    delete options.params;
+  }
+
+  auth.getToken(options.config, (error, token) => {
+    if (error) {
+      callback(error);
+    } else {
+      const requestOptions = {
+        method: httpMethod,
+        url: urls.apiBaseUrl() + options.path,
+        json: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // Some firewalls strip the body of GET requests.
+      // To get around this, we send the params for GET
+      // requests as query params instead of a JSON body.
+      if (httpMethod === 'GET' &amp;&amp; options.params) {
+        requestOptions.qs = options.params;
+      } else if (options.params) {
+        requestOptions.body = options.params;
+      }
+
+      log(`Request: ${httpMethod} ${urls.apiBaseUrl()}${options.path}`);
+
+      request(requestOptions, (err, response, responseBody) => {
+        if (err) {
+          log(err);
+
+          callback(err);
+        } else if (response.statusCode === 401) {
+          if (token === auth.token.access_token) {
+            /*
+             * When the server responds to an API call
+             * that the token is invalid, and the token hasn't
+             * since been updated, fire an "invalidateToken"
+             * event, which deletes the existing token.
+             */
+            emitter.emit('invalidateToken');
+          }
+
+          apiCall(httpMethod, options, callback);
+        } else if (responseBody &amp;&amp; responseBody.error) {
+          log(`API error: ${JSON.stringify(responseBody.error, null, 2)}`, 'error');
+
+          error = getError(responseBody.error, response.statusCode, responseBody.result);
+          callback(error);
+        } else if (responseBody &amp;&amp; responseBody.result &amp;&amp; responseBody.result.error) {
+          log(`API error: ${JSON.stringify(responseBody.result.error.detail, null, 2)}`, 'error');
+
+          error = getError(responseBody.result.error.detail, response.statusCode, responseBody.result);
+          callback(error);
+        } else {
+          log(`Success: ${response.statusCode} ${urls.apiBaseUrl()}${options.path}`);
+
+          callback(null, responseBody.result, responseBody);
+        }
+      });
+    }
+  });
+}
+
+/**
+ * Enum for HTTP methods
+ *
+ * @enum {string}
+ * @private
+ */
+const HTTP_METHODS = {
+  GET: 'GET',
+  POST: 'POST',
+  PATCH: 'PATCH',
+};
+
+/**
+ * Container object for API call methods
+ *
+ * @type {object}
+ * @property {module:api~apiCall} get `GET` API call method
+ * @property {module:api~apiCall} post `POST` API call method
+ * @property {module:api~apiCall} patch `PATCH` API call method
+ *
+ * @see {@link HTTP_METHODS} for more information
+ */
+const api = {};
+
+/**
+ * Curried function for generating methods on the {@link api} object.
+ *
+ * @type {object}
+ * @private
+ */
+const generateApiMethod = httpMethod => (options, callback) => {
+  apiCall(httpMethod, options, callback);
+};
+
+/*
+ * On module initialization, loop through the HTTP methods to
+ * populate the {@link api} object.
+ */
+Object.keys(HTTP_METHODS).forEach(httpMethod => {
+  api[httpMethod.toLowerCase()] = generateApiMethod(httpMethod);
+});
+
+module.exports = api;
+
+/**
+ * Callbacks follow the [Node.js error-first callback pattern]{@link https://nodejs.org/api/errors.html#errors_error_first_callbacks}.
+ *
+ * @callback module:api~requestCallback
+ * @param {(Error|null)} error Either an `Error` object or `null` if there's no error
+ * @param {object} result The 'result' object from the API response body
+ * @param {object} body The full body of the response from the API. This includes pagination details, if present
+ */
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Nov 27 2019 14:21:08 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

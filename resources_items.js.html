@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: resources/items.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: resources/items.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Items resources
+ *
+ * @module resources/items
+ * @copyright 2015–2019 RewardOps Inc.
+ */
+
+const config = require('../config');
+const api = require('../api');
+
+/**
+ * Curried function for creating a `getAll` program items function.
+ *
+ * @param {number} programId The ID of the item's parent program
+ *
+ * @returns {module:resources/items~GetAllFunc} Returns `getAll` program items function.
+ *
+ * @protected
+ */
+const getAllProgramItems = programId => {
+  return function getAll(params, callback) {
+    const options = {
+      path: `/programs/${programId}/items`,
+      config: config.getAll(),
+    };
+
+    /*
+     * If called with two arguments,
+     * set options.params to the first
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * one argument), set the callback as
+     * the argument.
+     */
+    if (arguments.length === 2) {
+      options.params = params;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      callback = params;
+    }
+
+    api.get(options, (error, data, response) => {
+      callback(error, data, response);
+    });
+  };
+};
+
+/**
+ * Function for getting an array of item JSON objects.
+ *
+ * @typedef module:resources/items~GetAllFunc
+ *
+ * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the API call
+ * @property {module:api~requestCallback} callback Callback that handles the response
+ *
+ * @example
+ * // Gets an array of item detail objects the program with id 12
+ * ro.program(12).items.getAll((error, data) => {
+ *   // ...
+ * });
+ */
+
+/**
+ * Curried function for creating a `get` program item function.
+ *
+ * @param {number} programId The ID of the item's parent program
+ *
+ * @returns {module:resources/items~GetFunc} Returns `get` program item function.
+ *
+ * @protected
+ */
+const getProgramItem = programId => {
+  return function get(itemId, params, callback) {
+    const options = {
+      path: `/programs/${programId}/items/${itemId}`,
+      config: config.getAll(),
+    };
+
+    /*
+     * If called with three arguments,
+     * set options.params to the second
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * two arguments), set the callback as
+     * the second argument.
+     */
+    if (arguments.length === 3) {
+      options.params = params;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      callback = params;
+    }
+
+    api.get(options, (error, data, response) => {
+      callback(error, data, response);
+    });
+  };
+};
+
+/**
+ * Function for getting a item JSON object.
+ *
+ * @typedef module:resources/items~GetFunc
+ *
+ * @property {string} itemId Program item ID
+ * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the API call
+ * @property {module:api~requestCallback} callback Callback that handles the response
+ *
+ * @example
+ * // Get JSON for the item with ID 938
+ * ro.program(12).items.get(938, (error, result, body) => {
+ *   if (error) {
+ *     console.log(error);
+ *   } else {
+ *     console.log(result);
+ *   }
+ * });
+ */
+
+/**
+ * Curried function for creating a `getParameters` program item function.
+ *
+ * @param {number} programId The ID of the item's parent program
+ *
+ * @returns {module:resources/items~GetParametersFunc} Returns `getParameters` program item function.
+ *
+ * @protected
+ */
+const getProgramItemParameters = programId => {
+  return function getParameters(params, callback) {
+    const options = {
+      path: `/programs/${programId}/items/parameters`,
+      config: config.getAll(),
+    };
+
+    /*
+     * If called with two arguments,
+     * set options.params to the first
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * one argument), set the callback as
+     * the argument.
+     */
+    if (arguments.length === 2) {
+      options.params = params;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      callback = params;
+    }
+
+    api.get(options, (error, data, response) => {
+      callback(error, data, response);
+    });
+  };
+};
+
+/**
+ * Function for getting an array of filter parameter JSON objects that are relevant to the program.
+ *
+ * @typedef module:resources/items~GetParametersFunc
+ *
+ * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the API call
+ * @property {module:api~requestCallback} callback Callback that handles the response
+ *
+ * @example
+ * // Gets an array of filter parameter objects for the program with id 12
+ * ro.program(12).items.getParameters((error, data) => {
+ *   // ...
+ * });
+ */
+
+/**
+ * Factory for items objects.
+ *
+ * @param {number} programId The ID of the item's parent program
+ *
+ * @returns {module:resources/items~ProgramItems} Program items object.
+ *
+ * @example
+ * // Returns a items object for the program with ID 55
+ * const items = ro.program(756).items;
+ */
+const items = programId => ({
+  programId,
+  get: getProgramItem(programId),
+  getAll: getAllProgramItems(programId),
+  getParameters: getProgramItemParameters(programId),
+});
+
+/**
+ * Program items object.
+ *
+ * @typedef module:resources/items~ProgramItems
+ *
+ * @property {number} programId The ID of the item's parent program
+ * @property {module:resources/items~GetFunc} get `get` program item function.
+ * @property {module:resources/items~GetAllFunc} getAll `getAll` program items function.
+ * @property {Function} getParameters
+ */
+
+module.exports = items;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Nov 27 2019 14:21:08 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

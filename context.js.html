@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: context.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: context.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Context
+ *
+ * @module context
+ * @copyright 2015–2019 RewardOps Inc.
+ */
+
+const orders = require('./resources/orders');
+const config = require('./config');
+const api = require('./api');
+
+/**
+ * A context is a top-level actor in the RewardOps API.
+ *
+ * NOTE: Currently, there is only one type of context ('programs')
+ *
+ * @param {string} context The name of the context type ('programs')
+ *
+ * @returns {ContextType} Returns context type object.
+ */
+function contextType(context) {
+  /**
+   * Return a list of context members (e.g., `programs`) available to you.
+   *
+   * NOTE: Response may be paginated if you have access to many context members.
+   *
+   * @param {object} [params] [Request]{@link https://github.com/request/request} params to pass to the API call
+   * @param {module:api~requestCallback} callback Callback that handles the response
+   *
+   * @example
+   * // Get a list of programs
+   * RO.programs.getAll((error, result, body) => {
+   *   if (error) {
+   *     console.log(error);
+   *   } else {
+   *     console.log(result);
+   *   }
+   * });
+   */
+  function getAll(params, callback) {
+    const options = {
+      path: `/${context}`,
+      config: config.getAll(),
+    };
+
+    /*
+     * If called with two arguments,
+     * set options.params to the first
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * one argument), set the callback as
+     * the argument.
+     */
+    if (arguments.length === 2) {
+      options.params = params;
+    } else {
+      callback = params;
+    }
+
+    api.get(options, (error, data, response) => {
+      callback(error, data, response);
+    });
+  }
+
+  /**
+   * Get details of the given context member
+   *
+   * @async
+   *
+   * @param {number} id The context member's id
+   * @param {object} [params] [Request]{@link https://github.com/request/request} params to pass to the API call
+   * @param {module:api~requestCallback} callback Callback that handles the response
+   *
+   * @example
+   *
+   * // Get details for the program with id 493
+   * ro.program.get(493, (error, data) => {
+   *   // ...
+   * });
+   */
+  function get(id, params, callback) {
+    const options = {
+      path: `/${context}/${id}`,
+      config: config.getAll(),
+    };
+
+    /*
+     * If called with three arguments,
+     * set options.params to the second
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * two arguments), set the callback as
+     * the second argument.
+     */
+    if (arguments.length === 3) {
+      options.params = params;
+    } else {
+      callback = params;
+    }
+
+    api.get(options, (error, data, response) => {
+      callback(error, data, response);
+    });
+  }
+
+  return {
+    context,
+    get,
+    getAll,
+  };
+}
+
+/**
+ * Context type type definition
+ *
+ * @typedef ContextType
+ * @type {object}
+ * @property {string} context Context value
+ * @property {Function} getAll Method that returns an array of context objects (e.g., programs)
+ * @property {Function} get Method that returns a context object (e.g., program)
+ */
+
+/**
+ * Return a context object (i.e. a `program` object).
+ *
+ * @param {string} contextTypeName The context type name (e.g., `programs`). This should be plural.
+ * @param {number} id The ID for the context
+ *
+ * @returns {ContextInstance} Returns context instance object.
+ */
+const contextInstance = (contextTypeName, id) => ({
+  contextTypeName,
+  id,
+  orders: orders(contextTypeName, id),
+});
+
+/**
+ * Context instance type definition
+ *
+ * @typedef ContextInstance
+ * @type {object}
+ * @property {string} contextTypeName See {@link contextInstance}
+ * @property {number} id See {@link contextInstance}
+ * @property {Function}
+ */
+
+module.exports = { contextInstance, contextType };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Nov 27 2019 14:21:08 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
