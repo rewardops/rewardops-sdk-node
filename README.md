@@ -46,7 +46,7 @@ RO.config.set('clientId', 'abcdefg1234567');
 RO.config.set('clientSecret', '9876543poiuytr');
 ```
 
-See [the library documentation](FIXME) for all config options.
+See [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
 
 ### Environment variables
 
@@ -64,7 +64,7 @@ You can also change the base API URL after loading the SDK using `RO.config.set(
 
 ### SDK API
 
-See [the library documentation](FIXME) for the complete SDK API.
+See [the library documentation](https://rewardops.github.io/rewardops-sdk-node/) for the complete SDK API.
 
 ### OAuth
 
