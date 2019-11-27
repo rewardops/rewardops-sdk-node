@@ -51,7 +51,7 @@ RO.config.set('clientSecret', '9876543poiuytr');
 ### Optional
 
 - `apiVersion`: The version of the RewardOps API to use. This affects the SDK methods available and the API baseUrl. (Default: `v4`)
-- `logFilePath`: The file path where the log file should be saved. *NOTE:* This must be set using the method `RO.setLogFilePath(path)`. (Default: `'logs/ro.log'`)
+- `logFilePath`: The file path where the log file should be saved. _NOTE:_ This must be set using the method `RO.setLogFilePath(path)`. (Default: `'logs/ro.log'`)
 - `logToFile`: If true and if verbose is true, saves log messages to file. (Default: `false`)
 - `maxListeners`: Sets maxListeners for the RO.emitter eventEmitter. (See [Node.js docs](https://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n).)
 - `timeout`: Timeout for HTTP requests (used by Request)
@@ -77,7 +77,7 @@ To see the SDK in action, look at the server for the [RewardOps sample JavaScrip
 
 ## SDK API
 
-*Note: Arguments in [square brackets] are optional.*
+_Note: Arguments in [square brackets] are optional._
 
 `options` objects are passed directly to the RewardOps API. Available parameters can be viewed on the [RewardOps API console](https://app.rewardops.net/api_docs/console?version=v3). As a rule, path parameters (i.e., required program, reward and order IDs) are passed as the first argument to SDK methods, while other parameters should appear in an `options` object.
 
@@ -114,7 +114,7 @@ Get a list of all programs available to you.
 (Response may be paginated if you have many programs.)
 
 ```js
-RO.programs.getAll(function(error, result, body) {
+RO.programs.getAll((error, result, body) => {
   if (error) {
     console.log(error);
   } else {
@@ -130,7 +130,7 @@ Get details of a program.
 ```js
 // Get details for program 123
 // Alias: `RO.program(123).details()`
-RO.programs.get(123, function(error, result, body) {
+RO.programs.get(123, (error, result, body) => {
   if (error) {
     console.log(error);
   } else {
@@ -159,7 +159,7 @@ Alias of `RO.programs.get(id, callback)`
 var myProgram = RO.program(123);
 
 // Get details for program 123
-myProgram.details(function(error, result, body) {
+myProgram.details((error, result, body) => {
   if (error) {
     console.log(error);
   } else {
@@ -177,15 +177,18 @@ Get a list of all rewards.
 ```js
 // Gets a list of all running rewards for the program.
 
-myProgram.rewards.getAll({
-  status: 'running'
-}, function(error, result, body) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(result);
+myProgram.rewards.getAll(
+  {
+    status: 'running',
+  },
+  (error, result, body) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(result);
+    }
   }
-});
+);
 ```
 
 #### program.rewards.get(id, [options,] callback)
@@ -195,7 +198,7 @@ Get a single reward.
 ```js
 // Gets the reward with id 1234
 
-myProgram.rewards.get(1234, function(error, result, body) {
+myProgram.rewards.get(1234, (error, result, body) => {
   if (error) {
     console.log(error);
   } else {
@@ -210,20 +213,23 @@ myProgram.rewards.get(1234, function(error, result, body) {
 
 Get a list of all orders for a member in a program.
 
-*Note:* The `options` object is required and must include a `member_id`.
+_Note:_ The `options` object is required and must include a `member_id`.
 
 ```js
 // Gets the orders for member abc987
 
-myProgram.orders.getAll({
-  'member_id': 'abc987'
-}, function(error, result, body) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(result);
+myProgram.orders.getAll(
+  {
+    member_id: 'abc987',
+  },
+  (error, result, body) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(result);
+    }
   }
-});
+);
 ```
 
 #### program.orders.get(id, callback)
@@ -233,7 +239,7 @@ Get details of a single order.
 ```js
 // Gets the order with id 'qwerty1234'
 
-myProgram.orders.get('qwerty1234', function(error, result, body) {
+myProgram.orders.get('qwerty1234', (error, result, body) => {
   if (error) {
     console.log(error);
   } else {
@@ -246,25 +252,28 @@ myProgram.orders.get('qwerty1234', function(error, result, body) {
 
 Create an order.
 
-*Note:* The `options` object is required and must include a `reward_id` and a `member` object.
+_Note:_ The `options` object is required and must include a `reward_id` and a `member` object.
 
 ```js
 // Posts a new order for the reward with id 45231 for member 'bbdd0987'
 
-myProgram.orders.create({
-  'reward_id': 45231,
-  'member': {
-    'id': 'jb0987',
-    'full_name': 'Jolanta Banicki',
-    'email': 'jolanta.b@example.com'
+myProgram.orders.create(
+  {
+    reward_id: 45231,
+    member: {
+      id: 'jb0987',
+      full_name: 'Jolanta Banicki',
+      email: 'jolanta.b@example.com',
+    },
+  },
+  (error, result, body) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(result);
+    }
   }
-}, function(error, result, body) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(result);
-  }
-});
+);
 ```
 
 ## Maintainer

@@ -1,37 +1,37 @@
 const nock = require('nock');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v4/itemsFixtures');
+const fixtures = require('../../fixtures/v4/items.fixtures');
 
-describe('v4 RO.program()', function() {
-  beforeAll(function() {
+describe('v4 RO.program()', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
 
     fixtures();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  describe('items', function() {
+  describe('items', () => {
     const id = 33;
     const program = RO.program(id);
 
-    beforeAll(function() {
+    beforeAll(() => {
       RO.config.set('clientId', 'itemTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.reset();
     });
 
-    it('should have the correct program ID', function() {
+    it('should have the correct program ID', () => {
       expect(program.items.programId).toEqual(id);
     });
 
-    describe('getAll()', function() {
-      it('should pass an array to the callback', function() {
+    describe('getAll()', () => {
+      it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -43,7 +43,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          program.items.getAll(function(error, data) {
+          program.items.getAll((error, data) => {
             expect(Array.isArray(data)).toBe(true);
 
             done();
@@ -51,7 +51,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -63,7 +63,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(12).items.getAll(function(error, itemList) {
+          RO.program(12).items.getAll((error, itemList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(itemList)).toBe(true);
@@ -74,7 +74,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             page: 7,
@@ -91,7 +91,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).items.getAll(params, function(error, itemsList) {
+          RO.program(55).items.getAll(params, (error, itemsList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(itemsList)).toBe(true);
@@ -103,8 +103,8 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('get()', function() {
-      it('should pass an object to the callback', function() {
+    describe('get()', () => {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -117,7 +117,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.items.get(555, function(error, data) {
+          program.items.get(555, (error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -125,7 +125,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -138,7 +138,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).items.get(929, function(error, itemList) {
+          RO.program(12).items.get(929, (error, itemList) => {
             expect(error).toEqual(null);
 
             expect(typeof itemList).toBe('object');
@@ -149,7 +149,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             member_id: '5432',
@@ -165,7 +165,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).items.get(234, params, function(error, itemsList) {
+          RO.program(55).items.get(234, params, (error, itemsList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(itemsList)).toBe(true);
@@ -177,8 +177,8 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('getParameter()', function() {
-      it('should pass an object to the callback', function() {
+    describe('getParameter()', () => {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -191,7 +191,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.items.getParameters(function(error, data) {
+          program.items.getParameters((error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -199,7 +199,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -212,7 +212,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(12).items.getParameters(function(error, data) {
+          RO.program(12).items.getParameters((error, data) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(data)).toBe(true);
@@ -223,7 +223,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             filter: 'CCATEGORY("CAT_TEST_001")',
@@ -239,7 +239,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).items.getParameters(params, function(error, data) {
+          RO.program(55).items.getParameters(params, (error, data) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(data)).toBe(true);

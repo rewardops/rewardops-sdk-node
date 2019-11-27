@@ -1,22 +1,24 @@
 const nock = require('nock');
-const emitter = require('../lib/emitter');
-const RO = require('..');
-const fixtures = require('./fixtures/apiFixtures');
 
-describe('api', function() {
-  beforeAll(function() {
+const fixtures = require('./fixtures/api.fixtures');
+const { generateBasicAuthToken } = require('../lib/utils/auth');
+const RO = require('..');
+const emitter = require('../lib/emitter');
+
+describe('api', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  it('should be an object', function() {
+  it('should be an object', () => {
     expect(typeof RO.api).toBe('object');
   });
 
-  it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', function() {
+  it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', () => {
     return new Promise(done => {
       const config = {
         clientId: null,
@@ -28,7 +30,7 @@ describe('api', function() {
           path: '/testForAuthError',
           config,
         },
-        function(error, data, response) {
+        (error, data, response) => {
           expect(error.name).toEqual('AuthenticationError');
 
           expect(data).toEqual(undefined);
@@ -40,7 +42,7 @@ describe('api', function() {
     });
   });
 
-  it('should check to see if a new token has been received already when the server gives a token error', function() {
+  it('should check to see if a new token has been received already when the server gives a token error', () => {
     return new Promise(done => {
       const expires = new Date();
       const firstToken = 'HeresAToken123456789';
@@ -52,7 +54,7 @@ describe('api', function() {
           Authorization: `Bearer ${firstToken}`,
         },
       })
-        .filteringRequestBody(function(body) {
+        .filteringRequestBody(body => {
           // Change auth.token after the
           // request has been made but before
           // sending the response
@@ -95,7 +97,7 @@ describe('api', function() {
           path: '/another/arbitrary-path',
           config,
         },
-        function(error, result) {
+        (error, result) => {
           expect(error).toEqual(null);
           expect(result).toEqual('OK');
 
@@ -105,7 +107,7 @@ describe('api', function() {
     });
   });
 
-  it('should request a new token and retry when the server responds that the attempted token is invalid', function() {
+  it('should request a new token and retry when the server responds that the attempted token is invalid', () => {
     return new Promise(done => {
       const expires = new Date();
       const badToken = 'HeresAToken123456789';
@@ -130,11 +132,7 @@ describe('api', function() {
         .get('/arbitrary-path')
         .reply(200, { result: 'OK' });
       const authScope = nock(RO.auth.getBaseUrl(), {
-        reqheaders: {
-          Authorization: `Basic ${Buffer.from(`${config.clientId}:${config.clientSecret}`).toString(
-            'base64'
-          )}`,
-        },
+        reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
       })
         .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
         .once()
@@ -148,7 +146,7 @@ describe('api', function() {
 
       expires.setHours(expires.getHours() + 2);
 
-      emitter.on('invalidateToken', function() {
+      emitter.on('invalidateToken', () => {
         listenerWasFired = true;
       });
 
@@ -165,7 +163,7 @@ describe('api', function() {
           path: '/some/arbitrary-path',
           config,
         },
-        function(error, result) {
+        (error, result) => {
           expect(error).toEqual(null);
           expect(result).toEqual('OK');
 
@@ -181,18 +179,18 @@ describe('api', function() {
     });
   });
 
-  describe('get', function() {
-    beforeAll(function() {
+  describe('get', () => {
+    beforeAll(() => {
       RO.auth.token = {};
 
       fixtures();
     });
 
-    it('should be a function', function() {
+    it('should be a function', () => {
       expect(typeof RO.api.get).toBe('function');
     });
 
-    it('should make an HTTP GET request to the url provided', function() {
+    it('should make an HTTP GET request to the url provided', () => {
       return new Promise(done => {
         const config = {
           clientId: 'abcdefg1234567',
@@ -204,7 +202,7 @@ describe('api', function() {
             path: '/someTestPath',
             config,
           },
-          function(error, programs) {
+          (error, programs) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(programs)).toBe(true);
@@ -215,7 +213,7 @@ describe('api', function() {
       });
     });
 
-    it('should accept a params property and pass it on to the request() call', function() {
+    it('should accept a params property and pass it on to the request() call', () => {
       return new Promise(done => {
         const token = 'ccccvvvv5555';
         const config = { clientId: 'abc', clientSecret: '123' };
@@ -242,7 +240,7 @@ describe('api', function() {
             params,
             config,
           },
-          function(error, result, response) {
+          (error, result, response) => {
             expect(error).toEqual(null);
 
             expect(result).toEqual('OK');
@@ -255,7 +253,7 @@ describe('api', function() {
       });
     });
 
-    it('should pass a third argument to the callback that is the full JSON body of the API response', function() {
+    it('should pass a third argument to the callback that is the full JSON body of the API response', () => {
       return new Promise(done => {
         const config = {
           clientId: 'abcdefg1234567',
@@ -269,7 +267,7 @@ describe('api', function() {
             path: '/someTestPath',
             config,
           },
-          function(error, programs, response) {
+          (error, programs, response) => {
             expect(error).toEqual(null);
 
             expect(typeof response).toBe('object');

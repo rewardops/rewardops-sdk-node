@@ -1,19 +1,19 @@
 const sinon = require('sinon');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v3/programFixtures');
+const fixtures = require('../../fixtures/v3/program.fixtures');
 
-describe('v3 RO.program()', function() {
-  beforeAll(function() {
+describe('v3 RO.program()', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
 
     fixtures();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  it('should return an error when passed with a non-number', function() {
+  it('should return an error when passed with a non-number', () => {
     const program1 = RO.program('1');
     const program2 = RO.program([]);
 
@@ -24,8 +24,8 @@ describe('v3 RO.program()', function() {
     expect(program2.message).toEqual('Program ID must be a number');
   });
 
-  describe('id', function() {
-    it('should be the number passed as an argument to ro.program()', function() {
+  describe('id', () => {
+    it('should be the number passed as an argument to ro.program()', () => {
       const id = Math.floor(Math.random() * (1000000 - 1)) + 1;
       const program = RO.program(id);
 
@@ -33,8 +33,8 @@ describe('v3 RO.program()', function() {
     });
   });
 
-  describe('details()', function() {
-    it('should be an alias for ro.programs.get(program.id)', function() {
+  describe('details()', () => {
+    it('should be an alias for ro.programs.get(program.id)', () => {
       return new Promise(done => {
         // A random integer, per
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -43,7 +43,7 @@ describe('v3 RO.program()', function() {
 
         sinon.spy(RO.programs, 'get').withArgs(id);
 
-        program.details(function() {
+        program.details(() => {
           expect(RO.programs.get.calledWith(id)).toEqual(true);
 
           RO.programs.get.restore();

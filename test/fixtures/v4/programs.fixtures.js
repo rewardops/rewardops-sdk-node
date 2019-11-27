@@ -1,29 +1,29 @@
 const nock = require('nock');
 
-module.exports = function() {
+const { generateBasicAuthToken } = require('../../../lib/utils/auth');
+
+module.exports = () => {
+  // Oauth calls
   nock('https://app.rewardops.net/api/v4/auth', {
-    reqheaders: {
-      Authorization: `Basic ${Buffer.from('abcdefg1234567:abcdefg1234567').toString('base64')}`,
-    },
+    reqheaders: generateBasicAuthToken('mockedclientidforprogramstests', 'mockedclientsecretforprogramstests'),
   })
     .post('/token', {
       grant_type: 'client_credentials',
     })
-    .twice()
+    .times(5)
     .reply(200, {
-      access_token: 'abcdefg1234',
-      token_type: 'bearer',
-      expires_in: 7200,
       created_at: Math.round(+new Date() / 1000),
+      expires_in: 7200,
+      access_token: 'abcd1234programs',
     });
 
+  // API calls
   nock('https://app.rewardops.net/api/v4', {
-    reqheaders: {
-      Authorization: 'Bearer abcdefg1234',
+    reqHeaders: {
+      Authorization: 'Bearer abcd1234programs',
     },
   })
-    .get('/someTestPath')
-    .twice()
+    .get('/programs')
     .reply(200, {
       status: 'OK',
       result: [
@@ -50,5 +50,7 @@ module.exports = function() {
         count: 1,
         pages: 1,
       },
-    });
+    })
+    .get('/programs/555')
+    .reply(200, { result: {} });
 };

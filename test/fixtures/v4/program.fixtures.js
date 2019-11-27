@@ -1,14 +1,12 @@
 const nock = require('nock');
-const RO = require('../../..');
 
-module.exports = function() {
+const RO = require('../../..');
+const { generateBasicAuthToken } = require('../../../lib/utils/auth');
+
+module.exports = () => {
   // Oauth calls
-  nock('https://app.rewardops.net/api/v3/auth', {
-    reqheaders: {
-      Authorization: `Basic ${Buffer.from('programTest123:itsATestGetUsedToIt').toString(
-        'base64'
-      )}`,
-    },
+  nock('https://app.rewardops.net/api/v4/auth', {
+    reqheaders: generateBasicAuthToken('programTest123', 'itsATestGetUsedToIt'),
   })
     .post(RO.auth.getTokenPath(), {
       grant_type: 'client_credentials',

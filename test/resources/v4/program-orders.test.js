@@ -1,50 +1,50 @@
 const nock = require('nock');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v4/programOrdersFixtures');
+const fixtures = require('../../fixtures/v4/program-orders.fixtures');
 
-describe('v4 RO.program()', function() {
-  beforeAll(function() {
+describe('v4 RO.program()', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     fixtures();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     nock.cleanAll();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  describe('orders', function() {
+  describe('orders', () => {
     const programId = 33;
     const program = RO.program(programId);
     const programOrdersUrl = `/programs/${programId}/orders`;
 
-    beforeAll(function() {
+    beforeAll(() => {
       RO.config.set('clientId', 'programTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.reset();
     });
 
-    it('should have the correct context ID', function() {
+    it('should have the correct context ID', () => {
       expect(program.orders.contextId).toEqual(programId);
     });
 
-    it('should have the correct context', function() {
+    it('should have the correct context', () => {
       expect(program.orders.contextTypeName).toEqual('programs');
     });
 
-    describe('getSummary()', function() {
-      it('should fire the callback with an error when the params object is missing', function() {
+    describe('getSummary()', () => {
+      it('should fire the callback with an error when the params object is missing', () => {
         return new Promise(done => {
-          program.orders.getSummary(function(error, data) {
+          program.orders.getSummary((error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
 
@@ -55,7 +55,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           const params = { member_id: 38 };
 
@@ -71,7 +71,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.orders.getSummary(params, function(error, data) {
+          program.orders.getSummary(params, (error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -79,7 +79,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const params = { member_id: 38 };
           const apiCall = nock(RO.urls.apiBaseUrl(), {
@@ -94,7 +94,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).orders.getSummary(params, function(error, orderList) {
+          RO.program(12).orders.getSummary(params, (error, orderList) => {
             expect(error).toEqual(null);
 
             expect(typeof orderList).toBe('object');
@@ -106,8 +106,8 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('getAll()', function() {
-      it('should pass an array to the callback', function() {
+    describe('getAll()', () => {
+      it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -122,7 +122,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          program.orders.getAll(38, function(error, data) {
+          program.orders.getAll(38, (error, data) => {
             expect(Array.isArray(data)).toBe(true);
 
             done();
@@ -130,7 +130,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -145,7 +145,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(12).orders.getAll(3, function(error, orderList) {
+          RO.program(12).orders.getAll(3, (error, orderList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(orderList)).toBe(true);
@@ -156,7 +156,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             page: 7,
@@ -173,7 +173,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).orders.getAll(777, params, function(error, programsList) {
+          RO.program(55).orders.getAll(777, params, (error, programsList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(programsList)).toBe(true);
@@ -185,8 +185,8 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('get()', function() {
-      it('should pass an object to the callback', function() {
+    describe('get()', () => {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -199,7 +199,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.orders.get(555, function(error, data) {
+          program.orders.get(555, (error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -207,7 +207,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -220,7 +220,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).orders.get(929, function(error, orderList) {
+          RO.program(12).orders.get(929, (error, orderList) => {
             expect(error).toEqual(null);
 
             expect(typeof orderList).toBe('object');
@@ -231,7 +231,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             use_program_order_code: false,
@@ -247,7 +247,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).orders.get(929, params, function(error, data) {
+          RO.program(12).orders.get(929, params, (error, data) => {
             expect(error).toEqual(null);
 
             expect(typeof data).toBe('object');
@@ -259,18 +259,16 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('create()', function() {
-      it('should fire the callback with an error when the params object is missing a member object', function() {
+    describe('create()', () => {
+      it('should fire the callback with an error when the params object is missing a member object', () => {
         return new Promise(done => {
           const params = {
             items: [{}],
           };
 
-          program.orders.create(params, function(error, data) {
+          program.orders.create(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass a member object in the params object to `orders.create()`'
-            );
+            expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
 
             expect(data).toEqual(undefined);
 
@@ -279,17 +277,15 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should fire the callback with an error when the params object is missing an items array', function() {
+      it('should fire the callback with an error when the params object is missing an items array', () => {
         return new Promise(done => {
           const params = {
             member: { id: 'hoo_ah' },
           };
 
-          program.orders.create(params, function(error, data) {
+          program.orders.create(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass an items array in the params object to `orders.create()`'
-            );
+            expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
 
             expect(data).toEqual(undefined);
 
@@ -298,7 +294,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           const newOrder = {
             member: {
@@ -317,7 +313,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.orders.create(newOrder, function(error, result) {
+          program.orders.create(newOrder, (error, result) => {
             expect(error).toEqual(null);
             expect(typeof result).toBe('object');
 
@@ -326,7 +322,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const newOrder = {
             member: {
@@ -368,7 +364,7 @@ describe('v4 RO.program()', function() {
               result: { status: 'OK' },
             });
 
-          RO.program(programId).orders.create(newOrder, function(error, result) {
+          RO.program(programId).orders.create(newOrder, (error, result) => {
             expect(error).toEqual(null);
 
             expect(result).toEqual({ status: 'OK' });
@@ -379,9 +375,9 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it("should pass an error to the callback when a params object isn't passed", function() {
+      it("should pass an error to the callback when a params object isn't passed", () => {
         return new Promise(done => {
-          RO.program(133000).orders.create(function(error, result) {
+          RO.program(133000).orders.create((error, result) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
 
@@ -393,18 +389,18 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('update()', function() {
+    describe('update()', () => {
       const orderId = 'abcd1234asdf0987';
       const orderUpdateUrl = `/programs/${programId}/orders/${orderId}`;
 
-      it('should fire the callback with an error when no id is passed as the first argument', function() {
+      it('should fire the callback with an error when no id is passed as the first argument', () => {
         return new Promise(done => {
           const params = {
             payment_status: 'PAID',
             payment_status_notes: 'The user paid, and we thank them for it.',
           };
 
-          program.orders.update(params, function(error, data) {
+          program.orders.update(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual(
               'must pass an order (external) ID as the first argument to `orders.update()`'
@@ -417,9 +413,9 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should fire the callback with an error when no params object is passed', function() {
+      it('should fire the callback with an error when no params object is passed', () => {
         return new Promise(done => {
-          program.orders.update(orderId, function(error, data) {
+          program.orders.update(orderId, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
 
@@ -430,7 +426,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           const params = {
             payment_status: 'PAID',
@@ -447,7 +443,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.orders.update(orderId, params, function(error, result) {
+          program.orders.update(orderId, params, (error, result) => {
             expect(error).toEqual(null);
             expect(typeof result).toBe('object');
 
@@ -456,7 +452,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const params = {
             payment_status: 'PAID',
@@ -472,7 +468,7 @@ describe('v4 RO.program()', function() {
               result: { status: 'OK' },
             });
 
-          RO.program(programId).orders.update(orderId, params, function(error, result) {
+          RO.program(programId).orders.update(orderId, params, (error, result) => {
             expect(error).toEqual(null);
 
             expect(result).toEqual({ status: 'OK' });
@@ -484,18 +480,18 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('updateOrderItems()', function() {
+    describe('updateOrderItems()', () => {
       const orderId = 'abcd1234asdf0987';
       const updateOrderItemsUrl = `/programs/${programId}/orders/${orderId}/order_items`;
 
-      it('should fire the callback with an error when no id is passed as the first argument', function() {
+      it('should fire the callback with an error when no id is passed as the first argument', () => {
         return new Promise(done => {
           const params = {
             order_item_payment_status: 'PAID',
             status_notes: 'The user paid, and we thank them for it.',
           };
 
-          program.orders.updateOrderItems(params, function(error, data) {
+          program.orders.updateOrderItems(params, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual(
               'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`'
@@ -508,9 +504,9 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should fire the callback with an error when no params object is passed', function() {
+      it('should fire the callback with an error when no params object is passed', () => {
         return new Promise(done => {
-          program.orders.updateOrderItems(orderId, function(error, data) {
+          program.orders.updateOrderItems(orderId, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
 
@@ -521,7 +517,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           const params = {
             order_item_payment_status: 'PAID',
@@ -538,7 +534,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.orders.updateOrderItems(orderId, params, function(error, result) {
+          program.orders.updateOrderItems(orderId, params, (error, result) => {
             expect(error).toEqual(null);
             expect(typeof result).toBe('object');
 
@@ -547,7 +543,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const params = {
             order_item_payment_status: 'PAID',
@@ -563,7 +559,7 @@ describe('v4 RO.program()', function() {
               result: { status: 'OK' },
             });
 
-          RO.program(programId).orders.updateOrderItems(orderId, params, function(error, result) {
+          RO.program(programId).orders.updateOrderItems(orderId, params, (error, result) => {
             expect(error).toEqual(null);
 
             expect(result).toEqual({ status: 'OK' });

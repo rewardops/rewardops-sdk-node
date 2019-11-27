@@ -1,37 +1,37 @@
 const nock = require('nock');
 const RO = require('../../..');
-const fixtures = require('../../fixtures/v4/customCategoriesFixtures');
+const fixtures = require('../../fixtures/v4/custom-categories.fixtures');
 
-describe('v4 RO.program()', function() {
-  beforeAll(function() {
+describe('v4 RO.program()', () => {
+  beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
 
     fixtures();
   });
 
-  afterAll(function() {
+  afterAll(() => {
     RO.config.reset();
   });
 
-  describe('customCategories', function() {
+  describe('customCategories', () => {
     const id = 33;
     const program = RO.program(id);
 
-    beforeAll(function() {
+    beforeAll(() => {
       RO.config.set('clientId', 'customCategoryTest123');
       RO.config.set('clientSecret', 'itsATestGetUsedToIt');
     });
 
-    afterAll(function() {
+    afterAll(() => {
       RO.config.reset();
     });
 
-    it('should have the correct program ID', function() {
+    it('should have the correct program ID', () => {
       expect(program.customCategories.programId).toEqual(id);
     });
 
-    describe('getAll()', function() {
-      it('should pass an array to the callback', function() {
+    describe('getAll()', () => {
+      it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -43,7 +43,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          program.customCategories.getAll(function(error, data) {
+          program.customCategories.getAll((error, data) => {
             expect(Array.isArray(data)).toBe(true);
 
             done();
@@ -51,7 +51,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -63,7 +63,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(12).customCategories.getAll(function(error, customCategoryList) {
+          RO.program(12).customCategories.getAll((error, customCategoryList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(customCategoryList)).toBe(true);
@@ -74,7 +74,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             page: 7,
@@ -91,7 +91,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).customCategories.getAll(params, function(error, customCategoriesList) {
+          RO.program(55).customCategories.getAll(params, (error, customCategoriesList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(customCategoriesList)).toBe(true);
@@ -103,10 +103,10 @@ describe('v4 RO.program()', function() {
       });
     });
 
-    describe('get()', function() {
-      it('should return an error if the category code is not a string', function() {
+    describe('get()', () => {
+      it('should return an error if the category code is not a string', () => {
         return new Promise(done => {
-          program.customCategories.get(1406, function(error, data) {
+          program.customCategories.get(1406, (error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('must pass a string as the category code');
             expect(data).toEqual(undefined);
@@ -116,7 +116,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should pass an object to the callback', function() {
+      it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -129,7 +129,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          program.customCategories.get('DOG_000007', function(error, data) {
+          program.customCategories.get('DOG_000007', (error, data) => {
             expect(typeof data).toBe('object');
 
             done();
@@ -137,7 +137,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should make an HTTP get request to the correct URL', function() {
+      it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.apiBaseUrl(), {
             reqHeaders: {
@@ -150,7 +150,7 @@ describe('v4 RO.program()', function() {
               result: {},
             });
 
-          RO.program(12).customCategories.get('CAT_000002', function(error, customCategoryList) {
+          RO.program(12).customCategories.get('CAT_000002', (error, customCategoryList) => {
             expect(error).toEqual(null);
 
             expect(typeof customCategoryList).toBe('object');
@@ -161,7 +161,7 @@ describe('v4 RO.program()', function() {
         });
       });
 
-      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', function() {
+      it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
         return new Promise(done => {
           const params = {
             member_id: '5432',
@@ -177,10 +177,7 @@ describe('v4 RO.program()', function() {
               result: [],
             });
 
-          RO.program(55).customCategories.get('RAT_000002', params, function(
-            error,
-            customCategoriesList
-          ) {
+          RO.program(55).customCategories.get('RAT_000002', params, function(error, customCategoriesList) {
             expect(error).toEqual(null);
 
             expect(Array.isArray(customCategoriesList)).toBe(true);
