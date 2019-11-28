@@ -178,7 +178,7 @@ describe('v4 RO.program()', () => {
               result: [],
             });
 
-          RO.program(55).customCategories.get('RAT_000002', params, function(error, customCategoriesList) {
+          RO.program(55).customCategories.get('RAT_000002', params, (error, customCategoriesList) => {
             expect(error).toEqual(null);
 
             expect(Array.isArray(customCategoriesList)).toBe(true);
