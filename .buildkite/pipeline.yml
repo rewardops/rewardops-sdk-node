@@ -1,5 +1,7 @@
  - name: "rewardops-sdk-node"
-   command: "npm test"
+   command: 
+         - "npm install"
+         - "npm test"  
    timeout_in_minutes: 15
    retry:
      automatic:
