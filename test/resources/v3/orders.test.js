@@ -3,6 +3,7 @@ const RO = require('../../..');
 describe('v3 orders', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
+    RO.config.set('verbose', false);
   });
 
   afterAll(() => {
