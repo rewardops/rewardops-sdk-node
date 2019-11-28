@@ -1,0 +1,7 @@
+# Used by the 'Add to Buildkite' button in the readme
+name: "rewardops-sdk-node template upload"
+steps:
+  - label: ":pipeline:"
+    command: "buildkite-agent pipeline upload"
+    agents:
+      queue: "ember"
