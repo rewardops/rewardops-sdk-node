@@ -1,10 +1,11 @@
 const nock = require('nock');
 
+const RO = require('../../..');
 const { generateBasicAuthToken } = require('../../../lib/utils/auth');
 
 module.exports = () => {
   // Oauth calls
-  nock('https://app.rewardops.net/api/v4/auth', {
+  nock(RO.auth.getBaseUrl(), {
     reqheaders: generateBasicAuthToken('mockedclientidforprogramstests', 'mockedclientsecretforprogramstests'),
   })
     .post('/token', {
@@ -18,7 +19,7 @@ module.exports = () => {
     });
 
   // API calls
-  nock('https://app.rewardops.net/api/v4', {
+  nock(RO.urls.getApiBaseUrl(), {
     reqHeaders: {
       Authorization: 'Bearer abcd1234programs',
     },

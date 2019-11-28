@@ -39,7 +39,7 @@ describe('v4 RO.programs', () => {
 
     it('should make an HTTP get request to the correct URL', () => {
       return new Promise(done => {
-        const apiCall = nock(`${RO.urls.apiServerUrl()}/api/v3`)
+        const apiCall = nock(`${RO.urls.getApiServerUrl()}/api/v3`)
           .get('/programs')
           .reply(200, {
             result: [],
@@ -62,7 +62,7 @@ describe('v4 RO.programs', () => {
           page: 7,
           per_page_count: 50,
         };
-        const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+        const scope = nock(`${RO.urls.getApiServerUrl()}/api/v3`, {
           reqHeaders: {
             Authorization: 'Bearer abcd1234programs',
           },
@@ -112,7 +112,7 @@ describe('v4 RO.programs', () => {
 
     it('should make an HTTP get request to the correct URL', () => {
       return new Promise(done => {
-        const scope = nock(`${RO.urls.apiServerUrl()}/api/v3`, {
+        const scope = nock(`${RO.urls.getApiServerUrl()}/api/v3`, {
           reqHeaders: {
             Authorization: 'Bearer abcd1234programs',
           },
