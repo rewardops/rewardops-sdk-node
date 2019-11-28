@@ -137,6 +137,226 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~ENVIRONMENT_URLS"><span class="type-signature">(inner, constant) </span>ENVIRONMENT_URLS<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>Enum for RewardOps environment URLs.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>DEVELOPMENT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Development</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>QA</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Quality assurance</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>INTEGRATION</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Integration</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>UAT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>User acceptance testing</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>PRODUCTION</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Production</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="urls.js.html">urls.js</a>, <a href="urls.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -147,7 +367,7 @@
     
 
     
-    <h4 class="name" id="~apiBaseUrl"><span class="type-signature">(inner) </span>apiBaseUrl<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="~getApiBaseUrl"><span class="type-signature">(inner) </span>getApiBaseUrl<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -155,7 +375,7 @@
 
 
 <div class="description">
-    <p>Returns the current RewardOps API base URL, based on the currently
+    <p>Get the current RewardOps API base URL, based on the API server URL and the currently
 configured <code>apiVersion</code> in <a href="module-config.html"><code>module:config</code></a>.</p>
 </div>
 
@@ -200,7 +420,7 @@ configured <code>apiVersion</code> in <a href="module-config.html"><code>module:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="urls.js.html">urls.js</a>, <a href="urls.js.html#line40">line 40</a>
+        <a href="urls.js.html">urls.js</a>, <a href="urls.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -258,7 +478,7 @@ configured <code>apiVersion</code> in <a href="module-config.html"><code>module:
     
 
     
-    <h4 class="name" id="~apiServerUrl"><span class="type-signature">(inner) </span>apiServerUrl<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="~getApiServerUrl"><span class="type-signature">(inner) </span>getApiServerUrl<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -268,7 +488,12 @@ configured <code>apiVersion</code> in <a href="module-config.html"><code>module:
 <div class="description">
     <p>Get the current hostname URL for the RewardOps server. Used in
 constructing the <code>apiBaseUrl</code>.</p>
-<p>Based on the <code>apiServerUrl</code> setting in <a href="module-config.html"><code>module:config</code></a>.</p>
+<p>Based, in order, on either:</p>
+<ol>
+<li>the <code>apiServerUrl</code> setting from <a href="module-config.html#~DefaultConfig"><code>module:config~DefaultConfig</code></a>; or,</li>
+<li>a <code>REWARDOPS_ENV</code> Node environment variable (case-insensitive; see <a href="module-urls.html#~ENVIRONMENT_URLS"><code>module:urls~ENVIRONMENT_URLS</code></a>).</li>
+</ol>
+<p>If neither has a known value, the production server URL is returned.</p>
 </div>
 
 
@@ -312,7 +537,7 @@ constructing the <code>apiBaseUrl</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="urls.js.html">urls.js</a>, <a href="urls.js.html#line18">line 18</a>
+        <a href="urls.js.html">urls.js</a>, <a href="urls.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -363,6 +588,17 @@ constructing the <code>apiBaseUrl</code>.</p>
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>ro.config.set('apiServerUrl', 'http://localhost:3000')</code></pre>
+
+    <pre class="prettyprint"><code>// REWARDOPS_ENV=qa npm start</code></pre>
+
+    <pre class="prettyprint"><code>// REWARDOPS_ENV=development npm start</code></pre>
+
+    <pre class="prettyprint"><code>// REWARDOPS_ENV=DEVELOPMENT npm start</code></pre>
+
+
 
         
     
@@ -386,7 +622,7 @@ constructing the <code>apiBaseUrl</code>.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Nov 27 2019 14:21:08 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Nov 28 2019 14:20:08 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
