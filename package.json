@@ -34,7 +34,10 @@
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "test": "jest",
     "preversion": "npm test",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "prepublish:docs": "npm run build:docs",
+    "publish:docs": "gh-pages -d docs",
+    "release": "standard-version"
   },
   "keywords": [
     "RewardOps",
@@ -59,7 +62,8 @@
     "lint-staged": "^9.4.3",
     "nock": "^9.6.1",
     "prettier": "^1.19.1",
-    "sinon": "^1.17.7"
+    "sinon": "^1.17.7",
+    "standard-version": "^7.0.1"
   },
   "dependencies": {
     "lodash": "^4.17.15",
