@@ -21,7 +21,7 @@ module.exports = () => {
     });
 
   // API calls
-  nock(RO.urls.apiBaseUrl(), {
+  nock(RO.urls.getApiBaseUrl(), {
     reqHeaders: {
       Authorization: 'Bearer abcd1234programs',
     },

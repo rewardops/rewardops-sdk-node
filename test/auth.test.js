@@ -9,7 +9,7 @@ const { generateBasicAuthToken } = require('../lib/utils/auth');
 describe('RO.auth', () => {
   describe('getBaseUrl()', () => {
     it('should return the correct value', () => {
-      expect(RO.auth.getBaseUrl()).toEqual(`${RO.urls.apiBaseUrl()}/auth`);
+      expect(RO.auth.getBaseUrl()).toEqual(`${RO.urls.getApiBaseUrl()}/auth`);
     });
   });
 

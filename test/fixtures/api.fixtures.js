@@ -18,7 +18,7 @@ module.exports = () => {
       created_at: Math.round(+new Date() / 1000),
     });
 
-  nock(RO.urls.apiBaseUrl(), {
+  nock(RO.urls.getApiBaseUrl(), {
     reqheaders: {
       Authorization: 'Bearer abcdefg1234',
     },

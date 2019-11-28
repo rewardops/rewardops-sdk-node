@@ -60,7 +60,7 @@ describe('v4 RO.program()', () => {
         return new Promise(done => {
           const params = { member_id: 38 };
 
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -83,7 +83,7 @@ describe('v4 RO.program()', () => {
       it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
           const params = { member_id: 38 };
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -110,7 +110,7 @@ describe('v4 RO.program()', () => {
     describe('getAll()', () => {
       it('should pass an array to the callback', () => {
         return new Promise(done => {
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -133,7 +133,7 @@ describe('v4 RO.program()', () => {
 
       it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -163,7 +163,7 @@ describe('v4 RO.program()', () => {
             page: 7,
             per_page_count: 50,
           };
-          const scope = nock(RO.urls.apiBaseUrl(), {
+          const scope = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -189,7 +189,7 @@ describe('v4 RO.program()', () => {
     describe('get()', () => {
       it('should pass an object to the callback', () => {
         return new Promise(done => {
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -210,7 +210,7 @@ describe('v4 RO.program()', () => {
 
       it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -237,7 +237,7 @@ describe('v4 RO.program()', () => {
           const params = {
             use_program_order_code: false,
           };
-          const scope = nock(RO.urls.apiBaseUrl(), {
+          const scope = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
             },
@@ -304,7 +304,7 @@ describe('v4 RO.program()', () => {
             items: [{}],
           };
 
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -355,7 +355,7 @@ describe('v4 RO.program()', () => {
               },
             ],
           };
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -434,7 +434,7 @@ describe('v4 RO.program()', () => {
             payment_status_notes: 'The user paid, and we thank them for it.',
           };
 
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -459,7 +459,7 @@ describe('v4 RO.program()', () => {
             payment_status: 'PAID',
             payment_status_notes: 'The user paid, and we thank them for it.',
           };
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -525,7 +525,7 @@ describe('v4 RO.program()', () => {
             status_notes: 'The user paid, and we thank them for it.',
           };
 
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -550,7 +550,7 @@ describe('v4 RO.program()', () => {
             order_item_payment_status: 'PAID',
             status_notes: 'The user paid, and we thank them for it.',
           };
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },

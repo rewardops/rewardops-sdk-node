@@ -34,7 +34,7 @@ describe('v3 RO.program()', () => {
     describe('getAll()', () => {
       it('should pass an array to the callback', () => {
         return new Promise(done => {
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -54,7 +54,7 @@ describe('v3 RO.program()', () => {
 
       it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -81,7 +81,7 @@ describe('v3 RO.program()', () => {
             page: 7,
             per_page_count: 50,
           };
-          const scope = nock(RO.urls.apiBaseUrl(), {
+          const scope = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -107,7 +107,7 @@ describe('v3 RO.program()', () => {
     describe('get()', () => {
       it('should pass an object to the callback', () => {
         return new Promise(done => {
-          nock(RO.urls.apiBaseUrl(), {
+          nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -128,7 +128,7 @@ describe('v3 RO.program()', () => {
 
       it('should make an HTTP get request to the correct URL', () => {
         return new Promise(done => {
-          const apiCall = nock(RO.urls.apiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
@@ -155,7 +155,7 @@ describe('v3 RO.program()', () => {
           const params = {
             member_id: '5432',
           };
-          const scope = nock(RO.urls.apiBaseUrl(), {
+          const scope = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
             },
