@@ -2,9 +2,9 @@ const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
 
+const RO = require('..');
 const emitter = require('../lib/emitter');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
-const RO = require('..');
 
 describe('RO.auth', () => {
   describe('getBaseUrl()', () => {
@@ -90,7 +90,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        const scope = nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -110,7 +110,7 @@ describe('RO.auth', () => {
           clientId: 'clientIdForTestingRequestHeaders',
           clientSecret: 'someFakeValueForHeaderTesting',
         };
-        const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        const scope = nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -166,7 +166,7 @@ describe('RO.auth', () => {
           expires_in: 7200,
         };
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -197,7 +197,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        const scope = nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -232,7 +232,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const scope = nock('https://app.rewardops.net/api/v4/auth', {
+        const scope = nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -265,7 +265,7 @@ describe('RO.auth', () => {
           clientSecret: 'someSecretOrAnother',
         };
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .defaultReplyHeaders({
@@ -308,7 +308,7 @@ describe('RO.auth', () => {
 
         timeoutError.message = 'ETIMEDOUT';
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { ...postBody })
@@ -351,7 +351,7 @@ describe('RO.auth', () => {
           grant_type: 'client_credentials',
         };
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { ...postBody })
@@ -425,7 +425,7 @@ describe('RO.auth', () => {
 
         emitter.setMaxListeners(n + 1);
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
@@ -477,7 +477,7 @@ describe('RO.auth', () => {
         };
         let listenerFiredToken = null;
 
-        nock('https://app.rewardops.net/api/v4/auth', {
+        nock(RO.auth.getBaseUrl(), {
           reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
         })
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
