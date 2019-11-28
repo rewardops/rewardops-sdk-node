@@ -28,6 +28,7 @@
     "type": "git",
     "url": "https://bitbucket.org/RewardOps/rewardops-sdk-node.git"
   },
+  "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
