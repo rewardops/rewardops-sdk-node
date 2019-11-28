@@ -37,7 +37,8 @@
     "postversion": "git push && git push --tags",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
-    "release": "standard-version"
+    "release": "standard-version",
+    "postrelease": "npm run publish:docs"
   },
   "keywords": [
     "RewardOps",
