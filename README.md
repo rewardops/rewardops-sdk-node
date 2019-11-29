@@ -1,3 +1,5 @@
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
 ## RewardOps Node SDK
 
 Note: The SDK currently supports v4 and v3 of the RewardOps API.
@@ -8,26 +10,14 @@ Note: The SDK currently supports v4 and v3 of the RewardOps API.
 
 To use the SDK in your Node.js project:
 
-```
+```sh
 npm install @rewardops/rewardops-sdk-node
 ```
 
 To install and save a specific (legacy) version of the SDK in your package.json, use a version tag in the Git URL:
 
-```
+```sh
 npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.6
-```
-
-### Git
-
-If you just want to get the SDK repo without adding it to a project:
-
-```
-git clone https://github.com/rewardops/rewardops-sdk-node.git
-
-cd rewardops-sdk-node
-
-npm install
 ```
 
 ## Configuration
@@ -69,6 +59,20 @@ The SDK dramatically simplifies OAuth. You only need to add your `clientId` and 
 To see the SDK in action, look at the server for the [RewardOps sample JavaScript app](https://github.com/rewardops/rewardops-sample-javascript).
 
 To see an application that uses the SDK to consume the RewardOps API, see the [RewardOps Angular Catalog app](https://github.com/rewardops/rewardops-angular-catalog), which uses the SDK in its Express server.
+
+## Development
+
+### Installation
+
+```sh
+git clone https://github.com/rewardops/rewardops-sdk-node.git
+
+cd rewardops-sdk-node
+
+nvm use # recommended; see https://github.com/nvm-sh/nvm/
+
+npm install
+```
 
 ## Maintainer
 
