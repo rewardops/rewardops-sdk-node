@@ -1,5 +1,3 @@
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-
 ## RewardOps Node SDK
 
 Note: The SDK currently supports v4 and v3 of the RewardOps API.
@@ -73,6 +71,8 @@ All rights reserved.
 ---
 
 ## Library Development
+
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 NOTE: This section is for developers maintaining the `rewardops-sdk-node` library, rather than those consuming the npm package.
 
