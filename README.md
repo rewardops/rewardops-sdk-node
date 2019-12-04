@@ -60,20 +60,6 @@ To see the SDK in action, look at the server for the [RewardOps sample JavaScrip
 
 To see an application that uses the SDK to consume the RewardOps API, see the [RewardOps Angular Catalog app](https://github.com/rewardops/rewardops-angular-catalog), which uses the SDK in its Express server.
 
-## Development
-
-### Installation
-
-```sh
-git clone https://github.com/rewardops/rewardops-sdk-node.git
-
-cd rewardops-sdk-node
-
-nvm use # recommended; see https://github.com/nvm-sh/nvm/
-
-npm install
-```
-
 ## Maintainer
 
 Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
@@ -83,3 +69,37 @@ Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
 Copyright (c) 2015-2019 RewardOps Inc.
 
 All rights reserved.
+
+---
+
+## Library Development
+
+NOTE: This section is for developers maintaining the `rewardops-sdk-node` library, rather than those consuming the npm package.
+
+Use [`nvm`](https://github.com/nvm-sh/nvm/) or check `.nvmrc` for expected Node version.
+
+Install:
+
+```sh
+npm install
+```
+
+To run the library test suite:
+
+```sh
+npm test
+```
+
+To build the documentation locally:
+
+```sh
+npm run build:docs
+```
+
+To publish a new version, in a new `release/*` branch, run:
+
+```sh
+npm run release
+# review CHANGELOGS for accuracy
+# follow console output from the `release` script
+```
