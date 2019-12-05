@@ -76,6 +76,8 @@ All rights reserved.
 
 NOTE: This section is for developers maintaining the `rewardops-sdk-node` library, rather than those consuming the npm package.
 
+**This repository uses [semantic versioning](https://semver.org/), [conventional commits](https://www.conventionalcommits.org) and [the `standard-version` library](https://github.com/conventional-changelog/standard-version#readme) for versioning and changelog documentation. Ensure that you are familiar with those before contributing.**
+
 Use [`nvm`](https://github.com/nvm-sh/nvm/) or check `.nvmrc` for expected Node version.
 
 Install:
