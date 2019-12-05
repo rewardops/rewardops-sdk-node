@@ -26,15 +26,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/RewardOps/rewardops-sdk-node.git"
+    "url": "git@github.com:rewardops/rewardops-sdk-node.git"
   },
   "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "test": "jest",
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
     "release": "standard-version",
@@ -57,6 +55,7 @@
     "eslint-plugin-jest": "^23.0.4",
     "eslint-plugin-jsdoc": "^18.1.5",
     "eslint-plugin-prettier": "^3.1.1",
+    "gh-pages": "^2.1.1",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "jsdoc": "^3.6.3",
