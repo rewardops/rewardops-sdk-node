@@ -28,13 +28,15 @@
     "type": "git",
     "url": "git@github.com:rewardops/rewardops-sdk-node.git"
   },
+  "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "test": "jest",
-    "preversion": "npm test",
     "prepublish:docs": "npm run build:docs",
-    "publish:docs": "gh-pages -d docs"
+    "publish:docs": "gh-pages -d docs",
+    "release": "standard-version",
+    "postrelease": "npm run publish:docs"
   },
   "keywords": [
     "RewardOps",
@@ -60,7 +62,8 @@
     "lint-staged": "^9.4.3",
     "nock": "^9.6.1",
     "prettier": "^1.19.1",
-    "sinon": "^1.17.7"
+    "sinon": "^1.17.7",
+    "standard-version": "^7.0.1"
   },
   "dependencies": {
     "lodash": "^4.17.15",

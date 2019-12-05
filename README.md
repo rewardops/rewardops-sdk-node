@@ -8,26 +8,14 @@ Note: The SDK currently supports v4 and v3 of the RewardOps API.
 
 To use the SDK in your Node.js project:
 
-```
-npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git
+```sh
+npm install @rewardops/rewardops-sdk-node
 ```
 
-To install and save a specific version of the SDK in your package.json, use a version tag in the Git URL:
+To install and save a specific (legacy) version of the SDK in your package.json, use a version tag in the Git URL:
 
-```
+```sh
 npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.6
-```
-
-### Git
-
-If you just want to get the SDK repo without adding it to a project:
-
-```
-git clone https://github.com/rewardops/rewardops-sdk-node.git
-
-cd rewardops-sdk-node
-
-npm install
 ```
 
 ## Configuration
@@ -76,6 +64,42 @@ Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
 
 ## License
 
-Copyright (c) 2015-2019 RewardOps
+Copyright (c) 2015-2019 RewardOps Inc.
 
 All rights reserved.
+
+---
+
+## Library Development
+
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
+NOTE: This section is for developers maintaining the `rewardops-sdk-node` library, rather than those consuming the npm package.
+
+Use [`nvm`](https://github.com/nvm-sh/nvm/) or check `.nvmrc` for expected Node version.
+
+Install:
+
+```sh
+npm install
+```
+
+To run the library test suite:
+
+```sh
+npm test
+```
+
+To build the documentation locally:
+
+```sh
+npm run build:docs
+```
+
+To publish a new version, in a new `release/*` branch, run:
+
+```sh
+npm run release
+# review CHANGELOGS for accuracy
+# follow console output from the `release` script
+```
