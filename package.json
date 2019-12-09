@@ -28,8 +28,7 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags"
+    "preversion": "npm test"
   },
   "keywords": [
     "RewardOps",
