@@ -1,5 +1,5 @@
 {
-  "name": "@rewardops/rewardops-sdk",
+  "name": "@rewardops/sdk-node",
   "version": "0.8.1",
   "engines": {
     "node": ">=4.4"
@@ -35,7 +35,7 @@
     "rewards",
     "API"
   ],
-  "license": "Proprietary",
+  "license": "MIT",
   "devDependencies": {
     "async": "^2.1.4",
     "chai": "^3.5.0",
