@@ -1,11 +1,12 @@
 {
   "name": "@rewardops/rewardops-sdk",
-  "version": "0.8.1",
+  "version": "1.0.0",
   "engines": {
-    "node": ">=4.4"
+    "node": ">=10"
   },
   "description": "Node.js SDK for the RewardOps API",
   "author": "RewardOps",
+  "license": "MIT",
   "contributors": [
     {
       "name": "Michael Yeung",
@@ -18,39 +19,71 @@
     {
       "name": "Jerad Gallinger",
       "email": "jerad@rewardops.com"
+    },
+    {
+      "name": "Shane Martin",
+      "email": "shane.martin@rewardops.com"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/RewardOps/rewardops-sdk-node.git"
+    "url": "git@github.com:rewardops/rewardops-sdk-node.git"
   },
+  "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags"
+    "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
+    "test": "jest",
+    "prepublish:docs": "npm run build:docs",
+    "publish:docs": "gh-pages -d docs",
+    "release": "standard-version",
+    "postrelease": "npm run publish:docs"
   },
   "keywords": [
     "RewardOps",
     "rewards",
     "API"
   ],
-  "license": "Proprietary",
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "async": "^2.1.4",
-    "chai": "^3.5.0",
-    "dox": "^0.9.0",
-    "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.4",
-    "gulp-mocha": "^3.0.1",
-    "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1",
-    "nock": "^9.2.3",
-    "sinon": "^1.17.7"
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-jsdoc": "^18.1.5",
+    "eslint-plugin-prettier": "^3.1.1",
+    "gh-pages": "^2.1.1",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "jsdoc": "^3.6.3",
+    "lint-staged": "^9.4.3",
+    "nock": "^9.6.1",
+    "prettier": "^1.19.1",
+    "sinon": "^1.17.7",
+    "standard-version": "^7.0.1"
   },
   "dependencies": {
-    "request": "^2.84.0",
-    "underscore": "^1.8.3",
+    "lodash": "^4.17.15",
+    "request": "^2.88.0",
     "winston": "^2.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,md,json,yaml}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

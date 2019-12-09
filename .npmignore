@@ -1,0 +1,5 @@
+docs/
+
+__tests__/
+test/
+*.test.js
