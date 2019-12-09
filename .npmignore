@@ -1,4 +1,8 @@
 docs/
+.nvmrc
+.prettierrc
+jsdoc.json
+commitlint.config.js
 
 __tests__/
 test/
