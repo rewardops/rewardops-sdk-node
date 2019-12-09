@@ -1,6 +1,23 @@
-steps:
-  - name: ":node:"
-    command: npm test
-    plugins:
-      - docker-compose#v3.1.0:
-          run: app
+ - name: "rewardops-sdk-node"
+   command: 
+         - "npm install"
+         - "npm test"  
+   timeout_in_minutes: 15
+   retry:
+     automatic:
+       - exit_status: "*"
+         limit: 2
+   agents:
+     queue: "ember"
+   env:
+     NODE_ENV: test
+   plugins:
+     - docker#v3.2.0:
+         image: "rewardops/pangea_node8:latest"
+         workdir: /rewardops-sdk-node
+         always-pull: true
+         propagate-environment: true
+         shm-size: "1gb"
+     - docker-login#v2.0.1:
+         username: rewardops
+         password-env: DOCKER_LOGIN_PASSWORD
