@@ -1,0 +1,6 @@
+.buildkite/
+
+test/
+
+.jshintrc
+gulpfile.js
