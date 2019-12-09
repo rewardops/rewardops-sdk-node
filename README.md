@@ -9,7 +9,7 @@ Note: The SDK currently supports v4 and v3 of the RewardOps API.
 To use the SDK in your Node.js project:
 
 ```sh
-npm install @rewardops/rewardops-sdk-node
+npm install @rewardops/sdk-node
 ```
 
 To install and save a specific (legacy) version of the SDK in your package.json, use a version tag in the Git URL:
