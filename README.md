@@ -11,7 +11,7 @@ To see an application that uses the SDK to consume the RewardOps API, see the [R
 To use the SDK in your Node.js project:
 
 ```
-npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git
+npm install @rewardops/sdk-node
 ```
 
 To install and save a specific version of the SDK in your package.json, use a version tag in the Git URL:
