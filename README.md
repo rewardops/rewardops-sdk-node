@@ -96,4 +96,5 @@ To publish a new version, in a new `release/*` branch, run:
 npm run release
 # review CHANGELOGS for accuracy
 # follow console output from the `release` script
+npm run publish:docs
 ```
