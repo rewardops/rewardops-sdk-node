@@ -1,9 +1,11 @@
 docs/
 .nvmrc
 .prettierrc
+.eslint*
 jsdoc.json
 commitlint.config.js
 
+.buildkite/
 __tests__/
 test/
 *.test.js
