@@ -62,14 +62,6 @@ To see an application that uses the SDK to consume the RewardOps API, see the [R
 
 Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
 
-## License
-
-Copyright (c) 2015-2019 RewardOps Inc.
-
-All rights reserved.
-
----
-
 ## Contributing
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
@@ -104,4 +96,5 @@ To publish a new version, in a new `release/*` branch, run:
 npm run release
 # review CHANGELOGS for accuracy
 # follow console output from the `release` script
+npm run publish:docs
 ```

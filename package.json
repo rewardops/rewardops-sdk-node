@@ -1,6 +1,6 @@
 {
   "name": "@rewardops/sdk-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "node": ">=10"
   },
@@ -36,8 +36,7 @@
     "test": "jest",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
-    "release": "standard-version",
-    "postrelease": "npm run publish:docs"
+    "release": "standard-version"
   },
   "keywords": [
     "RewardOps",
