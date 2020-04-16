@@ -67,7 +67,7 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "request": "^2.88.0",
-    "winston": "^2.3.0"
+    "winston": "^3.0.0"
   },
   "husky": {
     "hooks": {
