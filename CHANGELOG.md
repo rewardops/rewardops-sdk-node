@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.0...v1.0.2) (2020-04-17)
+
+### Bug Fixes
+
+- correct licensing issues + other tweaks ([#27](https://github.com/rewardops/rewardops-sdk-node/issues/27)) ([ab5ed8e](https://github.com/rewardops/rewardops-sdk-node/commit/ab5ed8e95c305a29a21f935bec9373f41e68c3c4))
+- remove License section ([dd71c73](https://github.com/rewardops/rewardops-sdk-node/commit/dd71c73a9816d29dae9a198f232136fa877601c7))
+
 ### [1.0.1](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.0...v1.0.1) (2019-12-17)
 
 ### Bug Fixes
