@@ -2,8 +2,10 @@ const faker = require('faker');
 
 const orderRecipientFactory = require('../../../lib/resources/order-recipients');
 const RO = require('../../..');
+const api = require('../../../lib/api');
 
-const mockApiClient = { post: jest.fn() };
+jest.mock('../../../lib/api');
+
 const mockCallBack = jest.fn();
 const mockPiiServerUrl = faker.internet.url();
 const mockProgramCode = faker.random.number();
@@ -12,7 +14,7 @@ describe('v5 order-recipients', () => {
   let orderRecipient;
 
   beforeEach(() => {
-    orderRecipient = orderRecipientFactory('programs', mockProgramCode, mockApiClient);
+    orderRecipient = orderRecipientFactory('programs', mockProgramCode);
   });
 
   afterEach(() => {
@@ -21,7 +23,7 @@ describe('v5 order-recipients', () => {
 
   it('throws an error if not provided a `programs` context', () => {
     expect(() => {
-      orderRecipientFactory('something else', mockProgramCode, mockApiClient);
+      orderRecipientFactory('something else', mockProgramCode);
     }).toThrow(Error('Can only create an order recipient object for programs'));
   });
 
@@ -48,14 +50,15 @@ describe('v5 order-recipients', () => {
 
     describe('#storeOrderRecipient', () => {
       it('should contain the piiServerUrl in the request URL', async () => {
-        const requestBody = { id: 1, accept_language: 'en-CA' };
+        const member = { id: faker.random.number(), accept_language: 'en-CA' };
 
-        await orderRecipient.store(requestBody, mockCallBack);
+        await orderRecipient.store({ member }, mockCallBack);
 
-        expect(mockApiClient.post).toHaveBeenCalledWith(
+        expect(api.post).toHaveBeenNthCalledWith(
+          1,
           {
             path: `/${mockPiiServerUrl}/api/v5/programs/${mockProgramCode}/order_recipients`,
-            requestBody,
+            member,
           },
           expect.any(Function)
         );
@@ -67,7 +70,7 @@ describe('v5 order-recipients', () => {
         await orderRecipient.store(requestBody, mockCallBack);
 
         expect(mockCallBack).toHaveBeenCalledWith(expect.any(Array));
-        expect(mockApiClient.post).not.toHaveBeenCalled();
+        expect(api.post).not.toHaveBeenCalled();
       });
     });
   });
