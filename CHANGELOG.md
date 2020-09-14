@@ -2,15 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.1.1](https://github.com/rewardops/rewardops-sdk-node/compare/v1.1.0...v1.1.1) (2020-09-10)
-
-## [1.1.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.2...v1.1.0) (2020-09-10)
-
-### Features
-
-- add configure prop `piiServerUrl` ([0f306f5](https://github.com/rewardops/rewardops-sdk-node/commit/0f306f5f01a2047a4b0a8493be97ed8208a66d6f))
-- add order-recipients module WIP ([5f77bbe](https://github.com/rewardops/rewardops-sdk-node/commit/5f77bbe028bef9d97948a7ce208f6e9849081574))
-
 ### [1.0.2](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.0...v1.0.2) (2020-04-17)
 
 ### Bug Fixes
