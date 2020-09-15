@@ -11,11 +11,14 @@ const mockPiiServerUrl = faker.internet.url();
 const mockProgramId = faker.random.number();
 const mockProgramCode = faker.random.word();
 
+// TODO: add additional tests
+// see: https://rewardops.atlassian.net/browse/MX-1064
 describe('v5 order-recipients', () => {
   let orderRecipient;
 
   beforeEach(() => {
     RO.config.set('piiServerUrl', mockPiiServerUrl);
+    RO.config.set('supportedLocales', ['en-CA', 'fr-CA']);
     orderRecipient = orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });
 
@@ -30,7 +33,7 @@ describe('v5 order-recipients', () => {
     );
   });
 
-  describe('when default (not configured)', () => {
+  describe('when piiServerUrl (not configured)', () => {
     beforeEach(() => {
       RO.config.set('piiServerUrl', undefined);
     });
@@ -38,6 +41,18 @@ describe('v5 order-recipients', () => {
     it('should respond with an error if there is a bad config', () => {
       expect(() => orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
         'piiServerUrl is not configured'
+      );
+    });
+  });
+
+  describe('when supportedLocales (not configured)', () => {
+    beforeEach(() => {
+      RO.config.set('supportedLocales', undefined);
+    });
+
+    it('should respond with an error if there is a bad config', () => {
+      expect(() => orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
+        'supportedLocales is not configured'
       );
     });
   });

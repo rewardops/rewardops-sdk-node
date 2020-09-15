@@ -17,7 +17,7 @@ describe('config', () => {
         logToFile: false,
         timeout: 20000,
         verbose: true,
-        supportedLocales: ['en-CA', 'fr-CA'],
+        supportedLocales: undefined,
       };
 
       expect(actual).toStrictEqual(expected);
