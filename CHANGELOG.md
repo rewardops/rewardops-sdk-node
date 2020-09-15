@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.3...v1.1.0) (2020-09-16)
+
+### Features
+
+- add order-recipients module with `storeOrderRecipient` and `getOrderRecipient` methods ([5f77bbe](https://github.com/rewardops/rewardops-sdk-node/pull/34/commits/5f77bbe028bef9d97948a7ce208f6e9849081574); [f1e5941](https://github.com/rewardops/rewardops-sdk-node/pull/34/commits/f1e59416acaf6f52bab40f1a4cc3122be8b22ed9))
+- add new `piiServerUrl` configuration property ([0f306f5](https://github.com/rewardops/rewardops-sdk-node/pull/34/commits/0f306f5f01a2047a4b0a8493be97ed8208a66d6f))
+- add new `acceptedLocales` configuration property (required for programs using `piiServerUrl`) ([713169e](https://github.com/rewardops/rewardops-sdk-node/pull/34/commits/713169e8626ceb226391fc2f5283581bd6d73781))
+
 ### [1.0.2](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.0...v1.0.2) (2020-04-17)
 
 ### Bug Fixes
