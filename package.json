@@ -54,9 +54,10 @@
     "eslint-plugin-jest": "^23.0.4",
     "eslint-plugin-jsdoc": "^18.1.5",
     "eslint-plugin-prettier": "^3.1.1",
+    "faker": "^5.1.0",
     "gh-pages": "^2.1.1",
     "husky": "^3.1.0",
-    "jest": "^25.3.0",
+    "jest": "^26.4.2",
     "jsdoc": "^3.6.3",
     "lint-staged": "^9.4.3",
     "nock": "^9.6.1",
@@ -65,9 +66,11 @@
     "standard-version": "^8.0.1"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "lodash": "^4.17.15",
     "request": "^2.88.0",
-    "winston": "^3.0.0"
+    "winston": "^3.0.0",
+    "yup": "^0.29.3"
   },
   "husky": {
     "hooks": {

@@ -6,16 +6,21 @@ describe('config', () => {
     it('should have the correct default values', () => {
       config.reset();
 
-      expect(config.getAll()).toEqual({
+      const actual = config.getAll();
+      const expected = {
         apiServerUrl: undefined,
         apiVersion: 'v4',
+        piiServerUrl: undefined,
         clientId: undefined,
         clientSecret: undefined,
         logFilePath: path.resolve(__dirname, '../logs/ro.log'),
         logToFile: false,
         timeout: 20000,
         verbose: true,
-      });
+        supportedLocales: undefined,
+      };
+
+      expect(actual).toStrictEqual(expected);
     });
   });
 

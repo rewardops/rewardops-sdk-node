@@ -4,4 +4,4 @@ steps:
   - label: ":pipeline:"
     command: "buildkite-agent pipeline upload"
     agents:
-      queue: "ember"
+      queue: "pangea-frontend"

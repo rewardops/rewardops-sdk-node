@@ -1,6 +1,7 @@
 ## RewardOps Node SDK
 
 Note: The SDK currently supports v4 and v3 of the RewardOps API.
+In addition, v5 endpoints are partially implemented.
 
 ## Installation
 

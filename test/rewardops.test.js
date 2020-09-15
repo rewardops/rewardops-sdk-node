@@ -11,6 +11,7 @@ const expectedDefaults = {
   logToFile: false,
   timeout: 20000,
   verbose: true,
+  supportedLocales: undefined,
 };
 
 describe('RO', () => {
