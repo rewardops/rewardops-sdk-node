@@ -8,7 +8,7 @@
        - exit_status: "*"
          limit: 2
    agents:
-     queue: "ember"
+     queue: "pangea-frontend"
    env:
      NODE_ENV: test
    plugins:
