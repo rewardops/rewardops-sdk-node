@@ -1,76 +1,73 @@
 const faker = require('faker');
+const axios = require('axios');
 
 const orderRecipientFactory = require('../../../lib/resources/order-recipients');
 const RO = require('../../..');
-const api = require('../../../lib/api');
 
-jest.mock('../../../lib/api');
+jest.mock('axios');
 
 const mockCallBack = jest.fn();
 const mockPiiServerUrl = faker.internet.url();
-const mockProgramCode = faker.random.number();
+const mockProgramId = faker.random.number();
+const mockProgramCode = faker.random.word();
 
 describe('v5 order-recipients', () => {
   let orderRecipient;
 
   beforeEach(() => {
-    orderRecipient = orderRecipientFactory('programs', mockProgramCode);
+    RO.config.set('piiServerUrl', mockPiiServerUrl);
+    orderRecipient = orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });
 
   afterEach(() => {
+    RO.config.reset();
     jest.clearAllMocks();
   });
 
   it('throws an error if not provided a `programs` context', () => {
-    expect(() => {
-      orderRecipientFactory('something else', mockProgramCode);
-    }).toThrow(Error('Can only create an order recipient object for programs'));
+    expect(() => orderRecipientFactory('something else', mockProgramId, mockProgramCode)).toThrow(
+      'Can only create an order recipient object for programs'
+    );
   });
 
   describe('when default (not configured)', () => {
-    describe('#storeOrderRecipient', () => {
-      it('should respond with an error if there is a bad config', async () => {
-        const requestBody = {};
+    beforeEach(() => {
+      RO.config.set('piiServerUrl', undefined);
+    });
 
-        await expect(orderRecipient.store(requestBody, mockCallBack)).rejects.toThrowError(
-          'piiServerUrl is not configured'
-        );
-      });
+    it('should respond with an error if there is a bad config', () => {
+      expect(() => orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
+        'piiServerUrl is not configured'
+      );
     });
   });
 
   describe('when configured', () => {
-    beforeEach(() => {
-      RO.config.set('piiServerUrl', mockPiiServerUrl);
-    });
-
-    afterEach(() => {
-      RO.config.reset();
-    });
-
     describe('#storeOrderRecipient', () => {
       it('should contain the piiServerUrl in the request URL', async () => {
         const member = { id: faker.random.number(), accept_language: 'en-CA' };
 
-        await orderRecipient.store({ member }, mockCallBack);
+        await orderRecipient.create({ member }, mockCallBack);
 
-        expect(api.post).toHaveBeenNthCalledWith(
+        expect(axios.post).toHaveBeenNthCalledWith(
           1,
+          `${RO.config.get('piiServerUrl')}/api/v5/auth/token`,
+          { grant_type: 'client_credentials' },
           {
-            path: `/${mockPiiServerUrl}/api/v5/programs/${mockProgramCode}/order_recipients`,
-            member,
-          },
-          expect.any(Function)
+            auth: {
+              username: RO.config.get('clientId'),
+              password: RO.config.get('clientSecret'),
+            },
+          }
         );
       });
 
       it('should respond with an error if the params are invalid', async () => {
         const requestBody = {};
 
-        await orderRecipient.store(requestBody, mockCallBack);
+        await orderRecipient.create(requestBody, mockCallBack);
 
-        expect(mockCallBack).toHaveBeenCalledWith(expect.any(Array));
-        expect(api.post).not.toHaveBeenCalled();
+        expect(mockCallBack).toHaveBeenCalledWith(['accept_language is a required field']);
       });
     });
   });
