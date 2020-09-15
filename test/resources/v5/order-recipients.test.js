@@ -45,7 +45,7 @@ describe('v5 order-recipients', () => {
     });
   });
 
-  describe('when supportedLocales (not configured)', () => {
+  describe('when supportedLocales not configured', () => {
     beforeEach(() => {
       RO.config.set('supportedLocales', undefined);
     });
