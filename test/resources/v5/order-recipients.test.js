@@ -33,7 +33,7 @@ describe('v5 order-recipients', () => {
     );
   });
 
-  describe('when piiServerUrl (not configured)', () => {
+  describe('when piiServerUrl not configured', () => {
     beforeEach(() => {
       RO.config.set('piiServerUrl', undefined);
     });
