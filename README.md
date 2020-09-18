@@ -1,7 +1,8 @@
 ## RewardOps Node SDK
 
-Note: The SDK currently supports v4 and v3 of the RewardOps API.
-In addition, v5 endpoints are partially implemented.
+The RewardOps Node SDK dramatically simplifies OAuth as well as typical interfacing with our public APIs. Simply add your `clientId` and `clientSecret` to the config and you're ready to go.
+
+_Note: The SDK currently supports v4 and v3 of the RewardOps API. In addition, v5 endpoints are partially implemented._
 
 ## Installation
 
@@ -19,14 +20,16 @@ To install and save a specific (legacy) version of the SDK in your package.json,
 npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.6
 ```
 
-## Configuration
+## Usage
 
-### Required
+### Required configuration
+
+The following properties must be set before making any API calls using the SDK:
 
 - `clientId`: Your RewardOps API OAuth client_id.
 - `clientSecret`: Your RewardOps API OAuth client_secret.
 
-You must set `RO.config.clientId` and `RO.config.clientSecret` before making any API calls using the SDK.
+For example, in your application initialization module, you can add:
 
 ```js
 const RO = require('rewardops-sdk');
@@ -35,29 +38,78 @@ RO.config.set('clientId', 'abcdefg1234567');
 RO.config.set('clientSecret', '9876543poiuytr');
 ```
 
-See [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
+NOTE: If your program is configured to use geographic-specific PII storage, you must also set:
 
-### Environment variables
+- `piiServerUrl`: Geographic-specific PII storage server URL.
+- `supportedLocales`: List of accepted locales for the program (RFC2616 format).
 
-You can optionally set the environment variable `REWARDOPS_ENV` before starting your application to change the root RewardOps API URL to which the SDK will make requests. See
+See the `config` module in [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
+
+#### Environment variables
+
+To change the RewardOps host API URL, you can optionally set the environment variable `REWARDOPS_ENV` before starting your application. (See the `api` module of [the library documentation](https://rewardops.github.io/rewardops-sdk-node/) for more info.)
 
 You can also change the base API URL after loading the SDK using `RO.config.set('apiServerUrl', '[your-server-url]')`.
 
-## Documentation
+## Usage
 
-### SDK API
+When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and cache it for further use.
 
-See [the library documentation](https://rewardops.github.io/rewardops-sdk-node/) for the complete SDK API.
+Several SDK methods can receive `options` objects, which then passed directly to the RewardOps API calls. Available parameters can be viewed on [RewardOps API console](https://app.rewardops.net/api_docs/console). As a rule, path parameters (e.g., required `program`, `reward`, and `order` IDs) are passed as the first argument to SDK methods, while other parameters should appear in an `options` object.
 
-### OAuth
+In addition, most methods accept a callback function, whose type definition can be found in the `api` module of [the library documentation](https://rewardops.github.io/rewardops-sdk-node/).
 
-The SDK dramatically simplifies OAuth. You only need to add your `clientId` and `clientSecret` to the config and you're ready to go. When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and store it for later use.
+### Example methods
 
-### Samples
+#### Programs
 
-To see the SDK in action, look at the server for the [RewardOps sample JavaScript app](https://github.com/rewardops/rewardops-sample-javascript).
+```js
+// Get a list of all programs available to you
+RO.programs.getAll(callback);
 
-To see an application that uses the SDK to consume the RewardOps API, see the [RewardOps Angular Catalog app](https://github.com/rewardops/rewardops-angular-catalog), which uses the SDK in its Express server.
+// Get details of a program
+RO.programs.get(123, callback);
+```
+
+#### Program
+
+The program object has methods for accessing the program's rewards, orders, and more:
+
+```js
+//  Return a program object for the program with the specified `id`
+const myProgram = RO.program(123); // Standard program
+const myProgram = RO.program(123, 'example_program_code'); // Geographic-specific PII storage-enabled program
+
+// Get details for program 123
+// Alias of `RO.programs.get(123)`
+myProgram.details(callback);
+
+// Get a list of all orders for a member in a program
+// NOTE: The `options` object is required and must include a `member_id`.
+myProgram.orders.getAll(options, callback)
+// Gets the order with ID 'qwerty1234'
+myProgram.orders.get('qwerty1234' callback);
+// Post a new order for the reward with id 45231 for member 'bbdd0987'
+// NOTE: The `options` object is required and must include a `reward_id` and a `member` object
+myProgram.orders.create(
+  {
+    member: {
+      id: 'jb0987',
+      full_name: 'Jolanta Banicki',
+      email: 'jolanta.b@example.com',
+    },
+  },
+  callback
+);
+
+// Get JSON for the customCategory with code CAT_000002
+myProgram.customCategories.get('CAT_000002', callback);
+
+// Get JSON for the item with ID 938
+myProgram.items.get(938, callback);
+```
+
+_This is a subset of the available methods. For the complete SDK API, see [the library documentation](https://rewardops.github.io/rewardops-sdk-node/)._
 
 ## Maintainer
 
