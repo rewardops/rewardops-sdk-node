@@ -78,9 +78,11 @@ describe('setV5Token', () => {
       const EXPIRATION_TIME = Date.now() + 7200 * 1000;
       const mockDate = { now: () => EXPIRATION_TIME };
 
+      // set the original token
       mockV5AuthAPI({ testToken: originalTestToken });
       await setV5Token();
 
+      // mockDate simulates fast forwarding in time to when the token is expired
       mockV5AuthAPI({ testToken: newTestToken });
       await setV5Token(mockDate);
 
