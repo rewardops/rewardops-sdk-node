@@ -43,6 +43,11 @@ NOTE: If your program is configured to use geographic-specific PII storage, you 
 - `piiServerUrl`: Geographic-specific PII storage server URL.
 - `supportedLocales`: List of accepted locales for the program (RFC2616 format).
 
+```js
+RO.config.set('piiServerUrl', 'https://api.ca.rewardops.net');
+RO.config.set('supportedLocales', ['en-CA', 'en-FR']);
+```
+
 See the `config` module in [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
 
 #### Environment variables
