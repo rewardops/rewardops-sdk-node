@@ -1,25 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Module: context</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> context</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
 </head>
 
-<body>
 
-<div id="main">
 
-    <h1 class="page-title">Module: context</h1>
-
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
     
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>context</h1>
+                </header>
+                
 
 
 
@@ -43,7 +100,6 @@
 
         
             
-
 
 
 
@@ -86,20 +142,23 @@
     
 
     
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="context.js.html">context.js</a>, <a href="context.js.html#line1">line 1</a>
-    </li></ul></dd>
     
 
     
 
     
 
+    
+        <p class="tag-source">
+            <a href="context.js.html" class="button">View Source</a>
+            <span>
+                <a href="context.js.html">context.js</a>, <a href="context.js.html#line1">line 1</a>
+            </span>
+        </p>
     
 </dl>
+
+
 
 
 
@@ -123,7 +182,7 @@
         
     
     </div>
-
+    
     
 
     
@@ -139,24 +198,35 @@
     
 
     
-        <h3 class="subsection-title">Methods</h3>
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
 
+
+    
+    <h4 class="name" id="~contextInstance">
+        <a class="href-link" href="#~contextInstance">#</a>
         
             
-
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                contextInstance<span class="signature">(contextTypeName, id, code)</span><span class="type-signature"> &rarr; {ContextInstance}</span>
+            
+        </span>
+    </h4>
     
 
     
-    <h4 class="name" id="~contextInstance"><span class="type-signature">(inner) </span>contextInstance<span class="signature">(contextTypeName, id, code)</span><span class="type-signature"> &rarr; {ContextInstance}</span></h4>
     
-
+    <div class="description">
+        <p>Return a context object (i.e. a <code>program</code> object).</p>
+    </div>
     
-
-
-
-<div class="description">
-    <p>Return a context object (i.e. a <code>program</code> object).</p>
-</div>
 
 
 
@@ -168,98 +238,104 @@
 
     <h5>Parameters:</h5>
     
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
+<div class="table-container">
+    <table class="params table">
+        <thead>
         <tr>
             
-                <td class="name"><code>contextTypeName</code></td>
+            <th>Name</th>
             
 
-            <td class="type">
+            <th>Type</th>
+
             
-                
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>contextTypeName</code></td>
+  
+
+  <td class="type">
+  
+      
 <span class="param-type">string</span>
 
 
-            
-            </td>
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The context type name (e.g., <code>programs</code>). This should be plural.</p></td>
+</tr>
+
+
+        
 
             
+<tr class="deep-level-0">
+  
+      <td class="name"><code>id</code></td>
+  
 
-            
-
-            <td class="description last"><p>The context type name (e.g., <code>programs</code>). This should be plural.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
+  <td class="type">
+  
+      
 <span class="param-type">number</span>
 
 
-            
-            </td>
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID for the context</p></td>
+</tr>
+
+
+        
 
             
+<tr class="deep-level-0">
+  
+      <td class="name"><code>code</code></td>
+  
 
-            
-
-            <td class="description last"><p>The ID for the context</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>code</code></td>
-            
-
-            <td class="type">
-            
-                
+  <td class="type">
+  
+      
 <span class="param-type">string</span>
 
 
-            
-            </td>
+  
+  </td>
 
-            
+  
 
-            
+  
 
-            <td class="description last"><p>v5 uses <code>program_code</code> instead of <code>program_id</code></p></td>
-        </tr>
+  <td class="description last"><p>v5 uses <code>program_code</code> instead of <code>program_id</code></p></td>
+</tr>
 
-    
-    </tbody>
-</table>
 
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -290,18 +366,19 @@
     
 
     
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="context.js.html">context.js</a>, <a href="context.js.html#line135">line 135</a>
-    </li></ul></dd>
     
 
     
 
     
 
+    
+        <p class="tag-source">
+            <a href="context.js.html" class="button">View Source</a>
+            <span>
+                <a href="context.js.html">context.js</a>, <a href="context.js.html#line136">line 136</a>
+            </span>
+        </p>
     
 </dl>
 
@@ -319,50 +396,65 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Returns context instance object.</p>
-</div>
 
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Returns context instance object.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
         
 <span class="param-type">ContextInstance</span>
 
 
-    </dd>
-</dl>
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
 
     
-
-
-
-
-
+    <h4 class="name" id="~contextType">
+        <a class="href-link" href="#~contextType">#</a>
         
             
-
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                contextType<span class="signature">(context)</span><span class="type-signature"> &rarr; {ContextType}</span>
+            
+        </span>
+    </h4>
     
 
     
-    <h4 class="name" id="~contextType"><span class="type-signature">(inner) </span>contextType<span class="signature">(context)</span><span class="type-signature"> &rarr; {ContextType}</span></h4>
     
-
-    
-
-
-
-<div class="description">
-    <p>A context is a top-level actor in the RewardOps API.</p>
+    <div class="description">
+        <p>A context is a top-level actor in the RewardOps API.</p>
 <p>NOTE: Currently, there is only one type of context ('programs')</p>
-</div>
+    </div>
+    
 
 
 
@@ -374,52 +466,54 @@
 
     <h5>Parameters:</h5>
     
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
+<div class="table-container">
+    <table class="params table">
+        <thead>
         <tr>
             
-                <td class="name"><code>context</code></td>
+            <th>Name</th>
             
 
-            <td class="type">
+            <th>Type</th>
+
             
-                
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>context</code></td>
+  
+
+  <td class="type">
+  
+      
 <span class="param-type">string</span>
 
 
-            
-            </td>
+  
+  </td>
 
-            
+  
 
-            
+  
 
-            <td class="description last"><p>The name of the context type ('programs')</p></td>
-        </tr>
+  <td class="description last"><p>The name of the context type ('programs')</p></td>
+</tr>
 
-    
-    </tbody>
-</table>
 
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -450,18 +544,19 @@
     
 
     
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="context.js.html">context.js</a>, <a href="context.js.html#line22">line 22</a>
-    </li></ul></dd>
     
 
     
 
     
 
+    
+        <p class="tag-source">
+            <a href="context.js.html" class="button">View Source</a>
+            <span>
+                <a href="context.js.html">context.js</a>, <a href="context.js.html#line22">line 22</a>
+            </span>
+        </p>
     
 </dl>
 
@@ -479,42 +574,66 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Returns context type object.</p>
-</div>
 
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Returns context type object.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
         
 <span class="param-type">ContextType</span>
 
 
-    </dd>
-</dl>
-
+    </div>
     
+</div>
 
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
                 
-<h4 class="name" id="~ContextInstance">ContextInstance</h4>
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">object</span>
+
+
+    </span>
+
+<h4 class="name" id="~ContextInstance">
+    <a class="href-link" href="#~ContextInstance">#</a>
+    
+    <span class="code-name">
+        ContextInstance
+    </span>
+    
+</h4>
 
 
 
@@ -525,115 +644,103 @@
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
 
 
     <h5 class="subsection-title">Properties:</h5>
 
     
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
+<div class="table-container">
+    <table class="props table">
+        <thead>
         <tr>
             
-                <td class="name"><code>contextTypeName</code></td>
+            <th>Name</th>
             
 
-            <td class="type">
+            <th>Type</th>
+
             
-                
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>contextTypeName</code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">string</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>See <code>contextInstance</code></p></td>
-        </tr>
+    
+    </td>
 
     
 
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
+    
 
-            <td class="type">
+    <td class="description last"><p>See <code>contextInstance</code></p></td>
+</tr>
+
+        
             
-                
+<tr class="deep-level-0">
+    
+        <td class="name"><code>id</code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">number</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>See <code>contextInstance</code></p></td>
-        </tr>
+    
+    </td>
 
     
 
-        <tr>
-            
-                <td class="name"><code></code></td>
-            
+    
 
-            <td class="type">
+    <td class="description last"><p>See <code>contextInstance</code></p></td>
+</tr>
+
+        
             
-                
+<tr class="deep-level-0">
+    
+        <td class="name"><code></code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">function</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
+    
+    </td>
 
     
-    </tbody>
-</table>
 
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -662,18 +769,19 @@
     
 
     
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="context.js.html">context.js</a>, <a href="context.js.html#line145">line 145</a>
-    </li></ul></dd>
     
 
     
 
     
 
+    
+        <p class="tag-source">
+            <a href="context.js.html" class="button">View Source</a>
+            <span>
+                <a href="context.js.html">context.js</a>, <a href="context.js.html#line146">line 146</a>
+            </span>
+        </p>
     
 </dl>
 
@@ -681,10 +789,26 @@
 
 
 
-
+</div>
             
-                
-<h4 class="name" id="~ContextType">ContextType</h4>
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">object</span>
+
+
+    </span>
+
+<h4 class="name" id="~ContextType">
+    <a class="href-link" href="#~ContextType">#</a>
+    
+    <span class="code-name">
+        ContextType
+    </span>
+    
+</h4>
 
 
 
@@ -695,115 +819,103 @@
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
 
 
     <h5 class="subsection-title">Properties:</h5>
 
     
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
+<div class="table-container">
+    <table class="props table">
+        <thead>
         <tr>
             
-                <td class="name"><code>context</code></td>
+            <th>Name</th>
             
 
-            <td class="type">
+            <th>Type</th>
+
             
-                
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>context</code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">string</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Context value</p></td>
-        </tr>
+    
+    </td>
 
     
 
-        <tr>
-            
-                <td class="name"><code>getAll</code></td>
-            
+    
 
-            <td class="type">
+    <td class="description last"><p>Context value</p></td>
+</tr>
+
+        
             
-                
+<tr class="deep-level-0">
+    
+        <td class="name"><code>getAll</code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">function</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Method that returns an array of context objects (e.g., programs)</p></td>
-        </tr>
+    
+    </td>
 
     
 
-        <tr>
-            
-                <td class="name"><code>get</code></td>
-            
+    
 
-            <td class="type">
+    <td class="description last"><p>Method that returns an array of context objects (e.g., programs)</p></td>
+</tr>
+
+        
             
-                
+<tr class="deep-level-0">
+    
+        <td class="name"><code>get</code></td>
+    
+
+    <td class="type">
+    
+        
 <span class="param-type">function</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Method that returns a context object (e.g., program)</p></td>
-        </tr>
+    
+    </td>
 
     
-    </tbody>
-</table>
 
+    
+
+    <td class="description last"><p>Method that returns a context object (e.g., program)</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -832,18 +944,19 @@
     
 
     
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="context.js.html">context.js</a>, <a href="context.js.html#line116">line 116</a>
-    </li></ul></dd>
     
 
     
 
     
 
+    
+        <p class="tag-source">
+            <a href="context.js.html" class="button">View Source</a>
+            <span>
+                <a href="context.js.html">context.js</a>, <a href="context.js.html#line117">line 117</a>
+            </span>
+        </p>
     
 </dl>
 
@@ -851,8 +964,10 @@
 
 
 
-
+</div>
             
+            </div>
+        </div>
     
 
     
@@ -863,19 +978,25 @@
 
 
 
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_orders-recipients.html">resources/orders-recipients</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Sep 16 2020 17:21:57 GMT-0400 (Eastern Daylight Time)
-</footer>
-
-<script> prettyPrint(); </script>
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
 <script src="scripts/linenumber.js"> </script>
+
 </body>
 </html>

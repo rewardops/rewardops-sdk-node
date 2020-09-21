@@ -1,25 +1,84 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: resources/order-recipients.js</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> resources/order-recipients.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
 </head>
 
-<body>
 
-<div id="main">
 
-    <h1 class="page-title">Source: resources/order-recipients.js</h1>
-
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
     
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>resources/order-recipients.js</h1>
+                </header>
+                
 
 
 
@@ -29,7 +88,7 @@
             <pre class="prettyprint source linenums"><code>/**
  * Orders Recipients resources
  *
- * @module resources/orders-recipients
+ * @module resources/order-recipients
  * @copyright 2015–2020 RewardOps Inc.
  */
 const axios = require('axios');
@@ -40,6 +99,11 @@ const { storeOrderRecipientSchema } = require('../schemas/store-order-recipient'
 
 const debugLogs = [];
 
+/**
+ * Request and set the bearer token in the `Authorization` header property in axios.
+ *
+ * @private
+ */
 const setV5Token = async () => {
   const {
     data: { access_token: accessToken },
@@ -59,10 +123,27 @@ const setV5Token = async () => {
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 };
 
+/**
+ * Higher order function for creating an order in context. Same as {@link module:resources/orders~createOrder}
+ *
+ * TODO: Refactor this so we don't have 2 different V3/V4 create order functions (https://rewardops.atlassian.net/browse/MX-1063)
+ *
+ * NOTE: This is actually something we'd regularly show, but are hiding so as to note cause confusion with
+ * 2 create order functions in the SDK's public API.
+ *
+ * @param {module:resources/order-recipients~V5OrderContext} v5OrderContext Order context object
+ *
+ * @returns {module:resources/order-recipients~CreateOrderFunc} Create order function
+ *
+ * @private
+ */
 const createOrder = ({ contextId }) => async (params, callback) => {
   debugLogs.push({ function: 'createOrder', params });
   try {
-    const response = await axios.post(`${config.get('piiServerUrl')}/api/v4/programs/${contextId}/orders`, params);
+    const response = await axios.post(
+      `${config.get('piiServerUrl')}/api/${config.get('apiVersion')}/programs/${contextId}/orders`,
+      params
+    );
     callback(null, response.data, response);
   } catch (error) {
     callback({ error, debugLogs });
@@ -70,15 +151,29 @@ const createOrder = ({ contextId }) => async (params, callback) => {
 };
 
 /**
- * Higher order function for creating an order recipient in context.
+ * Create order in context function for V3/V4 API.
  *
- * NOTE: This is a v5 API endpoint, therefore ignores the `apiVersion` config prop
+ * @typedef module:resources/order-recipients~CreateOrderFunc
  *
- * @param {module:resources/orders-recipients~V5OrderContext} v5OrderContext Order context object
- *
- * @returns {module:resources/orders~CreateFunc} `create` order function in context
+ * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the create order API call.
+ * @property {module:api~requestCallback} callback Callback that handles the response.
  *
  * @private
+ */
+
+/**
+ * Higher order function for creating an order recipient in context.
+ *
+ * NOTE: This is a v5 API endpoint, therefore ignores the `apiVersion` {@link module:config~DefaultConfig Config}
+ * property.
+ *
+ * @param {module:resources/order-recipients~V5OrderContext} v5OrderContext Order context object
+ *
+ * @returns {module:resources/order-recipients~StoreOrderRecipientFunc} `create` order function in context
+ *
+ * @see {@link module:resources/order-recipients~StoreOrderRecipientFunc} for examples.
+ *
+ * @protected
  */
 const storeOrderRecipient = ({ programCode }) => async member => {
   await storeOrderRecipientSchema.validate(member).then(async () => {
@@ -107,15 +202,78 @@ const storeOrderRecipient = ({ programCode }) => async member => {
 };
 
 /**
+ * Store order recipient function that makes a call to store data for geographic-specific
+ * PII storage-enabled programs.
+ *
+ * @typedef module:resources/order-recipients~StoreOrderRecipientFunc
+ *
+ * @property {module:resources/order-recipients~MemberPiiRequestBody} member Member PII information
+ *
+ * @protected
+ */
+
+/**
+ * Higher order function for creating an order that first stores geographic-specific PII information, in context.
+ *
+ * @param {module:resources/order-recipients~V5OrderContext} v5OrderContext Order context object
+ *
+ * @returns {module:resources/order-recipients~CreateOrderWithPiiStorageFunc} Create an order function that also
+ * stores geographic-specific PII information.
+ *
+ * @see {@link module:resources/order-recipients~CreateOrderWithPiiStorageFunc} for examples.
+ */
+const createOrderWithPiiStorage = ({ orderContext }) => async ({ member, ...createOrderParams }, callback) => {
+  try {
+    const orderRecipientData = await storeOrderRecipient(orderContext)(member);
+    await createOrder(orderContext)({ ...createOrderParams, ...orderRecipientData }, callback);
+  } catch (exception) {
+    callback(exception.errors || exception);
+  }
+};
+
+/**
+ * Create order function that makes a call to store geographic-specific PII information, then
+ * creates a new order along with the order recipient code generated from the first call.
+ *
+ * @typedef module:resources/order-recipients~CreateOrderWithPiiStorageFunc
+ *
+ * @param {object} orderParams Order params
+ * @param {module:resources/order-recipients~MemberPiiRequestBody} orderParams.member Member PII information
+ * @param {module:api~requestCallback} callback Callback that handles the response.
+ *
+ * @example
+ * // Create new order for a program that has geographic-specific PII storage enabled.
+ * // NOTE: Notice the second `'example_program_code'` argument on the `RO.program` method.
+ * const program = RO.program(12, 'example_program_code');
+ * program.order.create(
+ *   {
+ *     reward_id: 45231,
+ *     member: {
+ *       id: 'jb0987',
+ *       full_name: 'Jolanta Banicki',
+ *       email: 'jolanta.b@example.com',
+ *     },
+ *   },
+ *   (error, responseBody, response) => {
+ *     if (error) {
+ *       console.log(error);
+ *     } else {
+ *       console.log(result);
+ *     }
+ *   }
+ * );
+ */
+
+/**
  * Higher order function for fetching an order recipient in context.
  *
  * NOTE: This is a v5 API endpoint, therefore ignores the `apiVersion` config prop
  *
- * @param {module:resources/orders-recipients~V5OrderContext} v5OrderContext Order context object
+ * @param {module:resources/order-recipients~V5OrderContext} v5OrderContext Order context object
  *
- * @returns {module:resources/orders~CreateFunc} `create` order function in context
+ * @returns {module:resources/order-recipients~GetOrderRecipientFunc} `create` order function in context
  *
- * @public
+ * @see {@link module:resources/order-recipients~GetOrderRecipientFunc} for examples.
  */
 const getOrderRecipient = ({ programCode }) => async (orderRecipientCode, callback) => {
   try {
@@ -129,6 +287,35 @@ const getOrderRecipient = ({ programCode }) => async (orderRecipientCode, callba
   }
 };
 
+/**
+ * Fetch order recipient function.
+ *
+ * @typedef module:resources/order-recipients~GetOrderRecipientFunc
+ *
+ * @property {string} orderRecipientCode Order recipient code (e.g., from a
+ *   {@link module:resources/orders~GetSummaryFunc GetSummaryFunc} payload).
+ * @property {module:api~requestCallback} callback Callback that handles the response.
+ *
+ * @example
+ * // Used in the context of a program
+ * const orderRecipient = ro.program(12, 'example_program_code').getOrderRecipient(
+ *   'poiuytr123456',
+ *   (undefined, responseBody, response) => {
+ *     console.log(result);
+ *   });
+ */
+
+/**
+ * Factory for creating `orderRecipients` methods.
+ *
+ * @param {string} contextTypeName The type of the parent context ('programs')
+ * @param {number} contextId The ID of the order's parent program
+ * @param {string} programCode The Code of the order's parent program
+ *
+ * @returns {module:resources/orders~OrderRecipients} Orders object
+ *
+ * @protected
+ */
 const orderRecipientFactory = (contextTypeName, contextId, programCode) => {
   if (contextTypeName !== 'programs') {
     throw new Error('Can only create an order recipient object for programs');
@@ -148,23 +335,25 @@ const orderRecipientFactory = (contextTypeName, contextId, programCode) => {
 
   return {
     getOrderRecipient: getOrderRecipient(orderContext),
-    create: async ({ member, ...rest }, callback) => {
-      try {
-        const orderRecipientData = await storeOrderRecipient(orderContext)(member);
-        await createOrder(orderContext)({ ...rest, ...orderRecipientData }, callback);
-      } catch (exception) {
-        callback(exception.errors || exception);
-      }
-    },
+    create: createOrderWithPiiStorage(orderContext),
   };
 };
+
+/**
+ * Order recipients methods object
+ *
+ * @typedef module:resources/orders~OrderRecipients
+ *
+ * @property {module:resources/order-recipients~GetOrderRecipientFunc} getOrderRecipient
+ * @property {module:resources/order-recipients~CreateFunc} create
+ */
 
 module.exports = orderRecipientFactory;
 
 /**
- * Default SDK configuration options type
+ * Request body payload for Member PII information.
  *
- * @typedef module:resources/orders-recipients~PiiRequestBody
+ * @typedef module:resources/order-recipients~MemberPiiRequestBody
  *
  * @property {string} id Member ID
  * @property {string} accept_language The member's preferred locale, in the format of Accept-Language
@@ -174,13 +363,13 @@ module.exports = orderRecipientFactory;
  * @property {string} [ip_address] IP address
  * @property {string} [email] Email address
  * @property {string} [phone] Phone number
- * @property {module:resources/orders-recipients~AddressModelSchema} [address] Address
+ * @property {module:resources/order-recipients~AddressModelSchema} [address] Address
  */
 
 /**
  * RewardOps Address model schema
  *
- * @typedef module:resources/orders-recipients~AddressModelSchema
+ * @typedef module:resources/order-recipients~AddressModelSchema
  *
  * @property {string} address Street address
  * @property {string} address_2 Street address - 2
@@ -193,7 +382,7 @@ module.exports = orderRecipientFactory;
 /**
  * Order options object
  *
- * @typedef module:resources/orders-recipients~V5OrderContext
+ * @typedef module:resources/order-recipients~V5OrderContext
  *
  * @property {string} contextTypeName The type of the parent context ('programs')
  * @property {number} contextId The ID of the order's parent program
@@ -206,19 +395,25 @@ module.exports = orderRecipientFactory;
 
 
 
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_orders-recipients.html">resources/orders-recipients</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Sep 16 2020 17:21:57 GMT-0400 (Eastern Daylight Time)
-</footer>
-
-<script> prettyPrint(); </script>
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
 <script src="scripts/linenumber.js"> </script>
+
 </body>
 </html>
