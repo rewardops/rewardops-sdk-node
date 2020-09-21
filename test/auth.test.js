@@ -335,7 +335,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it.skip('should timeout and pass an error to the callback when there is a socket timeout', () => {
+    it('should timeout and pass an error to the callback when there is a socket timeout', () => {
       return new Promise(done => {
         const config = {
           clientId: 'asdf0987ghjk',
@@ -357,7 +357,7 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { ...postBody })
           .socketDelay(config.timeout + 10)
           .times(3)
-          .reply(200, reply)
+          .replyWithError('ESOCKETTIMEDOUT')
           .post(RO.auth.getTokenPath(), { ...postBody })
           .socketDelay(config.timeout - 10)
           .once()

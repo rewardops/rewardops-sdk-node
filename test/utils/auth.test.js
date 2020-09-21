@@ -42,12 +42,12 @@ describe('setV5Token', () => {
     config.set('clientId', clientId);
     config.set('clientSecret', clientSecret);
     axios.defaults.headers.common.Authorization = undefined;
-    axios.defaults.tokenData = {};
+    axios.defaults.tokenData = undefined;
   });
-
+  // clean up after all tests in this file have run.
   afterAll(() => {
     axios.defaults.headers.common.Authorization = undefined;
-    axios.defaults.tokenData = {};
+    axios.defaults.tokenData = undefined;
   });
 
   it('should set the accessToken', async () => {
