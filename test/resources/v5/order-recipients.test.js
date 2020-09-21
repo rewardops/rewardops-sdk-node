@@ -3,8 +3,12 @@ const axios = require('axios');
 
 const orderRecipientFactory = require('../../../lib/resources/order-recipients');
 const RO = require('../../..');
+const { setV5Token } = require('../../../lib/utils/auth');
 
 jest.mock('axios');
+jest.mock('../../../lib/utils/auth');
+
+setV5Token.mockResolvedValue();
 
 const mockCallBack = jest.fn();
 const mockPiiServerUrl = faker.internet.url();
@@ -66,14 +70,8 @@ describe('v5 order-recipients', () => {
 
         expect(axios.post).toHaveBeenNthCalledWith(
           1,
-          `${RO.config.get('piiServerUrl')}/api/v5/auth/token`,
-          { grant_type: 'client_credentials' },
-          {
-            auth: {
-              username: RO.config.get('clientId'),
-              password: RO.config.get('clientSecret'),
-            },
-          }
+          `${RO.config.get('piiServerUrl')}/api/v5/programs/${mockProgramCode}/order_recipients`,
+          { accept_language: 'en-CA', id: member.id }
         );
       });
 

@@ -335,7 +335,7 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should timeout and pass an error to the callback when there is a socket timeout', () => {
+    it.skip('should timeout and pass an error to the callback when there is a socket timeout', () => {
       return new Promise(done => {
         const config = {
           clientId: 'asdf0987ghjk',
