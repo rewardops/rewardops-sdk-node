@@ -112,7 +112,7 @@
 <pre class="prettyprint source lang-sh"><code>npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.4.6
 </code></pre>
 <h2>Usage</h2>
-<h3>Required configuration</h3>
+<h3>Configuration</h3>
 <p>The following properties must be set before making any API calls using the SDK:</p>
 <ul>
 <li><code>clientId</code>: Your RewardOps API OAuth client_id.</li>
@@ -136,7 +136,7 @@ RO.config.set('supportedLocales', ['en-CA', 'en-FR']);
 <h4>Environment variables</h4>
 <p>To change the RewardOps host API URL, you can optionally set the environment variable <code>REWARDOPS_ENV</code> before starting your application. (See the <code>api</code> module of <a href="https://rewardops.github.io/rewardops-sdk-node/">the library documentation</a> for more info.)</p>
 <p>You can also change the base API URL after loading the SDK using <code>RO.config.set('apiServerUrl', '[your-server-url]')</code>.</p>
-<h2>Usage</h2>
+<h3>Overview</h3>
 <p>When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and cache it for further use.</p>
 <p>Several SDK methods can receive <code>options</code> objects, which then passed directly to the RewardOps API calls. Available parameters can be viewed on <a href="https://app.rewardops.net/api_docs/console">RewardOps API console</a>. As a rule, path parameters (e.g., required <code>program</code>, <code>reward</code>, and <code>order</code> IDs) are passed as the first argument to SDK methods, while other parameters should appear in an <code>options</code> object.</p>
 <p>In addition, most methods accept a callback function, whose type definition can be found in the <code>api</code> module of <a href="https://rewardops.github.io/rewardops-sdk-node/">the library documentation</a>.</p>
