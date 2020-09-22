@@ -22,7 +22,7 @@ npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.
 
 ## Usage
 
-### Required configuration
+### Configuration
 
 The following properties must be set before making any API calls using the SDK:
 
@@ -56,7 +56,7 @@ To change the RewardOps host API URL, you can optionally set the environment var
 
 You can also change the base API URL after loading the SDK using `RO.config.set('apiServerUrl', '[your-server-url]')`.
 
-## Usage
+### Overview
 
 When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and cache it for further use.
 
