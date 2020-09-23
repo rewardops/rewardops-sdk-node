@@ -66,10 +66,6 @@ describe('setV5Token', () => {
   it('should return the error', async () => {
     jest.spyOn(auth, 'getToken').mockImplementation((_, callback) => callback('testError'));
 
-    mockV5AuthAPI()
-      .thrice()
-      .reply(404);
-
     await expect(setV5Token()).rejects.toMatch('testError');
   });
 });
