@@ -3,9 +3,9 @@ const nock = require('nock');
 
 const orderRecipientFactory = require('../../../lib/resources/order-recipients');
 const RO = require('../../..');
-const { setV5Token } = require('../../../lib/utils/auth');
+const { setV5Token } = require('../../../lib/utils/axios-helpers');
 
-jest.mock('../../../lib/utils/auth');
+jest.mock('../../../lib/utils/axios-helpers');
 
 setV5Token.mockResolvedValue();
 
@@ -16,8 +16,6 @@ const mockProgramCode = faker.random.word();
 const testError = { error: 'testError' };
 const mockOrderRecipientCode = '011a0032-162f-497d-9856-b9b7a9fb31b8';
 
-// TODO: add additional tests
-// see: https://rewardops.atlassian.net/browse/MX-1064
 describe('v5 order-recipients', () => {
   let orderRecipient;
 
