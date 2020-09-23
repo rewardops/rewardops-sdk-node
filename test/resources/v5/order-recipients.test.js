@@ -64,7 +64,7 @@ describe('v5 order-recipients', () => {
     const member = { id: faker.random.number(), accept_language: 'en-CA' };
     const mockOrderRecipient = {
       mockOrderRecipientCode,
-      validation_signature: '0t0ir1mXeV4Ii5-RgSZY....xFA==',
+      validation_signature: `${faker.random.uuid()}FA==`,
     };
     const mockStoreOrderRecipient = () =>
       nock(mockPiiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
