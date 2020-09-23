@@ -87,8 +87,5 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
 }
