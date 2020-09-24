@@ -72,7 +72,10 @@ describe('v5 order-recipients', () => {
       nock(mockPiiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
 
     const mockCreateOrderCall = () =>
-      nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, { amount: 100 });
+      nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, {
+        ...mockStoreOrderRecipientResponse,
+        amount: 100,
+      });
 
     describe('#storeOrderRecipient', () => {
       it('should return props from `storeOrderRecipient` when it receives a 200', async () => {
