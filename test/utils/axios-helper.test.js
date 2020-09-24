@@ -22,7 +22,7 @@ config.set('clientSecret', clientSecret);
  * Since OAuth Bearer tokens don't have a defined structure, we will
  * generate alphanumeric strings of length 24.
  *
- * https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+ * @see {@link https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/ OAuth access tokens}
  *
  * @returns {string} testAccessToken
  *
