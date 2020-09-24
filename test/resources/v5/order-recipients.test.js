@@ -3,10 +3,10 @@ const nock = require('nock');
 
 const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
-const { setV5Token } = require('../../../lib/utils/axios-helpers');
+const { setPiiToken } = require('../../../lib/utils/axios-helpers');
 
 jest.mock('../../../lib/utils/axios-helpers');
-setV5Token.mockResolvedValue();
+setPiiToken.mockResolvedValue();
 
 const mockCallBack = jest.fn();
 const mockPiiServerUrl = faker.internet.url();
@@ -72,7 +72,10 @@ describe('v5 order-recipients', () => {
       nock(mockPiiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
 
     const mockCreateOrderCall = () =>
-      nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, { amount: 100 });
+      nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, {
+        ...mockStoreOrderRecipientResponse,
+        amount: 100,
+      });
 
     describe('#storeOrderRecipient', () => {
       it('should return props from `storeOrderRecipient` when it receives a 200', async () => {
@@ -96,7 +99,7 @@ describe('v5 order-recipients', () => {
       });
 
       it('should return the error to the callback if an error occurs during auth', async () => {
-        setV5Token.mockRejectedValueOnce('testError');
+        setPiiToken.mockRejectedValueOnce('testError');
 
         await orderRecipient.create({ member }, mockCallBack);
 
@@ -139,7 +142,7 @@ describe('v5 order-recipients', () => {
 
   describe('#getOrderRecipient', () => {
     it('should return the error to the callback if an error occurs during auth', async () => {
-      setV5Token.mockRejectedValueOnce('testError');
+      setPiiToken.mockRejectedValueOnce('testError');
 
       await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
 

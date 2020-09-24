@@ -4,7 +4,7 @@ const faker = require('faker');
 
 const config = require('../../lib/config');
 const auth = require('../../lib/auth');
-const { setV5Token } = require('../../lib/utils/axios-helpers');
+const { setPiiToken } = require('../../lib/utils/axios-helpers');
 
 const RoUrl = faker.internet.url();
 const piiUrl = faker.internet.url();
@@ -38,7 +38,7 @@ const mockV5AuthAPI = () =>
     })
     .basicAuth({ user: clientId, pass: clientSecret });
 
-describe('setV5Token', () => {
+describe('setPiiToken', () => {
   beforeEach(() => {
     axios.defaults.headers.common.Authorization = undefined;
     axios.defaults.tokenData = undefined;
@@ -58,7 +58,7 @@ describe('setV5Token', () => {
       created_at: Date.now(),
     });
 
-    await setV5Token();
+    await setPiiToken();
 
     expect(axios.defaults.headers.common.Authorization).toEqual(`Bearer ${expectedTestToken}`);
   });
@@ -66,6 +66,6 @@ describe('setV5Token', () => {
   it('should return the error from `auth.getToken` callback', async () => {
     jest.spyOn(auth, 'getToken').mockImplementation((_, callback) => callback('testError'));
 
-    await expect(setV5Token()).rejects.toMatch('testError');
+    await expect(setPiiToken()).rejects.toMatch('testError');
   });
 });
