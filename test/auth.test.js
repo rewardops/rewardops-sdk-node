@@ -357,7 +357,7 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { ...postBody })
           .socketDelay(config.timeout + 10)
           .times(3)
-          .reply(200, reply)
+          .replyWithError('ESOCKETTIMEDOUT')
           .post(RO.auth.getTokenPath(), { ...postBody })
           .socketDelay(config.timeout - 10)
           .once()
