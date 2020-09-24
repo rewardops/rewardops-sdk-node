@@ -28,6 +28,6 @@ const program = RO.program(config.program.programId, config.program.programCode)
 util
   .promisify(program.orders.create)(payloads.requests.createOrderPii)
   .then(response => {
-    console.log('response :>> ', response);
+    console.log('response :>> ', JSON.stringify(response, undefined, 2));
   })
   .catch(error => console.log(JSON.stringify(error, undefined, 2)));
