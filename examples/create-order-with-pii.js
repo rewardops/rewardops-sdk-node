@@ -24,7 +24,7 @@ RO.config.set('piiServerUrl', config.sdk.piiServerUrl);
 
 const program = RO.program(config.program.programId, config.program.programCode);
 
-// PII create
+// create order
 util
   .promisify(program.orders.create)(payloads.requests.createOrderPii)
   .then(response => {
