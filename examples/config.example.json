@@ -1,0 +1,8 @@
+{
+  "supportedLocales": ["en-CA"],
+  "piiServerUrl": "https://api-uat.ca.rewardops.io:443",
+  "apiServerUrl": "https://uat-api.rewardops.io:443",
+  "apiVersion": "v4",
+  "clientId": "",
+  "clientSecret": ""
+}
