@@ -1,12 +1,11 @@
 const faker = require('faker');
 const nock = require('nock');
 
-const orderRecipientFactory = require('../../../lib/resources/order-recipients');
 const RO = require('../../..');
+const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setV5Token } = require('../../../lib/utils/axios-helpers');
 
 jest.mock('../../../lib/utils/axios-helpers');
-
 setV5Token.mockResolvedValue();
 
 const mockCallBack = jest.fn();
@@ -22,7 +21,7 @@ describe('v5 order-recipients', () => {
   beforeEach(() => {
     RO.config.set('piiServerUrl', mockPiiServerUrl);
     RO.config.set('supportedLocales', ['en-CA', 'fr-CA']);
-    orderRecipient = orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+    orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });
 
   afterEach(() => {
@@ -31,7 +30,7 @@ describe('v5 order-recipients', () => {
   });
 
   it('throws an error if not provided a `programs` context', () => {
-    expect(() => orderRecipientFactory('something else', mockProgramId, mockProgramCode)).toThrow(
+    expect(() => orderRecipients.orderRecipientFactory('something else', mockProgramId, mockProgramCode)).toThrow(
       'Can only create an order recipient object for programs'
     );
   });
@@ -42,7 +41,7 @@ describe('v5 order-recipients', () => {
     });
 
     it('should respond with an error if there is a bad config', () => {
-      expect(() => orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
+      expect(() => orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
         'piiServerUrl is not configured'
       );
     });
@@ -54,25 +53,41 @@ describe('v5 order-recipients', () => {
     });
 
     it('should respond with an error if there is a bad config', () => {
-      expect(() => orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
+      expect(() => orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
         'supportedLocales is not configured'
       );
     });
   });
 
   describe('when configured', () => {
+    /** Minimal Member props */
     const member = { id: faker.random.number(), accept_language: 'en-CA' };
-    const mockOrderRecipient = {
+
+    const mockStoreOrderRecipientResponse = {
       mockOrderRecipientCode,
       validation_signature: `${faker.random.uuid()}FA==`,
     };
-    const mockStoreOrderRecipient = () =>
+
+    const mockStoreOrderRecipientCall = () =>
       nock(mockPiiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
-    const mockCreateOrder = () =>
+
+    const mockCreateOrderCall = () =>
       nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, { amount: 100 });
 
+    describe('#storeOrderRecipient', () => {
+      it('should return props from `storeOrderRecipient` when it receives a 200', async () => {
+        mockStoreOrderRecipientCall().reply(200, {
+          result: mockStoreOrderRecipientResponse,
+        });
+
+        const orderRecipientData = await orderRecipients.storeOrderRecipient({ programCode: mockProgramCode })(member);
+
+        expect(orderRecipientData).toEqual(mockStoreOrderRecipientResponse);
+      });
+    });
+
     describe('#create', () => {
-      it('should respond with an error if the params are invalid', async () => {
+      it('should respond with an error if the request params are empty', async () => {
         const requestBody = {};
 
         await orderRecipient.create(requestBody, mockCallBack);
@@ -89,7 +104,7 @@ describe('v5 order-recipients', () => {
       });
 
       it('should return the error to the callback if an error occurs during store order recipient', async () => {
-        mockStoreOrderRecipient().reply(422, testError);
+        mockStoreOrderRecipientCall().reply(422, testError);
 
         await orderRecipient.create({ member }, mockCallBack);
 
@@ -97,11 +112,11 @@ describe('v5 order-recipients', () => {
       });
 
       it('should return the error to the callback if an error occurs during order create', async () => {
-        mockStoreOrderRecipient().reply(200, {
-          result: mockOrderRecipient,
+        mockStoreOrderRecipientCall().reply(200, {
+          result: mockStoreOrderRecipientResponse,
         });
 
-        mockCreateOrder().reply(422, testError);
+        mockCreateOrderCall().reply(422, testError);
 
         await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
@@ -109,11 +124,11 @@ describe('v5 order-recipients', () => {
       });
 
       it('should return the response to the callback if the create was successful', async () => {
-        mockStoreOrderRecipient().reply(200, {
-          result: mockOrderRecipient,
+        mockStoreOrderRecipientCall().reply(200, {
+          result: mockStoreOrderRecipientResponse,
         });
 
-        mockCreateOrder().reply(200, { result: 'ok' });
+        mockCreateOrderCall().reply(200, { result: 'ok' });
 
         await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
