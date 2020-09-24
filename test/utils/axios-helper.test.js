@@ -63,7 +63,7 @@ describe('setV5Token', () => {
     expect(axios.defaults.headers.common.Authorization).toEqual(`Bearer ${expectedTestToken}`);
   });
 
-  it('should return the error', async () => {
+  it('should return the error from `auth.getToken` callback', async () => {
     jest.spyOn(auth, 'getToken').mockImplementation((_, callback) => callback('testError'));
 
     await expect(setV5Token()).rejects.toMatch('testError');
