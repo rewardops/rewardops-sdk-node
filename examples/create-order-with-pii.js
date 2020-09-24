@@ -13,16 +13,16 @@ const config = require('./config.json');
 const payloads = require('./payloads.json');
 
 // standard setup
-RO.config.set('apiServerUrl', config.apiServerUrl);
-RO.config.set('apiVersion', config.apiVersion);
-RO.config.set('clientId', config.clientId);
-RO.config.set('clientSecret', config.clientSecret);
+RO.config.set('apiServerUrl', config.sdk.apiServerUrl);
+RO.config.set('apiVersion', config.sdk.apiVersion);
+RO.config.set('clientId', config.sdk.clientId);
+RO.config.set('clientSecret', config.sdk.clientSecret);
 
 // PII-specific setup
-RO.config.set('supportedLocales', config.supportedLocales);
-RO.config.set('piiServerUrl', config.piiServerUrl);
+RO.config.set('supportedLocales', config.sdk.supportedLocales);
+RO.config.set('piiServerUrl', config.sdk.piiServerUrl);
 
-const program = RO.program(516, 'national_australian_bank');
+const program = RO.program(config.program.programId, config.program.programCode);
 
 // PII create
 util
