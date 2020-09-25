@@ -53,11 +53,9 @@ See [the library documentation](https://rewardops.github.io/rewardops-sdk-node/)
 
 The SDK dramatically simplifies OAuth. You only need to add your `clientId` and `clientSecret` to the config and you're ready to go. When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and store it for later use.
 
-### Samples
+### Examples
 
-To see the SDK in action, look at the server for the [RewardOps sample JavaScript app](https://github.com/rewardops/rewardops-sample-javascript).
-
-To see an application that uses the SDK to consume the RewardOps API, see the [RewardOps Angular Catalog app](https://github.com/rewardops/rewardops-angular-catalog), which uses the SDK in its Express server.
+For examples of the SDK in use, see [the `examples/` directory](https://github.com/rewardops/rewardops-sdk-node/tree/master/lib).
 
 ## Maintainer
 
