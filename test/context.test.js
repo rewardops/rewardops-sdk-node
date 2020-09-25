@@ -2,7 +2,7 @@ const faker = require('faker');
 
 const context = require('../lib/context');
 const config = require('../lib/config');
-const orderRecipientFactory = require('../lib/resources/order-recipients');
+const { orderRecipientFactory } = require('../lib/resources/order-recipients');
 const orders = require('../lib/resources/orders');
 
 jest.mock('../lib/resources/order-recipients');

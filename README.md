@@ -71,45 +71,9 @@ RO.programs.getAll(callback);
 RO.programs.get(123, callback);
 ```
 
-#### Program
+### Examples
 
-The program object has methods for accessing the program's rewards, orders, and more:
-
-```js
-//  Return a program object for the program with the specified `id`
-const myProgram = RO.program(123); // Standard program
-const myProgram = RO.program(123, 'example_program_code'); // Geographic-specific PII storage-enabled program
-
-// Get details for program 123
-// Alias of `RO.programs.get(123)`
-myProgram.details(callback);
-
-// Get a list of all orders for a member in a program
-// NOTE: The `options` object is required and must include a `member_id`.
-myProgram.orders.getAll(options, callback)
-// Gets the order with ID 'qwerty1234'
-myProgram.orders.get('qwerty1234' callback);
-// Post a new order for the reward with id 45231 for member 'bbdd0987'
-// NOTE: The `options` object is required and must include a `reward_id` and a `member` object
-myProgram.orders.create(
-  {
-    member: {
-      id: 'jb0987',
-      full_name: 'Jolanta Banicki',
-      email: 'jolanta.b@example.com',
-    },
-  },
-  callback
-);
-
-// Get JSON for the customCategory with code CAT_000002
-myProgram.customCategories.get('CAT_000002', callback);
-
-// Get JSON for the item with ID 938
-myProgram.items.get(938, callback);
-```
-
-_This is a subset of the available methods. For the complete SDK API, see [the library documentation](https://rewardops.github.io/rewardops-sdk-node/)._
+For examples of the SDK in use, see [the `examples/` directory](https://github.com/rewardops/rewardops-sdk-node/tree/master/lib).
 
 ## Maintainer
 
