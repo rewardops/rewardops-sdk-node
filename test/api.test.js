@@ -59,7 +59,7 @@ describe('api', () => {
           // Change auth.token after the
           // request has been made but before
           // sending the response
-          RO.auth.token = {
+          RO.auth.tokens.v4 = {
             access_token: secondToken,
             expires,
           };
@@ -88,7 +88,7 @@ describe('api', () => {
       RO.config.set('clientId', config.clientId);
       RO.config.set('clientSecret', config.clientSecret);
 
-      RO.auth.token = {
+      RO.auth.tokens.v4 = {
         access_token: firstToken,
         expires,
       };
@@ -154,7 +154,7 @@ describe('api', () => {
       RO.config.set('clientId', config.clientId);
       RO.config.set('clientSecret', config.clientSecret);
 
-      RO.auth.token = {
+      RO.auth.tokens.v4 = {
         access_token: badToken,
         expires,
       };
@@ -171,7 +171,7 @@ describe('api', () => {
           expect(authScope.isDone()).toEqual(true);
           expect(badScope.isDone()).toEqual(true);
           expect(goodScope.isDone()).toEqual(true);
-          expect(RO.auth.token.access_token).toEqual(goodToken);
+          expect(RO.auth.tokens.v4.access_token).toEqual(goodToken);
           expect(listenerWasFired).toEqual(true);
 
           done();
@@ -232,8 +232,8 @@ describe('api', () => {
           .query(params)
           .reply(200, { result: 'OK' });
 
-        RO.auth.token = { access_token: token, expires: new Date() };
-        RO.auth.token.expires.setHours(RO.auth.token.expires.getHours() + 2);
+        RO.auth.tokens.v4 = { access_token: token, expires: new Date() };
+        RO.auth.tokens.v4.expires.setHours(RO.auth.tokens.v4.expires.getHours() + 2);
 
         RO.api.get(
           {
@@ -261,7 +261,7 @@ describe('api', () => {
           clientSecret: 'abcdefg1234567',
         };
 
-        RO.auth.token = {};
+        RO.auth.tokens.v4 = {};
 
         RO.api.get(
           {

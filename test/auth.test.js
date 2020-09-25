@@ -15,11 +15,11 @@ describe('RO.auth', () => {
 
   describe('getToken()', () => {
     beforeAll(() => {
-      RO.auth.token = {};
+      RO.auth.tokens.v4 = {};
     });
 
     afterEach(() => {
-      RO.auth.token = {};
+      RO.auth.tokens.v4 = {};
     });
 
     it("should pass an AuthenticationError to the callback when config.clientId isn't present", () => {
@@ -139,7 +139,7 @@ describe('RO.auth', () => {
 
         expires.setHours(expires.getHours() + 2);
 
-        RO.auth.token = {
+        RO.auth.tokens.v4 = {
           access_token: testToken,
           expires,
         };
@@ -172,10 +172,10 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
 
-        RO.auth.token = {};
+        RO.auth.tokens.v4 = {};
 
         RO.auth.getToken(config, () => {
-          expect(RO.auth.token.expires.getTime()).toEqual(
+          expect(RO.auth.tokens.v4.expires.getTime()).toEqual(
             new Date((reply.created_at + reply.expires_in) * 1000).getTime()
           );
 
@@ -203,7 +203,7 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
 
-        RO.auth.token = {
+        RO.auth.tokens.v4 = {
           access_token: testToken,
           expires,
         };
@@ -214,7 +214,7 @@ describe('RO.auth', () => {
           expect(error).toEqual(null);
 
           expect(token).toEqual(reply.access_token);
-          expect(token).toEqual(RO.auth.token.access_token);
+          expect(token).toEqual(RO.auth.tokens.v4.access_token);
 
           done();
         });
@@ -251,7 +251,7 @@ describe('RO.auth', () => {
           expect(error).toEqual(null);
 
           expect(token).toEqual(reply.access_token);
-          expect(token).toEqual(RO.auth.token.access_token);
+          expect(token).toEqual(RO.auth.tokens.v4.access_token);
 
           done();
         });
@@ -289,92 +289,97 @@ describe('RO.auth', () => {
       });
     });
 
-    it('should timeout and pass an error to the callback when the server times out', () => {
-      return new Promise(done => {
-        const config = {
-          clientId: 'asdf0987ghjk',
-          clientSecret: 'asdf1234poiu',
-          timeout: 50,
-        };
-        const reply = {
-          access_token: 'time0ut',
-          created_at: Math.round(+new Date() / 1000),
-          expires_in: 7200,
-        };
-        const postBody = {
-          grant_type: 'client_credentials',
-        };
-        const timeoutError = new Error();
+    describe('handling timeouts', () => {
+      it('should timeout and pass an error to the callback when the server times out', () => {
+        return new Promise(done => {
+          const config = {
+            clientId: 'asdf0987ghjk',
+            clientSecret: 'asdf1234poiu',
+            timeout: 50,
+          };
+          const reply = {
+            access_token: 'time0ut',
+            created_at: Math.round(+new Date() / 1000),
+            expires_in: 7200,
+          };
+          const postBody = {
+            grant_type: 'client_credentials',
+          };
+          const timeoutError = new Error();
 
-        timeoutError.message = 'ETIMEDOUT';
+          timeoutError.message = 'ETIMEDOUT';
 
-        nock(RO.auth.getBaseUrl(), {
-          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
-        })
-          .post(RO.auth.getTokenPath(), { ...postBody })
-          .times(3)
-          .replyWithError(timeoutError)
-          .post(RO.auth.getTokenPath(), { ...postBody })
-          .once()
-          .reply(200, reply);
+          nock(RO.auth.getBaseUrl(), {
+            reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
+          })
+            .post(RO.auth.getTokenPath(), { ...postBody })
+            .times(3)
+            .replyWithError(timeoutError)
+            .post(RO.auth.getTokenPath(), { ...postBody })
+            .once()
+            .reply(200, reply);
 
-        RO.auth.token = {};
+          RO.auth.tokens.v4 = {};
 
-        RO.auth.getToken(config, error => {
-          expect(error).toBeInstanceOf(Error);
-          expect(error.message).toEqual('ETIMEDOUT');
+          RO.auth.getToken(config, error => {
+            console.log('CALLBACK 1 RESULT', error);
+            expect(error).toBeInstanceOf(Error);
+            expect(error.message).toEqual('ETIMEDOUT');
 
-          RO.auth.getToken(config, (err, token) => {
-            expect(err).toEqual(null);
+            RO.auth.getToken({ ...config, test: 'foo' }, (err, token) => {
+              console.log('CALLBACK 2 RESULT', err);
 
-            expect(token).toEqual(reply.access_token);
+              expect(err).toEqual(null);
 
-            done();
+              expect(token).toEqual(reply.access_token);
+
+              done();
+            });
           });
         });
       });
-    });
 
-    it('should timeout and pass an error to the callback when there is a socket timeout', () => {
-      return new Promise(done => {
-        const config = {
-          clientId: 'asdf0987ghjk',
-          clientSecret: 'asdf1234poiu',
-          timeout: 50,
-        };
-        const reply = {
-          access_token: 'time0ut',
-          created_at: Math.round(+new Date() / 1000),
-          expires_in: 7200,
-        };
-        const postBody = {
-          grant_type: 'client_credentials',
-        };
+      it('should timeout and pass an error to the callback when there is a socket timeout', () => {
+        return new Promise(done => {
+          const config = {
+            clientId: 'asdf0987ghjk',
+            clientSecret: 'asdf1234poiu',
+            timeout: 50,
+          };
+          const reply = {
+            access_token: 'time0ut',
+            created_at: Math.round(+new Date() / 1000),
+            expires_in: 7200,
+          };
+          const postBody = {
+            grant_type: 'client_credentials',
+          };
 
-        nock(RO.auth.getBaseUrl(), {
-          reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
-        })
-          .post(RO.auth.getTokenPath(), { ...postBody })
-          .socketDelay(config.timeout + 10)
-          .times(3)
-          .replyWithError('ESOCKETTIMEDOUT')
-          .post(RO.auth.getTokenPath(), { ...postBody })
-          .socketDelay(config.timeout - 10)
-          .once()
-          .reply(200, reply);
+          nock(RO.auth.getBaseUrl(), {
+            reqheaders: generateBasicAuthToken(config.clientId, config.clientSecret),
+          })
+            .post(RO.auth.getTokenPath(), { ...postBody })
+            .socketDelay(config.timeout + 10)
+            .times(3)
+            .replyWithError('ESOCKETTIMEDOUT')
+            .post(RO.auth.getTokenPath(), { ...postBody })
+            .socketDelay(config.timeout - 10)
+            .once()
+            .reply(200, reply);
 
-        RO.auth.token = {};
+          RO.auth.tokens = {};
 
-        RO.auth.getToken(config, error => {
-          expect(error).toBeInstanceOf(Error);
-          expect(error.message).toEqual('ESOCKETTIMEDOUT');
+          RO.auth.getToken(config, error => {
+            expect(error).toBeInstanceOf(Error);
+            expect(error.message).toEqual('ESOCKETTIMEDOUT');
 
-          RO.auth.getToken(config, (err, token) => {
-            expect(err).toEqual(null);
+            RO.auth.getToken(config, (err, token) => {
+              expect(err).toEqual(null);
 
-            expect(token).toEqual(reply.access_token);
+              expect(token).toEqual(reply.access_token);
 
-            done();
+              done();
+            });
           });
         });
       });
@@ -420,7 +425,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const n = 5000;
+        const n = 5;
         const arr = [];
 
         emitter.setMaxListeners(n + 1);
@@ -449,7 +454,6 @@ describe('RO.auth', () => {
           },
           (error, results) => {
             expect(error).toEqual(null);
-
             for (let i = 0; i < results.length; i++) {
               expect(results[i]).toEqual(reply.access_token);
             }
@@ -483,12 +487,11 @@ describe('RO.auth', () => {
           .post(RO.auth.getTokenPath(), { grant_type: 'client_credentials' })
           .reply(200, reply);
 
-        RO.auth.token = {};
+        RO.auth.tokens.v4 = {};
 
-        emitter.once('unlockToken', (error, token) => {
+        emitter.once('resolveRequest', (error, token) => {
           listenerFiredToken = token;
         });
-
         RO.auth.getToken(config, (error, token) => {
           expect(error).toEqual(null);
           expect(token).toEqual(reply.access_token);
@@ -502,19 +505,20 @@ describe('RO.auth', () => {
 
   describe('invalidateToken()', () => {
     it('should set auth.token to an empty object', () => {
-      RO.auth.token = { imA: 'token' };
+      RO.auth.tokens = { v4: { token: 'v4Token' }, pii: { token: 'piiToken' } };
 
-      RO.auth.invalidateToken();
+      RO.auth.invalidateToken('pii');
 
-      expect(RO.auth.token).toEqual({});
+      expect(RO.auth.tokens).toEqual({ v4: { token: 'v4Token' }, pii: {} });
     });
 
     it('should listen to the invalidateToken event', () => {
-      RO.auth.token = { imStillA: 'token' };
+      RO.auth.tokens = { v4: { token: 'v4Token' }, pii: { token: 'piiToken' } };
 
-      emitter.emit('invalidateToken');
+      emitter.emit('invalidateToken', 'v4');
 
-      expect(RO.auth.token).toEqual({});
+      expect(RO.auth.tokens.v4).toEqual({});
+      expect(RO.auth.tokens.pii).toEqual({ token: 'piiToken' });
     });
   });
 });
