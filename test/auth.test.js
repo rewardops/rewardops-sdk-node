@@ -516,7 +516,6 @@ describe('RO.auth', () => {
           expect.objectContaining({ url: `${mockPiiServerUrl}/api/v5/auth/token` }),
           expect.any(Function)
         );
-        requestSpy.mockRestore();
       });
 
       it('should contain the API hostname, if `piiServerUrl` is not set in the config', () => {
