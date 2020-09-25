@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.2...v1.2.0) (2020-09-24)
+
+### Features
+
+- add PII token cache ([#37](https://github.com/rewardops/rewardops-sdk-node/issues/37)) ([d3e6127](https://github.com/rewardops/rewardops-sdk-node/commit/d3e6127e9eec4940300066d32b24a37004b2e48d))
+
+### Bug Fixes
+
+- add missing `return` from `storeOrderRecipient` ([#38](https://github.com/rewardops/rewardops-sdk-node/issues/38)) ([1269d23](https://github.com/rewardops/rewardops-sdk-node/commit/1269d236e21cd414f1103011490ffbb5c9f0f9c5))
+
 ## [1.1.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.3...v1.1.0) (2020-09-16)
 
 ### Features

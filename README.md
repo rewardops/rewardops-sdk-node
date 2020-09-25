@@ -116,6 +116,10 @@ myProgram.items.get(938, callback);
 
 _This is a subset of the available methods. For the complete SDK API, see [the library documentation](https://rewardops.github.io/rewardops-sdk-node/)._
 
+### Example usage
+
+For examples of the SDK in use, see [the `examples/` directory](https://github.com/rewardops/rewardops-sdk-node/tree/master/lib).
+
 ## Maintainer
 
 Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
