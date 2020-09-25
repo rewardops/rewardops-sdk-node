@@ -9,8 +9,8 @@
 const util = require('util');
 
 const RO = require('../lib/rewardops');
-const config = require('./config.example.json');
-const payloads = require('./payloads.example.json');
+const config = require('./config.json');
+const payloads = require('./payloads.json');
 
 // standard setup
 RO.config.set('apiServerUrl', config.sdk.apiServerUrl);
