@@ -322,13 +322,10 @@ describe('RO.auth', () => {
           RO.auth.tokens.v4 = {};
 
           RO.auth.getToken(config, error => {
-            console.log('CALLBACK 1 RESULT', error);
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('ETIMEDOUT');
 
             RO.auth.getToken({ ...config, test: 'foo' }, (err, token) => {
-              console.log('CALLBACK 2 RESULT', err);
-
               expect(err).toEqual(null);
 
               expect(token).toEqual(reply.access_token);

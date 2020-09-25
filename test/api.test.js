@@ -182,7 +182,7 @@ describe('api', () => {
 
   describe('get', () => {
     beforeAll(() => {
-      RO.auth.token = {};
+      RO.auth.tokens.v4 = {};
 
       fixtures();
     });
