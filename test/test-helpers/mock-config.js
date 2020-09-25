@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const { getTestAccessToken } = require('../test-helpers/auth-helpers');
+const { getTestAccessToken } = require('./auth-helpers');
 
 /**
  * Test helper that returns a mock config object.

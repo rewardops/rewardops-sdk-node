@@ -4,7 +4,7 @@ const EventEmitter = require('events');
 const faker = require('faker');
 const request = require('request');
 
-const { mockConfig } = require('./test-helpers/mockConfig');
+const { mockConfig } = require('./test-helpers/mock-config');
 const RO = require('..');
 const emitter = require('../lib/emitter');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
