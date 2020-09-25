@@ -22,7 +22,7 @@ npm install --save git+ssh://git@github.com:rewardops/rewardops-sdk-node.git#v0.
 
 ## Usage
 
-### Required configuration
+### Configuration
 
 The following properties must be set before making any API calls using the SDK:
 
@@ -43,6 +43,11 @@ NOTE: If your program is configured to use geographic-specific PII storage, you 
 - `piiServerUrl`: Geographic-specific PII storage server URL.
 - `supportedLocales`: List of accepted locales for the program (RFC2616 format).
 
+```js
+RO.config.set('piiServerUrl', 'https://api.ca.rewardops.net');
+RO.config.set('supportedLocales', ['en-CA', 'en-FR']);
+```
+
 See the `config` module in [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
 
 #### Environment variables
@@ -51,7 +56,7 @@ To change the RewardOps host API URL, you can optionally set the environment var
 
 You can also change the base API URL after loading the SDK using `RO.config.set('apiServerUrl', '[your-server-url]')`.
 
-## Usage
+### Overview
 
 When you make a call to the API using the SDK, the SDK will automatically use an existing valid bearer token if it has already received one. Otherwise, it will request one from the API and cache it for further use.
 
@@ -71,7 +76,47 @@ RO.programs.getAll(callback);
 RO.programs.get(123, callback);
 ```
 
-### Examples
+#### Program
+
+The program object has methods for accessing the program's rewards, orders, and more:
+
+```js
+//  Return a program object for the program with the specified `id`
+const myProgram = RO.program(123); // Standard program
+const myProgram = RO.program(123, 'example_program_code'); // Geographic-specific PII storage-enabled program
+
+// Get details for program 123
+// Alias of `RO.programs.get(123)`
+myProgram.details(callback);
+
+// Get a list of all orders for a member in a program
+// NOTE: The `options` object is required and must include a `member_id`.
+myProgram.orders.getAll(options, callback)
+// Gets the order with ID 'qwerty1234'
+myProgram.orders.get('qwerty1234' callback);
+// Post a new order for the reward with id 45231 for member 'bbdd0987'
+// NOTE: The `options` object is required and must include a `reward_id` and a `member` object
+myProgram.orders.create(
+  {
+    member: {
+      id: 'jb0987',
+      full_name: 'Jolanta Banicki',
+      email: 'jolanta.b@example.com',
+    },
+  },
+  callback
+);
+
+// Get JSON for the customCategory with code CAT_000002
+myProgram.customCategories.get('CAT_000002', callback);
+
+// Get JSON for the item with ID 938
+myProgram.items.get(938, callback);
+```
+
+_This is a subset of the available methods. For the complete SDK API, see [the library documentation](https://rewardops.github.io/rewardops-sdk-node/)._
+
+### Example usage
 
 For examples of the SDK in use, see [the `examples/` directory](https://github.com/rewardops/rewardops-sdk-node/tree/master/lib).
 
