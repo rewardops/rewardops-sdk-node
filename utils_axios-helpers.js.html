@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> urls.js</title>
+  <title> utils/axios-helpers.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>urls.js</h1>
+                    <h1>utils/axios-helpers.js</h1>
                 </header>
                 
 
@@ -85,88 +85,39 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * URLs
- *
- * @module urls
- * @copyright 2015–2020 RewardOps Inc.
- */
+            <pre class="prettyprint source linenums"><code>const axios = require('axios');
 
-const config = require('./config');
+const auth = require('../auth');
+const config = require('../config');
 
 /**
- * Enum for RewardOps environment URLs.
+ * Set axios' default auth header to OAuth Bearer Token from v5 RO API
  *
- * @readonly
- * @enum {string}
+ * @async
+ * @returns {Promise} If an error is returned from `auth.getToken` the
+ * promise will reject, otherwise it will resolve.
+ *
+ * @example
+ * await setPiiToken()
+ *
+ * @protected
  */
-const ENVIRONMENT_URLS = {
-  /** Development */
-  DEVELOPMENT: 'http://localhost:3000',
-  /** Quality assurance */
-  QA: 'https://qa.rewardops.io',
-  /** Integration */
-  INTEGRATION: 'https://int-api.rewardops.io',
-  /** User acceptance testing */
-  UAT: 'https://uat-api.rewardops.io',
-  /** Production */
-  PRODUCTION: 'https://api.rewardops.io',
-};
+const setPiiToken = () =>
+  new Promise((resolve, reject) => {
+    auth.getToken(
+      { ...config.getAll(), apiVersion: 'v5', apiServerUrl: config.get('piiServerUrl') },
+      (error, token) => {
+        if (error) {
+          reject(error.toString());
+        }
 
-/**
- * Get the current hostname URL for the RewardOps server. Used in
- * constructing the {@link apiBaseUrl}.
- *
- * Based, in order, on either:
- *
- * 1. the `apiServerUrl` setting from {@link module:config~DefaultConfig}; or,
- * 2. a `REWARDOPS_ENV` Node environment variable (case-insensitive; see {@link module:urls~ENVIRONMENT_URLS}).
- *
- * If neither has a known value, the production server URL is returned.
- *
- * @returns {string} Returns RewardOps server hostname URL
- *
- * @example
- * ro.config.set('apiServerUrl', 'http://localhost:3000')
- *
- * @example
- * // REWARDOPS_ENV=qa npm start
- *
- * @example
- * // REWARDOPS_ENV=development npm start
- *
- * @example
- * // REWARDOPS_ENV=DEVELOPMENT npm start
- */
-const getApiServerUrl = () => {
-  const customApiServerUrl = config.get('apiServerUrl');
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        resolve();
+      }
+    );
+  });
 
-  if (customApiServerUrl) {
-    return customApiServerUrl;
-  }
-
-  const rewardOpsEnv = process.env.REWARDOPS_ENV;
-  let serverEnvUrl;
-  if (rewardOpsEnv) {
-    serverEnvUrl = Object.entries(ENVIRONMENT_URLS).find(([env]) => env === rewardOpsEnv.toUpperCase());
-  }
-  return serverEnvUrl ? serverEnvUrl[1] : ENVIRONMENT_URLS.PRODUCTION;
-};
-
-/**
- * Get the current RewardOps API base URL, based on the API server URL and the currently
- * configured `apiVersion` in {@link module:config}.
- *
- * @returns {string} Returns RewardOps API base URL
- */
-const getApiBaseUrl = ({ apiServerUrl = getApiServerUrl(), apiVersion = config.get('apiVersion') } = {}) =>
-  `${apiServerUrl}/api/${apiVersion}`;
-
-module.exports = {
-  getApiBaseUrl,
-  getApiServerUrl,
-  ENVIRONMENT_URLS,
-};
+module.exports = { setPiiToken };
 </code></pre>
         </article>
     </section>

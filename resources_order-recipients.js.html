@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li><li><a href="global.html#setPiiToken">setPiiToken</a></li></ul></div>
                 
             </nav>
         </div>
@@ -95,33 +95,8 @@ const axios = require('axios');
 const { get } = require('lodash');
 
 const config = require('../config');
+const { setPiiToken } = require('../utils/axios-helpers');
 const { storeOrderRecipientSchema } = require('../schemas/store-order-recipient');
-
-const debugLogs = [];
-
-/**
- * Request and set the bearer token in the `Authorization` header property in axios.
- *
- * @private
- */
-const setV5Token = async () => {
-  const {
-    data: { access_token: accessToken },
-  } = await axios.post(
-    `${config.get('piiServerUrl')}/api/v5/auth/token`,
-    {
-      grant_type: 'client_credentials',
-    },
-    {
-      auth: {
-        username: config.get('clientId'),
-        password: config.get('clientSecret'),
-      },
-    }
-  );
-  debugLogs.push({ function: 'storeOrderRecipient.getV5Token', accessToken });
-  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-};
 
 /**
  * Higher order function for creating an order in context. Same as {@link module:resources/orders~createOrder}
@@ -138,7 +113,6 @@ const setV5Token = async () => {
  * @private
  */
 const createOrder = ({ contextId }) => async (params, callback) => {
-  debugLogs.push({ function: 'createOrder', params });
   try {
     const response = await axios.post(
       `${config.get('piiServerUrl')}/api/${config.get('apiVersion')}/programs/${contextId}/orders`,
@@ -146,7 +120,7 @@ const createOrder = ({ contextId }) => async (params, callback) => {
     );
     callback(null, response.data, response);
   } catch (error) {
-    callback({ error, debugLogs });
+    callback(get(error, 'response.data', error));
   }
 };
 
@@ -176,27 +150,17 @@ const createOrder = ({ contextId }) => async (params, callback) => {
  * @protected
  */
 const storeOrderRecipient = ({ programCode }) => async member => {
-  await storeOrderRecipientSchema.validate(member).then(async () => {
+  return storeOrderRecipientSchema.validate(member).then(async () => {
     try {
-      await setV5Token();
-    } catch (error) {
-      debugLogs.push({ function: 'storeOrderRecipient.getV5Token', error });
-      // eslint-disable-next-line no-throw-literal
-      throw { errors: { error, debugLogs } };
-    }
+      await setPiiToken();
 
-    try {
       const {
         data: { result },
       } = await axios.post(`${config.get('piiServerUrl')}/api/v5/programs/${programCode}/order_recipients`, member);
       return result;
     } catch (error) {
-      debugLogs.push({
-        function: 'storeOrderRecipient.createOrderRecipients',
-        error: get(error, 'response.data'),
-      });
       // eslint-disable-next-line no-throw-literal
-      throw { errors: { error, debugLogs } };
+      throw { error: get(error, 'response.data', error) };
     }
   });
 };
@@ -215,14 +179,14 @@ const storeOrderRecipient = ({ programCode }) => async member => {
 /**
  * Higher order function for creating an order that first stores geographic-specific PII information, in context.
  *
- * @param {module:resources/order-recipients~V5OrderContext} v5OrderContext Order context object
+ * @param {module:resources/order-recipients~V5OrderContext} orderContext Order context object
  *
  * @returns {module:resources/order-recipients~CreateOrderWithPiiStorageFunc} Create an order function that also
  * stores geographic-specific PII information.
  *
  * @see {@link module:resources/order-recipients~CreateOrderWithPiiStorageFunc} for examples.
  */
-const createOrderWithPiiStorage = ({ orderContext }) => async ({ member, ...createOrderParams }, callback) => {
+const createOrderWithPiiStorage = orderContext => async ({ member, ...createOrderParams }, callback) => {
   try {
     const orderRecipientData = await storeOrderRecipient(orderContext)(member);
     await createOrder(orderContext)({ ...createOrderParams, ...orderRecipientData }, callback);
@@ -277,7 +241,7 @@ const createOrderWithPiiStorage = ({ orderContext }) => async ({ member, ...crea
  */
 const getOrderRecipient = ({ programCode }) => async (orderRecipientCode, callback) => {
   try {
-    await setV5Token();
+    await setPiiToken();
     const { data } = await axios.get(
       `${config.get('piiServerUrl')}/api/v5/programs/${programCode}/order_recipients/${orderRecipientCode}`
     );
@@ -348,7 +312,7 @@ const orderRecipientFactory = (contextTypeName, contextId, programCode) => {
  * @property {module:resources/order-recipients~CreateFunc} create
  */
 
-module.exports = orderRecipientFactory;
+module.exports = { orderRecipientFactory, createOrder, storeOrderRecipient };
 
 /**
  * Request body payload for Member PII information.
