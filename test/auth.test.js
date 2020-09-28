@@ -425,7 +425,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const n = 5000;
+        const n = 500;
         const arr = [];
 
         emitter.setMaxListeners(n + 1);
@@ -548,6 +548,44 @@ describe('RO.auth', () => {
 
       expect(RO.auth.tokens.v4).toEqual({});
       expect(RO.auth.tokens.pii).toEqual({ token: 'piiToken' });
+    });
+  });
+
+  describe('param `tokenId`', () => {
+    beforeEach(() => {
+      jest.spyOn(request, 'post').mockImplementation((_, callback) => callback('API error'));
+    });
+
+    it('should call `requestToken` with `v4` by default', () => {
+      const emitterSpy = jest.spyOn(emitter, 'emit');
+
+      RO.auth.getToken(mockConfig(), () => {});
+
+      expect(emitterSpy).toBeCalledWith('lockToken', 'v4');
+    });
+
+    it('should call `requestToken` with `pii` when passed in the config object', () => {
+      const emitterSpy = jest.spyOn(emitter, 'emit');
+
+      RO.auth.getToken({ ...mockConfig(), tokenId: 'pii' }, () => {});
+
+      expect(emitterSpy).toBeCalledWith('lockToken', 'pii');
+    });
+
+    it('should return an error if the tokenId is not valid', () => {
+      const mockCallback = jest.fn();
+      RO.auth.getToken({ ...mockConfig(), tokenId: 'foo' }, mockCallback);
+
+      expect(mockCallback).toBeCalledWith(expect.any(Error));
+      expect(mockCallback.mock.calls[0][0].message).toEqual('TokenId must be v4 or pii');
+    });
+
+    it('should return an error if piiServerUrl is not set and tokenId = `pii`', () => {
+      const mockCallback = jest.fn();
+      RO.auth.getToken({ ...mockConfig(), piiServerUrl: undefined, tokenId: 'pii' }, mockCallback);
+
+      expect(mockCallback).toBeCalledWith(expect.any(Error));
+      expect(mockCallback.mock.calls[0][0].message).toEqual('PII tokens require piiServerUrl to be set');
     });
   });
 });
