@@ -328,7 +328,7 @@ describe('RO.auth', () => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('ETIMEDOUT');
 
-            RO.auth.getToken({ ...config, test: 'foo' }, (err, token) => {
+            RO.auth.getToken(config, (err, token) => {
               expect(err).toEqual(null);
 
               expect(token).toEqual(reply.access_token);
@@ -367,7 +367,7 @@ describe('RO.auth', () => {
             .once()
             .reply(200, reply);
 
-          RO.auth.tokens = {};
+          RO.auth.tokens.v4 = {};
 
           RO.auth.getToken(config, error => {
             expect(error).toBeInstanceOf(Error);
@@ -425,7 +425,7 @@ describe('RO.auth', () => {
           created_at: Math.round(+new Date() / 1000),
           expires_in: 7200,
         };
-        const n = 5;
+        const n = 5000;
         const arr = [];
 
         emitter.setMaxListeners(n + 1);
