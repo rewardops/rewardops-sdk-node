@@ -1,7 +1,10 @@
 const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
+const faker = require('faker');
+const request = require('request');
 
+const { mockConfig } = require('./test-helpers/mock-config');
 const RO = require('..');
 const emitter = require('../lib/emitter');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
@@ -496,6 +499,35 @@ describe('RO.auth', () => {
 
           done();
         });
+      });
+    });
+
+    describe('requestOptions.url', () => {
+      const mockPiiServerUrl = faker.internet.url();
+      const mockApiServerUrl = faker.internet.url();
+
+      it('should contain the PII hostname, if it is set in the config', () => {
+        const config = mockConfig({ piiServerUrl: mockPiiServerUrl });
+        const requestSpy = jest.spyOn(request, 'post').mockImplementation((_, callback) => callback('testError'));
+
+        RO.auth.getToken(config, () => {});
+
+        expect(requestSpy).toBeCalledWith(
+          expect.objectContaining({ url: `${mockPiiServerUrl}/api/v5/auth/token` }),
+          expect.any(Function)
+        );
+      });
+
+      it('should contain the API hostname, if `piiServerUrl` is not set in the config', () => {
+        const config = mockConfig({ piiServerUrl: null, apiServerUrl: mockApiServerUrl });
+        const requestSpy = jest.spyOn(request, 'post').mockImplementation((_, callback) => callback('testError'));
+
+        RO.auth.getToken(config, () => {});
+
+        expect(requestSpy).toBeCalledWith(
+          expect.objectContaining({ url: `${mockApiServerUrl}/api/v4/auth/token` }),
+          expect.any(Function)
+        );
       });
     });
   });
