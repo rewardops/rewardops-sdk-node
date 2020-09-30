@@ -166,9 +166,8 @@ module.exports = {
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
   // testURL: "http://localhost",
 
-  // Set to modern to allow `jest.setSystemTime`
-  // https://jestjs.io/docs/en/jest-object#jestsetsystemtimenow-number--date
-  timers: 'modern',
+  // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
+  // timers: "real",
 
   // A map from regular expressions to paths to transformers
   // transform: undefined,

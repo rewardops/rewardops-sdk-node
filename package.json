@@ -69,6 +69,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "lodash": "^4.17.15",
+    "mockdate": "^3.0.2",
     "request": "^2.88.0",
     "winston": "^3.3.3",
     "yup": "^0.29.3"

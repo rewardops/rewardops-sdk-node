@@ -1,3 +1,5 @@
+const mockDate = require('mockdate');
+
 const config = require('../../lib/config');
 const { log } = require('../../lib/utils/logger');
 
@@ -7,7 +9,7 @@ const timestamp = Date.now();
 const originalConsole = console;
 const mockConsole = { log: jest.fn() };
 // freeze time
-jest.setSystemTime(timestamp);
+mockDate.set(timestamp);
 
 describe('log()', () => {
   beforeAll(() => {
@@ -18,6 +20,7 @@ describe('log()', () => {
   afterAll(() => {
     // eslint-disable-next-line no-global-assign
     console = originalConsole;
+    mockDate.reset();
   });
 
   const expectedDate = new Date(timestamp);
