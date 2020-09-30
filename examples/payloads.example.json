@@ -1,18 +1,6 @@
 {
   "requests": {
     "createOrderPii": {
-      "items": [
-        {
-          "item_order_token": "c3erj2n442ogh4gp4q3rq3u4u24b422==",
-          "quantity": 1,
-          "member_spend": [
-            {
-              "currency_code": "CAD",
-              "amount": "100"
-            }
-          ]
-        }
-      ],
       "member": {
         "id": "10",
         "full_name": "Steve Paikin",
