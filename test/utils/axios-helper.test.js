@@ -7,6 +7,11 @@ const auth = require('../../lib/auth');
 const { setPiiToken } = require('../../lib/utils/axios-helpers');
 const { getTestAccessToken } = require('../test-helpers/auth-helpers');
 
+jest.mock('../../lib/utils/logger', () => ({
+  log: () => {},
+  prettyPrint: () => {},
+}));
+
 const RoUrl = faker.internet.url();
 const piiUrl = faker.internet.url();
 const clientId = faker.random.uuid();

@@ -2,6 +2,11 @@ const nock = require('nock');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v3/program-orders.fixtures');
 
+jest.mock('../../../lib/utils/logger', () => ({
+  log: () => {},
+  prettyPrint: () => {},
+}));
+
 describe('v3 RO.program()', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v3');

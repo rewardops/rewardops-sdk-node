@@ -5,6 +5,11 @@ const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
 
+jest.mock('../../../lib/utils/logger', () => ({
+  log: () => {},
+  prettyPrint: () => {},
+}));
+
 jest.mock('../../../lib/utils/axios-helpers');
 setPiiToken.mockResolvedValue();
 
