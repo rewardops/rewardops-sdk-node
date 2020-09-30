@@ -36,7 +36,6 @@ async function main() {
   const {
     items: [item],
   } = await util.promisify(program.items.getAll)({ per_page_count: 1 });
-  // console.log('item :>> ', JSON.stringify(item, undefined, 2));
 
   const orderItem = {
     item_order_token: item.supplier_items[0].order_token,
