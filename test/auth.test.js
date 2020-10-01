@@ -9,11 +9,6 @@ const RO = require('..');
 const emitter = require('../lib/emitter');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 
-jest.mock('../lib/utils/logger', () => ({
-  log: () => {},
-  prettyPrint: () => {},
-}));
-
 describe('RO.auth', () => {
   describe('getBaseUrl()', () => {
     it('should return the correct value', () => {
@@ -23,6 +18,7 @@ describe('RO.auth', () => {
 
   describe('getToken()', () => {
     beforeAll(() => {
+      RO.config.set('quiet', true);
       RO.auth.token = {};
     });
 

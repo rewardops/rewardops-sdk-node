@@ -5,15 +5,10 @@ const RO = require('..');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 const emitter = require('../lib/emitter');
 
-jest.mock('../lib/utils/logger', () => ({
-  log: () => {},
-  prettyPrint: () => {},
-}));
-
 describe('api', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
-    RO.config.set('verbose', false);
+    RO.config.set('quiet', true);
   });
 
   afterAll(() => {
