@@ -20,7 +20,6 @@ describe('v5 order-recipients', () => {
 
   beforeEach(() => {
     RO.config.set('piiServerUrl', mockPiiServerUrl);
-    RO.config.set('quiet', true);
     RO.config.set('supportedLocales', ['en-CA', 'fr-CA']);
     orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });

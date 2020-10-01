@@ -8,7 +8,6 @@ const emitter = require('../lib/emitter');
 describe('api', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
-    RO.config.set('quiet', true);
   });
 
   afterAll(() => {

@@ -5,7 +5,6 @@ const RO = require('../../..');
 describe('v3 RO.programs', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v3');
-    RO.config.set('quiet', true);
 
     fixtures();
   });

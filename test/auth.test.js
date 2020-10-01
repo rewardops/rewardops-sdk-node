@@ -18,7 +18,6 @@ describe('RO.auth', () => {
 
   describe('getToken()', () => {
     beforeAll(() => {
-      RO.config.set('quiet', true);
       RO.auth.token = {};
     });
 

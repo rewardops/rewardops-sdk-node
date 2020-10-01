@@ -5,7 +5,6 @@ const fixtures = require('../../fixtures/v4/program-orders.fixtures');
 describe('v4 RO.program()', () => {
   beforeAll(() => {
     RO.config.set('apiVersion', 'v4');
-    RO.config.set('quiet', true);
   });
 
   beforeEach(() => {
