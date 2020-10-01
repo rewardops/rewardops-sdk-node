@@ -67,9 +67,7 @@ describe('log()', () => {
 
       log('testLog', { meta: { foo: 'bar' } });
 
-      expect(mockConsole.log).toHaveBeenCalledWith(
-        expect.stringContaining(`RewardOps SDK INFO[${expectedDate.toISOString()}] testLog`)
-      );
+      expect(mockConsole.log).toHaveBeenCalledWith(expect.not.stringContaining('"foo": "bar"'));
     });
 
     test('nothing is logged when loggerMode = quiet', () => {
