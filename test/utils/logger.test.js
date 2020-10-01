@@ -12,10 +12,11 @@ const mockConsole = { log: jest.fn() };
 mockDate.set(timestamp);
 
 describe('log()', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     // eslint-disable-next-line no-global-assign
     console = mockConsole;
-    config.set('loggerMode', 'normal');
+    config.set('quiet', false);
+    config.set('verbose', true);
   });
   afterAll(() => {
     // eslint-disable-next-line no-global-assign
@@ -53,17 +54,17 @@ describe('log()', () => {
     );
   });
 
-  describe('loggerMode', () => {
-    test('options.meta is present in the log when loggerMode = verbose', () => {
-      config.set('loggerMode', 'verbose');
+  describe('logger levels', () => {
+    test('options.meta is present in the log when verbose is true', () => {
+      config.set('verbose', true);
 
       log('testLog', { meta: { foo: 'bar' } });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('"foo": "bar"'));
     });
 
-    test('options.meta is not present in the log when loggerMode = normal', () => {
-      config.set('loggerMode', 'normal');
+    test('options.meta is not present in the log when verbose is false', () => {
+      config.set('verbose', false);
 
       log('testLog', { meta: { foo: 'bar' } });
 
@@ -71,7 +72,7 @@ describe('log()', () => {
     });
 
     test('nothing is logged when loggerMode = quiet', () => {
-      config.set('loggerMode', 'quiet');
+      config.set('quiet', true);
 
       log('testLog', { meta: { foo: 'bar' } });
 

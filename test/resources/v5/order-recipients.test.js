@@ -5,11 +5,6 @@ const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
 
-jest.mock('../../../lib/utils/logger', () => ({
-  log: () => {},
-  prettyPrint: () => {},
-}));
-
 jest.mock('../../../lib/utils/axios-helpers');
 setPiiToken.mockResolvedValue();
 
@@ -25,6 +20,7 @@ describe('v5 order-recipients', () => {
 
   beforeEach(() => {
     RO.config.set('piiServerUrl', mockPiiServerUrl);
+    RO.config.set('quiet', true);
     RO.config.set('supportedLocales', ['en-CA', 'fr-CA']);
     orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });

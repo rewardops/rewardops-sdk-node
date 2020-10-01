@@ -10,7 +10,7 @@ const expectedDefaults = {
   logFilePath: path.resolve(__dirname, '../logs/ro.log'),
   logToFile: false,
   timeout: 20000,
-  loggerMode: 'normal',
+  quiet: false,
   verbose: true,
   supportedLocales: undefined,
 };
