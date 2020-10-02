@@ -11,14 +11,14 @@ describe('config', () => {
         apiServerUrl: undefined,
         apiVersion: 'v4',
         piiServerUrl: undefined,
+        supportedLocales: undefined,
         clientId: undefined,
         clientSecret: undefined,
+        timeout: 20000,
         logFilePath: path.resolve(__dirname, '../logs/ro.log'),
         logToFile: false,
-        timeout: 20000,
+        verbose: false,
         quiet: false,
-        verbose: true,
-        supportedLocales: undefined,
       };
 
       expect(actual).toStrictEqual(expected);
