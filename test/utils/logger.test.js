@@ -2,7 +2,7 @@ const mockDate = require('mockdate');
 
 const config = require('../../lib/config');
 
-const { log } = jest.requireActual('../../lib/utils/logger');
+const { log, LOG_PREFIX } = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -30,17 +30,19 @@ describe('log()', () => {
   test('logs are printed in the correct format', () => {
     log('testLog');
 
-    expect(mockConsole.log).toHaveBeenCalledWith(
-      expect.stringContaining(`RewardOps SDK INFO[${expectedDate.toISOString()}] testLog`)
-    );
+    const EXPECTED_SUBSTRINGS = [LOG_PREFIX, 'INFO', `[${expectedDate.toISOString()}]`, 'testLog'];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
+    });
   });
 
   test('options.level is present in the log', () => {
     log('errorLog', { level: 'error' });
 
-    expect(mockConsole.log).toHaveBeenCalledWith(
-      expect.stringContaining(`RewardOps SDK ERROR[${expectedDate.toISOString()}] errorLog`)
-    );
+    const EXPECTED_SUBSTRINGS = [LOG_PREFIX, 'ERROR', `[${expectedDate.toISOString()}]`, 'errorLog'];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
+    });
   });
 
   test('instances of Error are parsed into the log', () => {
@@ -50,9 +52,15 @@ describe('log()', () => {
 
     log(error);
 
-    expect(mockConsole.log).toHaveBeenCalledWith(
-      expect.stringContaining(`RewardOps SDK ERROR[${expectedDate.toISOString()}] ${error.message}\n${error.stack}`)
-    );
+    const EXPECTED_SUBSTRINGS = [
+      LOG_PREFIX,
+      'ERROR',
+      `[${expectedDate.toISOString()}]`,
+      `${error.message}\n${error.stack}`,
+    ];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
+    });
   });
 
   describe('config settings', () => {
