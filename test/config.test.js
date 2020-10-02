@@ -1,4 +1,3 @@
-const path = require('path');
 const config = require('../lib/config');
 
 describe('config', () => {
@@ -7,21 +6,8 @@ describe('config', () => {
       config.reset();
 
       const actual = config.getAll();
-      const expected = {
-        apiServerUrl: undefined,
-        apiVersion: 'v4',
-        piiServerUrl: undefined,
-        supportedLocales: undefined,
-        clientId: undefined,
-        clientSecret: undefined,
-        timeout: 20000,
-        logFilePath: path.resolve(__dirname, '../logs/ro.log'),
-        logToFile: false,
-        verbose: false,
-        quiet: false,
-      };
 
-      expect(actual).toStrictEqual(expected);
+      expect(actual).toStrictEqual(config.defaultConfig);
     });
   });
 
@@ -30,7 +16,7 @@ describe('config', () => {
       config.reset();
 
       expect(config.get('apiVersion')).toEqual('v4');
-      expect(config.get('verbose')).toEqual(true);
+      expect(config.get('verbose')).toEqual(false);
     });
   });
 
