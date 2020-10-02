@@ -1,7 +1,8 @@
 const mockDate = require('mockdate');
 
 const config = require('../../lib/config');
-const { log } = require('../../lib/utils/logger');
+
+const { log } = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -54,8 +55,8 @@ describe('log()', () => {
     );
   });
 
-  describe('logger levels', () => {
-    test('options.meta is present in the log when verbose is true', () => {
+  describe('config settings', () => {
+    test('options.meta is present in the log when `verbose` is true', () => {
       config.set('verbose', true);
 
       log('testLog', { meta: { foo: 'bar' } });
@@ -63,20 +64,12 @@ describe('log()', () => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('"foo": "bar"'));
     });
 
-    test('options.meta is not present in the log when verbose is false', () => {
+    test('options.meta is not present in the log when `verbose` is `false`', () => {
       config.set('verbose', false);
 
       log('testLog', { meta: { foo: 'bar' } });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.not.stringContaining('"foo": "bar"'));
-    });
-
-    test('nothing is logged when loggerMode = quiet', () => {
-      config.set('quiet', true);
-
-      log('testLog', { meta: { foo: 'bar' } });
-
-      expect(mockConsole.log).not.toHaveBeenCalled();
     });
   });
 });
