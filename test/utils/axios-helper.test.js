@@ -16,7 +16,6 @@ config.set('apiServerUrl', RoUrl);
 config.set('piiServerUrl', piiUrl);
 config.set('clientId', clientId);
 config.set('clientSecret', clientSecret);
-config.set('quiet', true);
 
 const mockV5AuthAPI = () =>
   nock(piiUrl)

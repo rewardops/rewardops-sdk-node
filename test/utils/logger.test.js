@@ -12,7 +12,7 @@ const mockConsole = { log: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 
-describe('log()', () => {
+describe('#log', () => {
   beforeEach(() => {
     // eslint-disable-next-line no-global-assign
     console = mockConsole;
@@ -78,6 +78,14 @@ describe('log()', () => {
       log('testLog', { meta: { foo: 'bar' } });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.not.stringContaining('"foo": "bar"'));
+    });
+
+    test('message is logged when `quiet` is true', () => {
+      config.set('quiet', true);
+
+      log('testLog');
+
+      expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('testLog'));
     });
   });
 });
