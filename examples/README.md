@@ -13,3 +13,5 @@ Inside the Node SDK's `examples/` directory,
   - See [the External API Console](https://api.rewardops.net/api_docs/console) in the RewardOps Admin Console for details on request payloads.
 
 Once the above is configured, you can run the scripts you're interested in.
+
+**NOTE: These are merely example scripts that use example configs and API payloads, which do not necessarily mimic an application setup.**
