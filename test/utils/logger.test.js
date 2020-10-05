@@ -2,7 +2,7 @@ const mockDate = require('mockdate');
 
 const config = require('../../lib/config');
 
-const { log, LOG_PREFIX } = jest.requireActual('../../lib/utils/logger');
+const { log, getLogLevel, LOG_PREFIX } = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -12,12 +12,27 @@ const mockConsole = { log: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 
+describe('#getLogLevel', () => {
+  describe('config settings', () => {
+    test.each`
+      verbose  | quiet    | expected
+      ${false} | ${false} | ${'info'}
+      ${true}  | ${false} | ${'verbose'}
+      ${false} | ${true}  | ${'warn'}
+      ${true}  | ${true}  | ${'verbose'}
+    `(`returns '$expected' when 'verbose' is $verbose and 'quiet' is $quiet`, ({ verbose, quiet, expected }) => {
+      config.set('verbose', verbose);
+      config.set('quiet', quiet);
+
+      expect(getLogLevel()).toEqual(expected);
+    });
+  });
+});
+
 describe('#log', () => {
   beforeEach(() => {
     // eslint-disable-next-line no-global-assign
     console = mockConsole;
-    config.set('quiet', false);
-    config.set('verbose', true);
   });
   afterAll(() => {
     // eslint-disable-next-line no-global-assign
