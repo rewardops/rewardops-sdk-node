@@ -1,7 +1,7 @@
 const faker = require('faker');
 const config = require('../../lib/config');
 
-const { storeOrderRecipientSchema } = require('../../lib/schemas/store-order-recipient');
+const { storeOrderRecipientSchema, isNumberOrUuid } = require('../../lib/schemas/store-order-recipient');
 
 const testLocale = faker.random.locale();
 const testNumber = faker.random.number();
@@ -12,43 +12,60 @@ describe('storeOrderRecipientSchema.validate()', () => {
   });
 
   test('it accepts a uuid as a id', () => {
-    const object = { id: faker.random.uuid(), accept_language: testLocale };
+    const params = { id: faker.random.uuid(), accept_language: testLocale };
 
-    expect(storeOrderRecipientSchema.validateSync(object)).toEqual(object);
+    expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
   test('it accepts a number as a id', () => {
-    const object = { id: testNumber, accept_language: testLocale };
+    const params = { id: testNumber, accept_language: testLocale };
 
-    expect(storeOrderRecipientSchema.validateSync(object)).toEqual({
-      id: String(testNumber),
-      accept_language: testLocale,
-    });
+    expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
   test('it reject an id that is an empty string', async () => {
-    const object = { id: '', accept_language: testLocale };
+    const params = { id: '', accept_language: testLocale };
 
-    await expect(storeOrderRecipientSchema.validate(object)).rejects.toThrowError('id is a required field');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('Id must be a number or UUID');
   });
 
   test('it reject an id that is undefined', async () => {
-    const object = { id: undefined, accept_language: testLocale };
+    const params = { id: undefined, accept_language: testLocale };
 
-    await expect(storeOrderRecipientSchema.validate(object)).rejects.toThrowError('id is a required field');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('id is a required field');
   });
 
   test('it reject if the given locale is not supported', async () => {
-    const object = { id: testNumber, accept_language: faker.random.locale() };
+    const params = { id: testNumber, accept_language: faker.random.locale() };
 
-    await expect(storeOrderRecipientSchema.validate(object)).rejects.toThrowError('Locale is not supported');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('Locale is not supported');
   });
 
   test('it reject if the given locale is undefined', async () => {
-    const object = { id: testNumber, accept_language: undefined };
+    const params = { id: testNumber, accept_language: undefined };
 
-    await expect(storeOrderRecipientSchema.validate(object)).rejects.toThrowError(
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError(
       'accept_language is a required field'
     );
+  });
+});
+
+describe('isNumberOrUuid', () => {
+  test.each`
+    value                     | expected
+    ${{}}                     | ${false}
+    ${[]}                     | ${false}
+    ${{ foo: 42 }}            | ${false}
+    ${[1, 2, 3]}              | ${false}
+    ${null}                   | ${false}
+    ${undefined}              | ${false}
+    ${-100}                   | ${false}
+    ${''}                     | ${false}
+    ${'fakeUuid'}             | ${false}
+    ${faker.random.boolean()} | ${false}
+    ${faker.random.number()}  | ${true}
+    ${faker.random.uuid()}    | ${true}
+  `('given $value, $expected is returned', ({ value, expected }) => {
+    expect(isNumberOrUuid(value)).toBe(expected);
   });
 });
