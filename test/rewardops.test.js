@@ -1,18 +1,6 @@
-const path = require('path');
-const packageJSON = require('../package');
 const RO = require('../');
-
-const expectedDefaults = {
-  apiServerUrl: undefined,
-  apiVersion: 'v4',
-  clientId: undefined,
-  clientSecret: undefined,
-  logFilePath: path.resolve(__dirname, '../logs/ro.log'),
-  logToFile: false,
-  timeout: 20000,
-  verbose: true,
-  supportedLocales: undefined,
-};
+const packageJSON = require('../package');
+const config = require('../lib/config');
 
 describe('RO', () => {
   describe('defaults', () => {
@@ -20,7 +8,7 @@ describe('RO', () => {
       RO.config.reset();
 
       // config should now deep equal the defaults
-      expect(RO.config.getAll()).toEqual(expectedDefaults);
+      expect(RO.config.getAll()).toEqual(config.defaultConfig);
     });
   });
 
@@ -37,7 +25,7 @@ describe('RO', () => {
 
       RO.config.reset();
 
-      expect(RO.config.getAll()).toEqual(expectedDefaults);
+      expect(RO.config.getAll()).toEqual(config.defaultConfig);
       expect(RO.config.get('foo', undefined)).toEqual();
       expect(RO.config.get('bar', undefined)).toEqual();
     });

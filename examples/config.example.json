@@ -1,7 +1,8 @@
 {
   "program": {
     "programId": 0,
-    "programCode": ""
+    "programCode": "",
+    "currencyCode": "CAD"
   },
   "sdk": {
     "supportedLocales": ["en-CA"],
@@ -9,6 +10,7 @@
     "apiServerUrl": "https://uat-api.rewardops.io:443",
     "apiVersion": "v4",
     "clientId": "",
-    "clientSecret": ""
+    "clientSecret": "",
+    "verbose": true
   }
 }
