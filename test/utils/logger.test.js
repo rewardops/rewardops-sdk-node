@@ -8,7 +8,7 @@ const { log, getLogLevel, LOG_PREFIX } = jest.requireActual('../../lib/utils/log
 const timestamp = Date.now();
 
 const originalConsole = console;
-const mockConsole = { log: jest.fn() };
+const mockConsole = { log: jest.fn(), warn: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 

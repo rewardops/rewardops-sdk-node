@@ -21,7 +21,7 @@ const mockConfig = ({
   timeout = 20000,
   verbose = true,
   supportedLocales = undefined,
-}) => ({
+} = {}) => ({
   apiServerUrl,
   apiVersion,
   piiServerUrl,
