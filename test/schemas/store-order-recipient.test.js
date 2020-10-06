@@ -2,13 +2,15 @@ const faker = require('faker');
 const config = require('../../lib/config');
 
 const { storeOrderRecipientSchema, isNumberOrUuid } = require('../../lib/schemas/store-order-recipient');
+const { mockConfig } = require('../test-helpers/mock-config');
 
 const testLocale = faker.random.locale();
 const testNumber = faker.random.number();
 
 describe('storeOrderRecipientSchema.validate()', () => {
   beforeEach(() => {
-    config.set('supportedLocales', [testLocale]);
+    config.reset();
+    config.init(mockConfig({ supportedLocales: [testLocale] }));
   });
 
   test('it accepts a uuid as a id', () => {

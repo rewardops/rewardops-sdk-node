@@ -4,6 +4,7 @@ const nock = require('nock');
 const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
+const { mockConfig } = require('../../test-helpers/mock-config');
 
 jest.mock('../../../lib/utils/axios-helpers');
 setPiiToken.mockResolvedValue();
@@ -19,8 +20,12 @@ describe('v5 order-recipients', () => {
   let orderRecipient;
 
   beforeEach(() => {
-    RO.config.set('piiServerUrl', mockPiiServerUrl);
-    RO.config.set('supportedLocales', ['en-CA', 'fr-CA']);
+    RO.config.init(
+      mockConfig({
+        supportedLocales: ['en-CA', 'fr-CA'],
+        piiServerUrl: mockPiiServerUrl,
+      })
+    );
     orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
   });
 
@@ -37,7 +42,13 @@ describe('v5 order-recipients', () => {
 
   describe('when piiServerUrl not configured', () => {
     beforeEach(() => {
-      RO.config.set('piiServerUrl', undefined);
+      RO.config.reset();
+      RO.config.init(
+        mockConfig({
+          piiServerUrl: null,
+          supportedLocales: [],
+        })
+      );
     });
 
     it('should respond with an error if there is a bad config', () => {
@@ -49,7 +60,12 @@ describe('v5 order-recipients', () => {
 
   describe('when supportedLocales not configured', () => {
     beforeEach(() => {
-      RO.config.set('supportedLocales', undefined);
+      RO.config.reset();
+      RO.config.init(
+        mockConfig({
+          supportedLocales: undefined,
+        })
+      );
     });
 
     it('should respond with an error if there is a bad config', () => {

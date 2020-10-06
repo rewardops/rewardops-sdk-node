@@ -1,12 +1,18 @@
 const nock = require('nock');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v4/program-orders.fixtures');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({
+    apiVersion: 'v4',
+    piiServerUrl: null,
+    clientId: 'programTest123',
+    clientSecret: 'itsATestGetUsedToIt',
+  })
+);
 
 describe('v4 RO.program()', () => {
-  beforeAll(() => {
-    RO.config.set('apiVersion', 'v4');
-  });
-
   beforeEach(() => {
     fixtures();
   });
@@ -15,23 +21,10 @@ describe('v4 RO.program()', () => {
     nock.cleanAll();
   });
 
-  afterAll(() => {
-    RO.config.reset();
-  });
-
   describe('orders', () => {
     const programId = 33;
     const program = RO.program(programId);
     const programOrdersUrl = `/programs/${programId}/orders`;
-
-    beforeAll(() => {
-      RO.config.set('clientId', 'programTest123');
-      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
-    });
-
-    afterAll(() => {
-      RO.config.reset();
-    });
 
     it('should have the correct context ID', () => {
       expect(program.orders.contextId).toEqual(programId);

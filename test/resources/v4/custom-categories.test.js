@@ -1,11 +1,19 @@
 const nock = require('nock');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v4/custom-categories.fixtures');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({
+    apiVersion: 'v4',
+    piiServerUrl: null,
+    clientId: 'customCategoryTest123',
+    clientSecret: 'itsATestGetUsedToIt',
+  })
+);
 
 describe('v4 RO.program()', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v4');
-
     fixtures();
   });
 
@@ -16,11 +24,6 @@ describe('v4 RO.program()', () => {
   describe('customCategories', () => {
     const id = 33;
     const program = RO.program(id);
-
-    beforeAll(() => {
-      RO.config.set('clientId', 'customCategoryTest123');
-      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
-    });
 
     afterAll(() => {
       RO.config.reset();
