@@ -13,14 +13,8 @@ const config = require('./config.json');
 const payloads = require('./payloads.json');
 
 // standard setup
-RO.config.set('apiServerUrl', config.sdk.apiServerUrl);
-RO.config.set('apiVersion', config.sdk.apiVersion);
-RO.config.set('clientId', config.sdk.clientId);
-RO.config.set('clientSecret', config.sdk.clientSecret);
-
-// PII-specific setup
-RO.config.set('supportedLocales', config.sdk.supportedLocales);
-RO.config.set('piiServerUrl', config.sdk.piiServerUrl);
+// NOTE: config.sdk.supportedLocales and config.sdk.piiServerUrl are PII-specific values.
+RO.config.init(config.sdk);
 
 const program = RO.program(config.program.programId, config.program.programCode);
 
