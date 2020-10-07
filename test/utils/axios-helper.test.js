@@ -15,8 +15,8 @@ const clientSecret = faker.internet.password();
 
 config.init(
   mockConfig({
-    apiServerUrl: RoUrl,
-    piiServerUrl: piiUrl,
+    apiServerUrl,
+    piiServerUrl,
     clientId,
     clientSecret,
   })
