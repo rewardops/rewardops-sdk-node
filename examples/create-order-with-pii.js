@@ -14,7 +14,6 @@ const payloads = require('./payloads.json');
 
 /** Set up RewardOps SDK configuration */
 const setSDKConfig = () => {
-  // standard setup
   // NOTE: config.sdk.supportedLocales and config.sdk.piiServerUrl are PII-specific values.
   RO.config.init(config.sdk);
 };
