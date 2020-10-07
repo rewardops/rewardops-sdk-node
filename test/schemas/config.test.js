@@ -23,7 +23,7 @@ describe('configSchema.validate()', () => {
   });
 });
 
-describe('required fields', () => {
+describe('required properties', () => {
   test.each`
     field                 | expected
     ${'apiServerUrl'}     | ${true}
