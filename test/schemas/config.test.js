@@ -37,7 +37,7 @@ describe('required fields', () => {
     ${'piiServerUrl'}     | ${true}
     ${'supportedLocales'} | ${true}
     ${'quiet'}            | ${false}
-  `('given $field is missing, test `isVaild` returns $expected', ({ field, expected }) => {
+  `('given $field is missing, test `isValid` returns $expected', ({ field, expected }) => {
     const testConfig = omit(validConfig, [field]);
 
     expect(configSchema.isValidSync(testConfig)).toBe(expected);
