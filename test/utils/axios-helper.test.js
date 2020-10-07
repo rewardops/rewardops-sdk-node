@@ -23,7 +23,7 @@ config.init(
 );
 
 const mockV5AuthAPI = () =>
-  nock(piiUrl)
+  nock(piiServerUrl)
     .post('/api/v5/auth/token', {
       grant_type: 'client_credentials',
     })
