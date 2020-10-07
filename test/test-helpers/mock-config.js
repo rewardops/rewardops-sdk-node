@@ -21,6 +21,7 @@ const mockConfig = ({
   timeout = 20000,
   verbose = true,
   supportedLocales = undefined,
+  logFilePath = faker.system.filePath(),
 } = {}) => ({
   apiServerUrl,
   apiVersion,
@@ -31,6 +32,7 @@ const mockConfig = ({
   timeout,
   verbose,
   supportedLocales,
+  logFilePath,
 });
 
 module.exports = { mockConfig };
