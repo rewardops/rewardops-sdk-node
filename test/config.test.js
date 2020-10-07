@@ -43,7 +43,7 @@ describe('config', () => {
     });
   });
 
-  describe('getAll()', () => {
+  describe('#getAll', () => {
     it('should have the correct default values', () => {
       config.reset();
 
