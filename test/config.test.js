@@ -12,7 +12,7 @@ const validConfig = {
 };
 
 describe('config', () => {
-  describe('init()', () => {
+  describe('#init', () => {
     beforeEach(() => {
       config.reset();
     });
@@ -43,7 +43,7 @@ describe('config', () => {
     });
   });
 
-  describe('getAll()', () => {
+  describe('#getAll', () => {
     it('should have the correct default values', () => {
       config.reset();
 
