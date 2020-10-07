@@ -12,7 +12,7 @@ const validConfig = {
 };
 
 describe('config', () => {
-  describe('init()', () => {
+  describe('#init', () => {
     beforeEach(() => {
       config.reset();
     });
