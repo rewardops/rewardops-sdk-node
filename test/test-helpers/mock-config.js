@@ -20,6 +20,7 @@ const mockConfig = ({
   logToFile = false,
   timeout = 20000,
   verbose = true,
+  quiet = true,
   supportedLocales = undefined,
   logFilePath = faker.system.filePath(),
 } = {}) => ({
@@ -33,6 +34,7 @@ const mockConfig = ({
   verbose,
   supportedLocales,
   logFilePath,
+  quiet,
 });
 
 module.exports = { mockConfig };

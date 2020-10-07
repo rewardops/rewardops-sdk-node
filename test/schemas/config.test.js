@@ -25,15 +25,18 @@ describe('configSchema.validate()', () => {
 
 describe('required fields', () => {
   test.each`
-    field             | expected
-    ${'apiServerUrl'} | ${false}
-    ${'apiVersion'}   | ${false}
-    ${'clientId'}     | ${false}
-    ${'clientSecret'} | ${false}
-    ${'logFilePath'}  | ${false}
-    ${'logToFile'}    | ${false}
-    ${'timeout'}      | ${false}
-    ${'verbose'}      | ${false}
+    field                 | expected
+    ${'apiServerUrl'}     | ${true}
+    ${'apiVersion'}       | ${false}
+    ${'clientId'}         | ${false}
+    ${'clientSecret'}     | ${false}
+    ${'logFilePath'}      | ${false}
+    ${'logToFile'}        | ${false}
+    ${'timeout'}          | ${false}
+    ${'verbose'}          | ${false}
+    ${'piiServerUrl'}     | ${true}
+    ${'supportedLocales'} | ${true}
+    ${'quiet'}            | ${false}
   `('given $field is missing, test `isVaild` returns $expected', ({ field, expected }) => {
     const testConfig = omit(validConfig, [field]);
 
