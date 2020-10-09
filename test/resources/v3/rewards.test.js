@@ -1,11 +1,14 @@
 const nock = require('nock');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v3/rewards.fixtures');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({ apiVersion: 'v3', piiServerUrl: null, clientId: 'rewardTest123', clientSecret: 'itsATestGetUsedToIt' })
+);
 
 describe('v3 RO.program()', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v3');
-
     fixtures();
   });
 
@@ -16,11 +19,6 @@ describe('v3 RO.program()', () => {
   describe('rewards', () => {
     const id = 33;
     const program = RO.program(id);
-
-    beforeAll(() => {
-      RO.config.set('clientId', 'rewardTest123');
-      RO.config.set('clientSecret', 'itsATestGetUsedToIt');
-    });
 
     afterAll(() => {
       RO.config.reset();

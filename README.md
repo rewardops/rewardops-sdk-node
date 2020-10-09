@@ -34,8 +34,11 @@ For example, in your application initialization module, you can add:
 ```js
 const RO = require('rewardops-sdk');
 
-RO.config.set('clientId', 'abcdefg1234567');
-RO.config.set('clientSecret', '9876543poiuytr');
+RO.config.init({
+  ...restOfConfig,
+  clientId: 'abcdefg1234567',
+  clientSecret: '9876543poiuytr',
+});
 ```
 
 NOTE: If your program is configured to use geographic-specific PII storage, you must also set:
@@ -44,17 +47,20 @@ NOTE: If your program is configured to use geographic-specific PII storage, you 
 - `supportedLocales`: List of accepted locales for the program (RFC2616 format).
 
 ```js
-RO.config.set('piiServerUrl', 'https://api.ca.rewardops.net');
-RO.config.set('supportedLocales', ['en-CA', 'en-FR']);
+RO.config.init({
+  ...restOfConfig,
+  piiServerUrl: 'https://api.ca.rewardops.net',
+  supportedLocales: ['en-CA', 'en-FR'],
+});
 ```
 
 See the `config` module in [the SDK library documentation](https://rewardops.github.io/rewardops-sdk-node/) for all config options.
 
 #### Environment variables
 
-To change the RewardOps host API URL, you can optionally set the environment variable `REWARDOPS_ENV` before starting your application. (See the `api` module of [the library documentation](https://rewardops.github.io/rewardops-sdk-node/) for more info.)
+**NOTE** `RO.config.set` has been deprecated in favor of `RO.config.init` which requires all the configuration values at initialization.
 
-You can also change the base API URL after loading the SDK using `RO.config.set('apiServerUrl', '[your-server-url]')`.
+To change the RewardOps host API URL, you can optionally set the environment variable `REWARDOPS_ENV` before starting your application. (See the `api` module of [the library documentation](https://rewardops.github.io/rewardops-sdk-node/) for more info.)
 
 ### Overview
 

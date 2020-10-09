@@ -1,14 +1,20 @@
 const sinon = require('sinon');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v4/program.fixtures');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({
+    apiVersion: 'v4',
+    piiServerUrl: null,
+    verbose: false,
+  })
+);
 
 describe('v4 RO.program()', () => {
   /* jshint camelcase: false */
 
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v4');
-    RO.config.set('verbose', false);
-
     fixtures();
   });
 

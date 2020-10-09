@@ -20,8 +20,10 @@ const mockConfig = ({
   logToFile = false,
   timeout = 20000,
   verbose = true,
+  quiet = true,
   supportedLocales = undefined,
-}) => ({
+  logFilePath = faker.system.filePath(),
+} = {}) => ({
   apiServerUrl,
   apiVersion,
   piiServerUrl,
@@ -31,6 +33,8 @@ const mockConfig = ({
   timeout,
   verbose,
   supportedLocales,
+  logFilePath,
+  quiet,
 });
 
 module.exports = { mockConfig };

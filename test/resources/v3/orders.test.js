@@ -1,9 +1,9 @@
 const RO = require('../../..');
+const { mockConfig } = require('../../test-helpers/mock-config');
 
 describe('v3 orders', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v3');
-    RO.config.set('verbose', false);
+    RO.config.init(mockConfig({ apiVersion: 'v3', piiServerUrl: null, verbose: false }));
   });
 
   afterAll(() => {

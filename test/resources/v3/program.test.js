@@ -1,12 +1,20 @@
 const sinon = require('sinon');
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v3/program.fixtures');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({
+    apiVersion: 'v3',
+    piiServerUrl: null,
+    clientId: 'programTest123',
+    clientSecret: 'itsATestGetUsedToIt',
+    verbose: false,
+  })
+);
 
 describe('v3 RO.program()', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v3');
-    RO.config.set('verbose', false);
-
     fixtures();
   });
 

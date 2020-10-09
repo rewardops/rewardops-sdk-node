@@ -1,6 +1,7 @@
 const mockDate = require('mockdate');
 
 const config = require('../../lib/config');
+const { mockConfig } = require('../test-helpers/mock-config');
 
 const { log, getLogLevel, LOG_PREFIX } = jest.requireActual('../../lib/utils/logger');
 
@@ -8,11 +9,15 @@ const { log, getLogLevel, LOG_PREFIX } = jest.requireActual('../../lib/utils/log
 const timestamp = Date.now();
 
 const originalConsole = console;
-const mockConsole = { log: jest.fn() };
+const mockConsole = { log: jest.fn(), warn: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 
 describe('#getLogLevel', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
   describe('config settings', () => {
     test.each`
       verbose  | quiet    | expected
@@ -80,7 +85,8 @@ describe('#log', () => {
 
   describe('config settings', () => {
     test('options.meta is present in the log when `verbose` is true', () => {
-      config.set('verbose', true);
+      config.reset();
+      config.init(mockConfig({ verbose: true }));
 
       log('testLog', { meta: { foo: 'bar' } });
 
@@ -88,7 +94,8 @@ describe('#log', () => {
     });
 
     test('options.meta is not present in the log when `verbose` is `false`', () => {
-      config.set('verbose', false);
+      config.reset();
+      config.init(mockConfig({ verbose: false }));
 
       log('testLog', { meta: { foo: 'bar' } });
 
@@ -96,7 +103,8 @@ describe('#log', () => {
     });
 
     test('message is logged when `quiet` is true', () => {
-      config.set('quiet', true);
+      config.reset();
+      config.init(mockConfig({ quiet: true }));
 
       log('testLog');
 

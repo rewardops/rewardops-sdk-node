@@ -4,10 +4,13 @@ const fixtures = require('./fixtures/api.fixtures');
 const RO = require('..');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 const emitter = require('../lib/emitter');
+const { mockConfig } = require('../test/test-helpers/mock-config');
+
+const defaultConfig = mockConfig({ apiVersion: 'v4' });
 
 describe('api', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v4');
+    RO.config.init(defaultConfig);
   });
 
   afterAll(() => {
@@ -84,8 +87,8 @@ describe('api', () => {
 
       expires.setHours(expires.getHours() + 2);
 
-      RO.config.set('clientId', config.clientId);
-      RO.config.set('clientSecret', config.clientSecret);
+      RO.config.reset();
+      RO.config.init({ ...defaultConfig, clientId: config.clientId, clientSecret: config.clientSecret });
 
       RO.auth.token = {
         access_token: firstToken,
@@ -150,8 +153,8 @@ describe('api', () => {
         listenerWasFired = true;
       });
 
-      RO.config.set('clientId', config.clientId);
-      RO.config.set('clientSecret', config.clientSecret);
+      RO.config.reset();
+      RO.config.init({ ...defaultConfig, clientId: config.clientId, clientSecret: config.clientSecret });
 
       RO.auth.token = {
         access_token: badToken,

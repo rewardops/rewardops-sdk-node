@@ -4,6 +4,7 @@ const context = require('../lib/context');
 const config = require('../lib/config');
 const { orderRecipientFactory } = require('../lib/resources/order-recipients');
 const orders = require('../lib/resources/orders');
+const { mockConfig } = require('../test/test-helpers/mock-config');
 
 jest.mock('../lib/resources/order-recipients');
 orderRecipientFactory.mockReturnValue({ create: jest.fn() });
@@ -61,7 +62,7 @@ describe('context', () => {
     });
 
     it('should return mockOrderRecipientFactory.create if piiServerUrl is present', () => {
-      config.set('piiServerUrl', faker.internet.url());
+      config.init(mockConfig({ piiServerUrl: faker.internet.url() }));
       const program = context.contextInstance('programs');
 
       expect(program.orders.create).toEqual(orderRecipientFactory().create);

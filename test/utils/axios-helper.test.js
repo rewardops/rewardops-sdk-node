@@ -6,19 +6,24 @@ const config = require('../../lib/config');
 const auth = require('../../lib/auth');
 const { setPiiToken } = require('../../lib/utils/axios-helpers');
 const { getTestAccessToken } = require('../test-helpers/auth-helpers');
+const { mockConfig } = require('../test-helpers/mock-config');
 
-const RoUrl = faker.internet.url();
-const piiUrl = faker.internet.url();
+const apiServerUrl = faker.internet.url();
+const piiServerUrl = faker.internet.url();
 const clientId = faker.random.uuid();
 const clientSecret = faker.internet.password();
 
-config.set('apiServerUrl', RoUrl);
-config.set('piiServerUrl', piiUrl);
-config.set('clientId', clientId);
-config.set('clientSecret', clientSecret);
+config.init(
+  mockConfig({
+    apiServerUrl,
+    piiServerUrl,
+    clientId,
+    clientSecret,
+  })
+);
 
 const mockV5AuthAPI = () =>
-  nock(piiUrl)
+  nock(piiServerUrl)
     .post('/api/v5/auth/token', {
       grant_type: 'client_credentials',
     })

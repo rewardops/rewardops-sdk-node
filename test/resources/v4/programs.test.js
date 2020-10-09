@@ -1,11 +1,19 @@
 const nock = require('nock');
 const fixtures = require('../../fixtures/v3/programs.fixtures');
 const RO = require('../../..');
+const { mockConfig } = require('../../test-helpers/mock-config');
+
+RO.config.init(
+  mockConfig({
+    apiVersion: 'v3',
+    piiServerUrl: null,
+    clientId: 'mockedclientidforprogramstests',
+    clientSecret: 'mockedclientsecretforprogramstests',
+  })
+);
 
 describe('v4 RO.programs', () => {
   beforeAll(() => {
-    RO.config.set('apiVersion', 'v3');
-
     fixtures();
   });
 
@@ -14,16 +22,6 @@ describe('v4 RO.programs', () => {
   });
 
   describe('getAll()', () => {
-    beforeAll(() => {
-      RO.config.set('clientId', 'mockedclientidforprogramstests');
-      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
-    });
-
-    afterAll(() => {
-      RO.config.set('clientId', undefined);
-      RO.config.set('clientSecret', undefined);
-    });
-
     it('should pass an array to the callback', () => {
       return new Promise(done => {
         RO.programs.getAll((error, programList) => {
@@ -85,16 +83,6 @@ describe('v4 RO.programs', () => {
   });
 
   describe('get()', () => {
-    beforeAll(() => {
-      RO.config.set('clientId', 'mockedclientidforprogramstests');
-      RO.config.set('clientSecret', 'mockedclientsecretforprogramstests');
-    });
-
-    afterAll(() => {
-      RO.config.set('clientId', undefined);
-      RO.config.set('clientSecret', undefined);
-    });
-
     it('should pass an object to the callback', () => {
       return new Promise(done => {
         const id = 555;

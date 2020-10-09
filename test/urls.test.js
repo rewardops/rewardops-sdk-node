@@ -1,5 +1,6 @@
 const config = require('../lib/config');
 const urls = require('../lib/urls');
+const { mockConfig } = require('./test-helpers/mock-config');
 
 describe('urls', () => {
   let initialEnv;
@@ -16,7 +17,7 @@ describe('urls', () => {
 
   describe('getApiServerUrl()', () => {
     afterAll(() => {
-      config.set('apiServerUrl', undefined);
+      config.reset();
     });
 
     it('should have the correct server url in the development env', () => {
@@ -72,7 +73,8 @@ describe('urls', () => {
       const EXAMPLE_URL = 'http://example.com/test';
 
       process.env.REWARDOPS_ENV = 'development';
-      config.set('apiServerUrl', EXAMPLE_URL);
+
+      config.init(mockConfig({ apiServerUrl: EXAMPLE_URL }));
 
       expect(urls.getApiServerUrl()).toEqual(EXAMPLE_URL);
       expect(urls.getApiBaseUrl()).toEqual(`${EXAMPLE_URL}/api/${config.get('apiVersion')}`);
@@ -80,18 +82,15 @@ describe('urls', () => {
   });
 
   describe('version', () => {
-    it('should have the correct version at the end of the path', () => {
-      config.set('apiVersion', 'v3');
+    test.each`
+      apiVersion | expectedPath
+      ${'v3'}    | ${'/api/v3'}
+      ${'v5'}    | ${'/api/v5'}
+    `('given $apiVersion, $expectedPath is present in the url', ({ apiVersion, expectedPath }) => {
+      config.reset();
+      config.init(mockConfig({ apiVersion }));
 
-      expect(urls.getApiBaseUrl()).toEqual(`${urls.getApiServerUrl()}/api/v3`);
-
-      config.set('apiVersion', 'v5');
-
-      expect(urls.getApiBaseUrl()).toEqual(`${urls.getApiServerUrl()}/api/v5`);
-
-      config.set('apiVersion', 'v6-beta');
-
-      expect(urls.getApiBaseUrl()).toEqual(`${urls.getApiServerUrl()}/api/v6-beta`);
+      expect(urls.getApiBaseUrl()).toEqual(`${urls.getApiServerUrl()}${expectedPath}`);
     });
   });
 });

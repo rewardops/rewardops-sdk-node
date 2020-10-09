@@ -3,8 +3,6 @@ const nock = require('nock');
 const RO = require('../../..');
 const { generateBasicAuthToken } = require('../../../lib/utils/auth');
 
-RO.config.set('apiVersion', 'v3');
-
 module.exports = () => {
   // Oauth calls
   nock(RO.auth.getBaseUrl(), {
