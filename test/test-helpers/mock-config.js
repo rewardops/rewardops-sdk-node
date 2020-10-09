@@ -3,13 +3,23 @@ const faker = require('faker');
 const { getTestAccessToken } = require('./auth-helpers');
 
 /**
- * Test helper that returns a mock config object.
+ * Minimal mock {@link module:config~DefaultConfig} object.
  *
+ * @private
+ */
+const minimalMockConfig = {
+  clientId: getTestAccessToken(),
+  clientSecret: getTestAccessToken(),
+};
+
+/**
+ * Test helper that returns a complete mock config object.
  *
- * @param {{apiServerUrl: string, apiVersion: string, piiServerUrl: string, clientId: string, clientSecret: string, logToFile: boolean, timeout: number, verbose: boolean, supportedLocales: Array|undefined}} configOverrides Returns a complete config object with overrides and defaults.
- * @returns {object} Mock config object for tests.
+ * @param {module:config~DefaultConfig} configOverrides Returns a complete config object with overrides and defaults.
  *
- * @protected
+ * @returns {module:config~DefaultConfig} Mock config object.
+ *
+ * @private
  */
 const mockConfig = ({
   apiServerUrl = faker.internet.url(),
@@ -37,4 +47,4 @@ const mockConfig = ({
   quiet,
 });
 
-module.exports = { mockConfig };
+module.exports = { minimalMockConfig, mockConfig };
