@@ -1,25 +1,84 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: config.js</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> config.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
 </head>
 
-<body>
 
-<div id="main">
 
-    <h1 class="page-title">Source: config.js</h1>
-
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
     
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>config.js</h1>
+                </header>
+                
 
 
 
@@ -36,6 +95,7 @@
 const path = require('path');
 
 const { cloneDeep } = require('lodash');
+const { configSchema } = require('./schemas/config');
 
 /**
  * Default SDK configuration options
@@ -48,13 +108,14 @@ const defaultConfig = {
   apiServerUrl: undefined,
   apiVersion: 'v4',
   piiServerUrl: undefined,
+  supportedLocales: undefined,
   clientId: undefined,
   clientSecret: undefined,
+  timeout: 20000,
   logFilePath: path.resolve(__dirname, '../logs/ro.log'),
   logToFile: false,
-  timeout: 20000,
-  verbose: true,
-  supportedLocales: undefined,
+  verbose: false,
+  quiet: false,
 };
 
 /**
@@ -90,24 +151,69 @@ const getAll = () => cloneDeep(config);
  * @param {*} value Value of a configuration property
  *
  * @returns {*} The value given.
+ *
+ * @deprecated since version 1.3.0
  */
 const set = (key, value) => {
-  config[key] = value;
+  // NOTE: we cannot use `log` function here as this module is a dependency of logger module.
+  console.warn('config.set is deprecated, please use config.init instead');
+
+  config = { ...config, [key]: value };
   return value;
 };
 
 /**
- * Reset the configuration to defaults
+ * Boolean that indicates whether the config module has been initialized
+ *
+ * @protected
+ */
+let configInitialized = false;
+
+/**
+ * Reset the configuration to defaults and allow {@link module:config~init}
+ * to be called again.
  */
 const reset = () => {
   config = cloneDeep(defaultConfig);
+  configInitialized = false;
+};
+
+/**
+ * Set all properties of the configuration.
+ *
+ * Can only be called once; however, configuration can be reset using {@link module:config~reset},
+ * then this method can be called again. (Although, this is not recommended.)
+ *
+ * NOTE: This is a much safer configuration approach than the `set` method, as it eliminates
+ * some potential edges case issues for PII-enabled programs.
+ *
+ * @param {module:config~DefaultConfig} initialConfig Configuration values that will override default values.
+ *
+ * @returns {module:config~DefaultConfig} Frozen config object.
+ */
+const init = initialConfig => {
+  if (configInitialized) {
+    throw new Error('cannot initialize config more than once');
+  }
+
+  configInitialized = true;
+
+  const newConfig = { ...defaultConfig, ...initialConfig };
+
+  configSchema.validateSync(newConfig);
+
+  config = newConfig;
+
+  return Object.freeze(config);
 };
 
 module.exports = {
+  init,
   get,
   getAll,
   set,
   reset,
+  defaultConfig,
 };
 
 /**
@@ -117,16 +223,18 @@ module.exports = {
  *
  * @property {string} clientId RewardOps API OAuth `client_id`.
  * @property {string} clientSecret RewardOps API OAuth `client_secret`.
- * @property {string} apiServerUrl API server URL that the SDK will use for requests.
- * @property {string} [apiVersion] Version of the RewardOps API to use for requests.
+ * @property {string} [apiServerUrl] API server URL that the SDK will use for requests.
+ *   If unset, the SDK uses {@link module:urls~getApiServerUrl} to derive the server URL.
+ * @property {string} [apiVersion='v4'] Version of the RewardOps API to use for requests.
  *   This affects the SDK methods available and the API baseUrl.
- * @property {string} piiServerUrl Geographic-specific PII storage server URL that the SDK will use for requests.
- * @property {Array} supportedLocales An array of accepted locales, in the format of Accept-Language
+ * @property {string} [piiServerUrl] Geographic-specific PII storage server URL that the SDK will use for requests.
+ * @property {Array} [supportedLocales] List of accepted locales for the program, in the format of Accept-Language
  *   as per RFC2616; e.g. `en-CA`, `en-US`
- * @property {string} [logFilePath] Path for log output file.
- * @property {boolean} [logToFile] If `true` and if {@link config.verbose} is `true`, saves log messages to file.
- * @property {number} [timeout] Timeout for HTTP requests (used by [Request]{@link https://github.com/request/request}).
- * @property {boolean} [verbose] If true, logs output to console (and optionally to file).
+ * @property {number} [timeout=20000] Timeout for HTTP requests (used by {@link https://github.com/request/request Request library}).
+ * @property {string} [logFilePath='&lt;parent dir>/logs/ro.log'] Path for log output file.
+ * @property {boolean} [logToFile=false] If `true` and if {@link config.verbose} is `true`, saves log messages to file.
+ * @property {boolean} [verbose=false] Run SDK with verbose logging (as well as in optional file).
+ * @property {boolean} [quiet=false] Run SDK with minimal logging(as well as in optional file). NOTE: Superceded by `verbose` if both are `true`.
  */
 </code></pre>
         </article>
@@ -135,19 +243,25 @@ module.exports = {
 
 
 
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_orders-recipients.html">resources/orders-recipients</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Sep 25 2020 11:08:42 GMT-0400 (Eastern Daylight Time)
-</footer>
-
-<script> prettyPrint(); </script>
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
 <script src="scripts/linenumber.js"> </script>
+
 </body>
 </html>

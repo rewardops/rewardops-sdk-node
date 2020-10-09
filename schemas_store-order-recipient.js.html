@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> utils/axios-helpers.js</title>
+  <title> schemas/store-order-recipient.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isNumberOrUuid">isNumberOrUuid</a></li><li><a href="global.html#RO">RO</a></li></ul></div>
                 
             </nav>
         </div>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>utils/axios-helpers.js</h1>
+                    <h1>schemas/store-order-recipient.js</h1>
                 </header>
                 
 
@@ -85,45 +85,50 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Axios helpers
- *
- * @module utils/axios
- * @copyright 2015–2020 RewardOps Inc.
- */
-const axios = require('axios');
+            <pre class="prettyprint source linenums"><code>const { every } = require('lodash');
+const yup = require('yup');
 
-const auth = require('../auth');
 const config = require('../config');
 
 /**
- * Set axios' default auth header to OAuth Bearer Token from v5 RO API
+ * Predicate validation helper for Reward Ops item IDs.
  *
- * @async
- * @returns {Promise&lt;void>} If an error is returned from `auth.getToken` the
- * promise will reject, otherwise it will resolve.
+ * @param {*} value Value being tested
  *
- * @example
- * await setPiiToken()
+ * @returns {boolean} True if value is a positive number or UUID, false otherwise
  *
  * @protected
  */
-const setPiiToken = () =>
-  new Promise((resolve, reject) => {
-    auth.getToken(
-      { ...config.getAll(), apiVersion: 'v5', apiServerUrl: config.get('piiServerUrl') },
-      (error, token) => {
-        if (error) {
-          reject(error.toString());
-        }
+const isNumberOrUuid = value =>
+  every([
+    ['number', 'string'].includes(typeof value),
+    yup
+      .number()
+      .positive()
+      .isValidSync(value) ||
+      yup
+        .string()
+        .uuid()
+        .isValidSync(value),
+  ]);
 
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        resolve();
-      }
-    );
-  });
+const storeOrderRecipientSchema = yup.object().shape({
+  id: yup
+    .mixed()
+    .required()
+    .test('is-valid-id', 'Id must be a number or UUID', isNumberOrUuid),
+  accept_language: yup
+    .string()
+    .required()
+    .test('is-valid-locale', 'Locale is not supported', locale =>
+      config.get('supportedLocales') ? config.get('supportedLocales').includes(locale) : true
+    ),
+});
 
-module.exports = { setPiiToken };
+module.exports = {
+  storeOrderRecipientSchema,
+  isNumberOrUuid,
+};
 </code></pre>
         </article>
     </section>
