@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.2.0...v1.3.0) (2020-10-09)
+
+### Features
+
+- add `config.init` method, with validation ([#46](https://github.com/rewardops/rewardops-sdk-node/issues/46)) ([c510eb2](https://github.com/rewardops/rewardops-sdk-node/commit/c510eb202b16fe38dda398cc6d8948f197c73408))
+- improve logging throughout the SDK ([#44](https://github.com/rewardops/rewardops-sdk-node/issues/44)) ([d6bb8e1](https://github.com/rewardops/rewardops-sdk-node/commit/d6bb8e16b611c52e40bce3f9078e5bbb55d3eb2b))
+  - add `quiet` prop to SDK config
+  - add missing logs to new PII methods
+  - add meta data output to logs in verbose mode
+
+### Bug Fixes
+
+- allow id to be UUID ([#45](https://github.com/rewardops/rewardops-sdk-node/issues/45)) ([1f2762f](https://github.com/rewardops/rewardops-sdk-node/commit/1f2762f3d81474e9adcc935e61f473745c115d23))
+
 ## [1.2.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.0.2...v1.2.0) (2020-09-24)
 
 ### Features
