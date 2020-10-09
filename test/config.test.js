@@ -1,4 +1,5 @@
 const faker = require('faker');
+const mockConsole = require('jest-mock-console');
 
 const config = require('../lib/config');
 const { getTestAccessToken } = require('../test/test-helpers/auth-helpers');
@@ -12,11 +13,11 @@ const validConfig = {
 };
 
 describe('config', () => {
-  describe('#init', () => {
-    beforeEach(() => {
-      config.reset();
-    });
+  afterEach(() => {
+    config.reset();
+  });
 
+  describe('#init', () => {
     test('an error is thrown if you call init more than once', () => {
       config.init(validConfig);
 
@@ -45,33 +46,28 @@ describe('config', () => {
 
   describe('#getAll', () => {
     it('should have the correct default values', () => {
-      config.reset();
-
       const actual = config.getAll();
 
       expect(actual).toStrictEqual(config.defaultConfig);
     });
   });
 
-  describe('get()', () => {
+  describe('#get', () => {
     it('should return a config value', () => {
-      config.reset();
-
       expect(config.get('apiVersion')).toEqual('v4');
       expect(config.get('verbose')).toEqual(false);
     });
   });
 
-  describe('set()', () => {
-    it('should set a config value', () => {
-      config.reset();
-
+  describe('#set', () => {
+    it('should set and return (then be able to get) a config value', () => {
       config.init(validConfig);
 
-      // Returns the new value
+      // TODO: remove this mock once we take the Console warning out out of the `config` module
+      mockConsole();
       expect(config.set('apiVersion', 'v1')).toEqual('v1');
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
 
-      // The value was set correctly
       expect(config.get('apiVersion')).toEqual('v1');
     });
   });
