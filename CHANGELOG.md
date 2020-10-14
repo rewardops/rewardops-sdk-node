@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/rewardops/rewardops-sdk-node/compare/v1.3.0...v1.3.1) (2020-10-14)
+
+### Bug Fixes
+
+- return entire response if POST call fails ([#50](https://github.com/rewardops/rewardops-sdk-node/issues/50)) ([79c1440](https://github.com/rewardops/rewardops-sdk-node/commit/79c1440dbb05e4eba10d0e97b59424b5ee56a44e))
+
 ## [1.3.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.2.0...v1.3.0) (2020-10-09)
 
 ### Features
