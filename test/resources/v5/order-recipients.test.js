@@ -127,7 +127,7 @@ describe('v5 order-recipients', () => {
 
         await orderRecipient.create({ member }, mockCallBack);
 
-        expect(mockCallBack).toBeCalledWith({ error: testError });
+        expect(mockCallBack).toBeCalledWith({ error: expect.objectContaining({ status: 422, data: testError }) });
       });
 
       it('should return the error to the callback if an error occurs during order create', async () => {
