@@ -94,7 +94,7 @@
 
 const path = require('path');
 
-const { cloneDeep } = require('lodash');
+const { cloneDeep, omitBy, isNil } = require('lodash');
 const { configSchema } = require('./schemas/config');
 
 /**
@@ -125,6 +125,18 @@ const defaultConfig = {
  * @protected
  */
 let config = cloneDeep(defaultConfig);
+
+/**
+ * Merge given config object with the default configs, omitting nullable values
+ * (i.e. `undefined` or `null`).
+ *
+ * @param {module:config~DefaultConfig} initialConfig Config prop
+ *
+ * @returns {module:config~DefaultConfig} Merged config
+ *
+ * @private
+ */
+const mergeConfig = initialConfig => ({ ...defaultConfig, ...omitBy(initialConfig, isNil) });
 
 /**
  * Get a single property from the configuration.
@@ -198,7 +210,7 @@ const init = initialConfig => {
 
   configInitialized = true;
 
-  const newConfig = { ...defaultConfig, ...initialConfig };
+  const newConfig = mergeConfig(initialConfig);
 
   configSchema.validateSync(newConfig);
 
@@ -208,6 +220,7 @@ const init = initialConfig => {
 };
 
 module.exports = {
+  mergeConfig,
   init,
   get,
   getAll,
