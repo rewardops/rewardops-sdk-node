@@ -9,12 +9,12 @@ const REQUIRED_PROPS = ['clientId', 'clientSecret'];
 const OPTIONAL_PROPS = [
   'apiServerUrl',
   'apiVersion',
+  'piiServerUrl',
+  'supportedLocales',
   'logFilePath',
   'logToFile',
   'timeout',
   'verbose',
-  'piiServerUrl',
-  'supportedLocales',
   'quiet',
 ];
 
@@ -23,22 +23,34 @@ describe('config', () => {
     config.reset();
   });
 
+  describe('#mergeConfig', () => {
+    const { mergeConfig, defaultConfig } = config;
+
+    let mockOptionalConfig;
+    beforeEach(() => {
+      mockOptionalConfig = omit(mockConfig(), REQUIRED_PROPS);
+    });
+
+    it.each([null, {}])('returns the default if given %p', input => {
+      expect(mergeConfig(input)).toEqual(defaultConfig);
+    });
+
+    it('merges given non-nil optional props with the default props', () => {
+      expect(mergeConfig(mockOptionalConfig)).toStrictEqual({ ...defaultConfig, ...mockOptionalConfig });
+    });
+
+    it.each(OPTIONAL_PROPS)('omits nil props from the merge so default props values are used', prop => {
+      const input = { ...mockOptionalConfig, [prop]: undefined };
+      const expected = { ...defaultConfig, ...mockOptionalConfig, [prop]: defaultConfig[prop] };
+      expect(mergeConfig(input)).toStrictEqual(expected);
+    });
+  });
+
   describe('#init', () => {
     it('throws an error if called more than once', () => {
       config.init(minimalMockConfig);
 
       expect(() => config.init()).toThrowError('cannot initialize config more than once');
-    });
-
-    it('throws an error if validation fails', () => {
-      const throwsValidationError = () => config.init({ ...minimalMockConfig, apiVersion: 500 });
-
-      expect(throwsValidationError).toThrow(
-        expect.objectContaining({
-          name: 'ValidationError',
-          message: 'apiVersion must be one of the following values: v3, v4, v5',
-        })
-      );
     });
 
     it('freezes the config object following invocation', () => {
@@ -49,20 +61,43 @@ describe('config', () => {
       expect(testConfig.timeout).toEqual(500);
     });
 
-    it.each(REQUIRED_PROPS)('throws an error if `%s` prop not passed', prop => {
-      const omittedRequiredProp = () => config.init(omit(minimalMockConfig, [prop]));
+    describe('schema validation', () => {
+      it('throws an error if validation fails', () => {
+        const throwsValidationError = () => config.init({ ...minimalMockConfig, apiVersion: 500 });
 
-      expect(omittedRequiredProp).toThrow(
-        expect.objectContaining({
-          name: 'ValidationError',
-          message: `${prop} is a required field`,
-        })
-      );
-    });
+        expect(throwsValidationError).toThrow(
+          expect.objectContaining({
+            name: 'ValidationError',
+            message: 'apiVersion must be one of the following values: v3, v4, v5',
+          })
+        );
+      });
 
-    it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is omitted', prop => {
-      const omittedOptionalProp = () => config.init(omit(mockConfig(), [prop]));
-      expect(omittedOptionalProp).not.toThrowError();
+      it.each(REQUIRED_PROPS)('throws an error if `%s` prop not passed', prop => {
+        const omittedRequiredProp = () => config.init(omit(minimalMockConfig, [prop]));
+
+        expect(omittedRequiredProp).toThrow(
+          expect.objectContaining({
+            name: 'ValidationError',
+            message: `${prop} is a required field`,
+          })
+        );
+      });
+
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is omitted', prop => {
+        const omittedOptionalProp = () => config.init(omit(mockConfig(), [prop]));
+        expect(omittedOptionalProp).not.toThrowError();
+      });
+
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `undefined`', prop => {
+        const omittedOptionalProp = () => config.init(mockConfig({ [prop]: undefined }));
+        expect(omittedOptionalProp).not.toThrowError();
+      });
+
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `null`', prop => {
+        const omittedOptionalProp = () => config.init(mockConfig({ [prop]: null }));
+        expect(omittedOptionalProp).not.toThrowError();
+      });
     });
   });
 
