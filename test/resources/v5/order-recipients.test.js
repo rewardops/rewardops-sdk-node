@@ -147,11 +147,11 @@ describe('v5 order-recipients', () => {
           result: mockStoreOrderRecipientResponse,
         });
 
-        mockCreateOrderCall().reply(200, { result: 'ok' });
+        mockCreateOrderCall().reply(200, { result: 'testData' });
 
         await orderRecipient.create({ member, amount: 100 }, mockCallBack);
-
-        expect(mockCallBack).toBeCalledWith(null, { result: 'ok' }, expect.any(Object));
+        // PII create order should have the same callback signature as orders#create
+        expect(mockCallBack).toBeCalledWith(null, 'testData', { result: 'testData' });
       });
     });
   });
