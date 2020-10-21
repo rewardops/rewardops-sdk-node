@@ -121,7 +121,7 @@ const createOrder = ({ contextId }) => async (params, callback) => {
 
     const response = await axios.post(url, params);
 
-    callback(null, response.data, response);
+    callback(null, response.data.result, response.data);
   } catch (error) {
     log(`API Error: ${prettyPrint(error)}`, { level: 'error' });
 
