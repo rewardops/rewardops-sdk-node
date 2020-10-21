@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://github.com/rewardops/rewardops-sdk-node/compare/v1.3.2...v1.3.3) (2020-10-21)
+
+### Bug Fixes
+
+- refactor PII create to use `Orders#create` callback signature ([#52](https://github.com/rewardops/rewardops-sdk-node/issues/52)) ([b01a7df](https://github.com/rewardops/rewardops-sdk-node/commit/b01a7dfba7ac50d9a177b242b4518cc670adb582))
+
 ### [1.3.2](https://github.com/rewardops/rewardops-sdk-node/compare/v1.3.1...v1.3.2) (2020-10-16)
 
 ### Bug Fixes
