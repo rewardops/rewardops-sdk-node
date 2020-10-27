@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.0.0...v2.1.0) (2020-10-27)
+
+### Features
+
+- redact PII in log output ([2d29b71](https://github.com/rewardops/rewardops-sdk-node/commit/2d29b71326e7b2e95a9a20a12f411a9102bd4e6e))
+
 ## [2.0.0](https://github.com/rewardops/rewardops-sdk-node/compare/v1.3.2...v2.0.0) (2020-10-21)
 
 ### Bug Fixes
