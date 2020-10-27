@@ -1,9 +1,20 @@
 const mockDate = require('mockdate');
+const faker = require('faker');
+const _ = require('lodash');
 
 const config = require('../../lib/config');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const { log, getLogLevel, LOG_PREFIX } = jest.requireActual('../../lib/utils/logger');
+const {
+  formatMessage,
+  getLogLevel,
+  log,
+  logFormat,
+  prettyPrint,
+  redactSecrets,
+  LOG_PREFIX,
+  REDACTED_MESSAGE,
+} = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -12,6 +23,89 @@ const originalConsole = console;
 const mockConsole = { log: jest.fn(), warn: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
+
+describe('#prettyPrint', () => {
+  it('should stringify an object', () => {
+    const result = prettyPrint({
+      name: 'AuthenticationError',
+      message: 'Client authentication failed due to unknown client',
+    });
+    const expectedResult = `{
+  "name": "AuthenticationError",
+  "message": "Client authentication failed due to unknown client"
+}`;
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should stringify an array', () => {
+    const result = prettyPrint(['Error 1', 'Error 2']);
+    const expectedResult = `[
+  "Error 1",
+  "Error 2"
+]`;
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should handle an array of objects', () => {
+    const result = prettyPrint([{ error: 'Something' }, { error: 'Went Wrong' }]);
+    const expectedResult = `[
+  {
+    "error": "Something"
+  },
+  {
+    "error": "Went Wrong"
+  }
+]`;
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  it.each`
+    input        | expected
+    ${100}       | ${'100'}
+    ${'foobar'}  | ${'"foobar"'}
+    ${null}      | ${'null'}
+    ${NaN}       | ${'null'}
+    ${Infinity}  | ${'null'}
+    ${undefined} | ${undefined}
+  `('should handle primitives ($input -> $expected)', ({ input, expected }) => {
+    expect(prettyPrint(input)).toEqual(expected);
+  });
+});
+
+describe('#redactSecrets', () => {
+  it.each`
+    input                                        | secretPropPath
+    ${{ secret: 'sauce' }}                       | ${['secret']}
+    ${{ clientSecret: faker.random.uuid() }}     | ${['clientSecret']}
+    ${{ creditCard: '1234 1234 1234 1234' }}     | ${['creditCard']}
+    ${[{ password: faker.random.words() }]}      | ${[0, 'password']}
+    ${[{ api: { token: faker.random.uuid() } }]} | ${[0, 'api', 'token']}
+  `('should redact secrets from JSON-stringifiable objects', ({ input, secretPropPath }) => {
+    expect(_.get(redactSecrets(input), secretPropPath)).toEqual(REDACTED_MESSAGE);
+  });
+});
+
+describe('#formatMessage', () => {
+  it.each`
+    input                         | expectedSubstring
+    ${{}}                         | ${'{}'}
+    ${[]}                         | ${'[]'}
+    ${[{ bar: [{ baz: 'yo' }] }]} | ${'"baz": "yo"'}
+    ${{ secret: 'message' }}      | ${`"secret": "${REDACTED_MESSAGE}"`}
+  `('should pretty-print and redact secrets from JSON-stringifiable objects', ({ input, expectedSubstring }) => {
+    const formattedMessage = formatMessage(input);
+
+    expect(typeof formattedMessage).toEqual('string');
+    expect(formattedMessage).toEqual(expect.stringContaining(expectedSubstring));
+  });
+
+  it.each([100, 'foobar', null, NaN, Infinity, undefined])('should passthrough primitives (%p)', input => {
+    expect(formatMessage(input)).toBe(input);
+  });
+});
 
 describe('#getLogLevel', () => {
   beforeEach(() => {
@@ -30,6 +124,71 @@ describe('#getLogLevel', () => {
       config.set('quiet', quiet);
 
       expect(getLogLevel()).toEqual(expected);
+    });
+  });
+});
+
+describe('#logFormat', () => {
+  const mockTimestamp = new Date().toISOString();
+  const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
+
+  it('logs SDK prefix, timestamp, and log level', () => {
+    expect.assertions(4);
+
+    const formattedLog = logFormat({ level: mockLogLevel, message: 'foobar', timestamp: mockTimestamp });
+
+    const EXPECTED_SUBSTRINGS = [LOG_PREFIX, mockTimestamp, mockLogLevel.toUpperCase(), 'foobar'];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(formattedLog).toEqual(expect.stringContaining(substring));
+    });
+  });
+
+  it('logs pretty-printed message, without unprovided metadata', () => {
+    const formattedLog = logFormat({ level: mockLogLevel, message: { foo: 'bar' }, timestamp: mockTimestamp });
+
+    expect(formattedLog).toEqual(
+      expect.stringContaining(`{
+  "foo": "bar"
+}`)
+    );
+    expect(formattedLog).not.toEqual(expect.stringContaining('Metadata'));
+  });
+
+  it('logs pretty-printed metadata, if provided', () => {
+    const formattedLog = logFormat({
+      level: mockLogLevel,
+      message: 'foobar',
+      timestamp: mockTimestamp,
+      meta: { baz: 'yo' },
+    });
+
+    expect(formattedLog).toEqual(
+      expect.stringContaining(`\nMetadata:\t{
+  "baz": "yo"
+}`)
+    );
+  });
+
+  it('filters PII from log messages', () => {
+    expect.assertions(4);
+
+    const mockClientId = faker.random.uuid();
+    const messageWithPii = {
+      clientId: mockClientId,
+      clientSecret: faker.random.uuid(),
+      foo: 'bar',
+      apiToken: faker.random.uuid(),
+    };
+    const formattedLog = logFormat({ level: mockLogLevel, message: messageWithPii, timestamp: mockTimestamp });
+
+    const EXPECTED_SUBSTRINGS = [
+      `"clientId": "${mockClientId}"`,
+      `"clientSecret": "${REDACTED_MESSAGE}"`,
+      `"foo": "bar"`,
+      `"apiToken": "${REDACTED_MESSAGE}"`,
+    ];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(formattedLog).toEqual(expect.stringContaining(substring));
     });
   });
 });
@@ -66,6 +225,8 @@ describe('#log', () => {
   });
 
   test('instances of Error are parsed into the log', () => {
+    expect.assertions(4);
+
     const error = new Error();
     error.message = 'errorMessage';
     error.stack = 'errorStack';
