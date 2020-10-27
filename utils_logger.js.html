@@ -96,32 +96,82 @@
  */
 
 const winston = require('winston');
-const { isEmpty } = require('lodash');
+const { isEmpty, isPlainObject, isArray } = require('lodash');
+const redact = require('redact-secrets');
 
 const config = require('./../config');
 
 const { combine, timestamp: timestampFormatter, printf } = winston.format;
 
-/** RewardOps SDK log prefix */
+/**
+ * RewardOps SDK log prefix
+ *
+ * @private
+ */
 const LOG_PREFIX = 'RewardOps SDK';
 
 /**
- * Pretty print a JSON object
+ * Redacted message placeholder value
+ *
+ * @private
+ */
+const REDACTED_MESSAGE = '[REDACTED]';
+
+/**
+ * Reports whether a value is either an array or object, and therefore
+ * can be traversed as valid JSON (i.e. JSON-stringifiable).
+ *
+ * @param {*} value Any value
+ *
+ * @returns {boolean} Report of whether value can be traversed as JSON
+ *
+ * @private
+ */
+const isJSON = value => isPlainObject(value) || isArray(value);
+
+/**
+ * Pretty print a given value.
  *
  * @param {object|Array} json JSON object
  *
  * @returns {string} Prettier JSON string
  *
- * @protected
+ * @private
  */
 const prettyPrint = json => JSON.stringify(json, undefined, 2);
+
+/**
+ * Deeply iterate over an object and redact secret values by replacing
+ * them with a `REDACTED_MESSAGE` const string.
+ *
+ * @param {object} obj Object with potential secrets
+ *
+ * @returns {object} New object with secrets redacted
+ *
+ * @private
+ */
+const redactSecrets = obj => redact(REDACTED_MESSAGE).map(obj);
+
+/**
+ * Formats a message according to its type.
+ *
+ * If given a JSON-stringifiable object, it redacts any potential secrets
+ * and pretty prints; otherwise, it simply passes through the message.
+ *
+ * @param {*} message Log message
+ *
+ * @returns {string} Formatted message
+ *
+ * @private
+ */
+const formatMessage = message => (isJSON(message) ? prettyPrint(redactSecrets(message)) : message);
 
 /**
  * Get Winston log level based on SDK configuration.
  *
  * @returns {string} Log level
  *
- * @protected
+ * @private
  */
 const getLogLevel = () => {
   if (config.get('verbose')) {
@@ -133,12 +183,25 @@ const getLogLevel = () => {
   return 'info';
 };
 
-/** RewardOps log format */
-const logFormat = printf(({ level, message = '', timestamp, meta = {} }) => {
-  return [LOG_PREFIX, level.toUpperCase(), `[${timestamp}]`, message, isEmpty(meta) ? '' : `\n\t${prettyPrint(meta)}`]
+/**
+ * RewardOps log format
+ *
+ * @param {object} options Log format options
+ *
+ * @returns {string} Formatted log string
+ *
+ * @private
+ */
+const logFormat = ({ level, message = '', timestamp, meta = {} }) =>
+  [
+    LOG_PREFIX,
+    level.toUpperCase(),
+    `[${timestamp}]`,
+    formatMessage(message),
+    isEmpty(meta) ? '' : `\nMetadata:\t${prettyPrint(meta)}`,
+  ]
     .join(' ')
     .trim();
-});
 
 /**
  * Winston logger configuration
@@ -147,7 +210,7 @@ const logFormat = printf(({ level, message = '', timestamp, meta = {} }) => {
  * @private
  */
 const logger = winston.createLogger({
-  format: combine(timestampFormatter(), logFormat),
+  format: combine(timestampFormatter(), printf(logFormat)),
   transports: [new winston.transports.Console({ level: getLogLevel() })],
 });
 
@@ -252,7 +315,17 @@ if (config.get('logToFile')) {
   setLogFilePath();
 }
 
-module.exports = { log, getLogLevel, setLogFilePath, prettyPrint, LOG_PREFIX };
+module.exports = {
+  log,
+  logFormat,
+  formatMessage,
+  getLogLevel,
+  setLogFilePath,
+  prettyPrint,
+  redactSecrets,
+  LOG_PREFIX,
+  REDACTED_MESSAGE,
+};
 </code></pre>
         </article>
     </section>
