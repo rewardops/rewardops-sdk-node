@@ -9,6 +9,7 @@ const {
   formatMessage,
   getLogLevel,
   log,
+  logFormat,
   prettyPrint,
   redactSecrets,
   LOG_PREFIX,
@@ -127,6 +128,71 @@ describe('#getLogLevel', () => {
   });
 });
 
+describe('#logFormat', () => {
+  const mockTimestamp = new Date().toISOString();
+  const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
+
+  it('logs SDK prefix, timestamp, and log level', () => {
+    expect.assertions(4);
+
+    const formattedLog = logFormat({ level: mockLogLevel, message: 'foobar', timestamp: mockTimestamp });
+
+    const EXPECTED_SUBSTRINGS = [LOG_PREFIX, mockTimestamp, mockLogLevel.toUpperCase(), 'foobar'];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(formattedLog).toEqual(expect.stringContaining(substring));
+    });
+  });
+
+  it('logs pretty-printed message, without unprovided metadata', () => {
+    const formattedLog = logFormat({ level: mockLogLevel, message: { foo: 'bar' }, timestamp: mockTimestamp });
+
+    expect(formattedLog).toEqual(
+      expect.stringContaining(`{
+  "foo": "bar"
+}`)
+    );
+    expect(formattedLog).not.toEqual(expect.stringContaining('Metadata'));
+  });
+
+  it('logs pretty-printed metadata, if provided', () => {
+    const formattedLog = logFormat({
+      level: mockLogLevel,
+      message: 'foobar',
+      timestamp: mockTimestamp,
+      meta: { baz: 'yo' },
+    });
+
+    expect(formattedLog).toEqual(
+      expect.stringContaining(`\nMetadata:\t{
+  "baz": "yo"
+}`)
+    );
+  });
+
+  it('filters PII from log messages', () => {
+    expect.assertions(4);
+
+    const mockClientId = faker.random.uuid();
+    const messageWithPii = {
+      clientId: mockClientId,
+      clientSecret: faker.random.uuid(),
+      foo: 'bar',
+      apiToken: faker.random.uuid(),
+    };
+    const formattedLog = logFormat({ level: mockLogLevel, message: messageWithPii, timestamp: mockTimestamp });
+
+    const EXPECTED_SUBSTRINGS = [
+      `"clientId": "${mockClientId}"`,
+      `"clientSecret": "${REDACTED_MESSAGE}"`,
+      `"foo": "bar"`,
+      `"apiToken": "${REDACTED_MESSAGE}"`,
+    ];
+    EXPECTED_SUBSTRINGS.forEach(substring => {
+      expect(formattedLog).toEqual(expect.stringContaining(substring));
+    });
+  });
+});
+
 describe('#log', () => {
   beforeEach(() => {
     // eslint-disable-next-line no-global-assign
@@ -159,6 +225,8 @@ describe('#log', () => {
   });
 
   test('instances of Error are parsed into the log', () => {
+    expect.assertions(4);
+
     const error = new Error();
     error.message = 'errorMessage';
     error.stack = 'errorStack';
