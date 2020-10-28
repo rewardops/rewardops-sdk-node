@@ -56,22 +56,26 @@ describe('context', () => {
     });
   });
 
-  describe('piiServerUrl logic', () => {
+  describe('`program` context', () => {
     beforeEach(() => {
       config.reset();
     });
 
-    it('should return mockOrderRecipientFactory.create if piiServerUrl is present', () => {
-      config.init(mockConfig({ piiServerUrl: faker.internet.url() }));
-      const program = context.contextInstance('programs');
+    describe('when `piiServerUrl` is set', () => {
+      it('invokes mockOrderRecipientFactory for order create', () => {
+        config.init(mockConfig({ piiServerUrl: faker.internet.url() }));
+        const program = context.contextInstance('programs');
 
-      expect(program.orders.create).toEqual(orderRecipientFactory().create);
+        expect(program.orders.create).toEqual(orderRecipientFactory().create);
+      });
     });
 
-    it('should return mockOrders.create if piiServerUrl is undefined', () => {
-      const program = context.contextInstance('programs');
+    describe('when `piiServerUrl` not set', () => {
+      it('invokes mockOrders for order create', () => {
+        const program = context.contextInstance('programs');
 
-      expect(program.orders.create).toEqual(orders().create);
+        expect(program.orders.create).toEqual(orders().create);
+      });
     });
   });
 });
