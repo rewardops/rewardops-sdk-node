@@ -3,18 +3,12 @@ const faker = require('faker');
 const _ = require('lodash');
 
 const config = require('../../lib/config');
+const { LOG_PREFIX } = require('../../lib/constants');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const {
-  formatMessage,
-  getLogLevel,
-  log,
-  logFormat,
-  prettyPrint,
-  redactSecrets,
-  LOG_PREFIX,
-  REDACTED_MESSAGE,
-} = jest.requireActual('../../lib/utils/logger');
+const { formatMessage, getLogLevel, log, logFormat, prettyPrint, redactSecrets, REDACTED_MESSAGE } = jest.requireActual(
+  '../../lib/utils/logger'
+);
 
 // test setup
 const timestamp = Date.now();

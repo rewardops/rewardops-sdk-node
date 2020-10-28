@@ -4,6 +4,7 @@ const nock = require('nock');
 const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
+const { ConfigurationError } = require('../../../lib/utils/error');
 const { mockConfig } = require('../../test-helpers/mock-config');
 
 jest.mock('../../../lib/utils/axios-helpers');
@@ -35,9 +36,10 @@ describe('v5 order-recipients', () => {
   });
 
   it('throws an error if not provided a `programs` context', () => {
-    expect(() => orderRecipients.orderRecipientFactory('something else', mockProgramId, mockProgramCode)).toThrow(
-      'Can only create an order recipient object for programs'
-    );
+    const missingProgramsContext = () =>
+      orderRecipients.orderRecipientFactory('something else', mockProgramId, mockProgramCode);
+    expect(missingProgramsContext).toThrow(ConfigurationError);
+    expect(missingProgramsContext).toThrow('Can only create an order recipient object for programs');
   });
 
   describe('when piiServerUrl not configured', () => {
@@ -51,10 +53,11 @@ describe('v5 order-recipients', () => {
       );
     });
 
-    it('should respond with an error if there is a bad config', () => {
-      expect(() => orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
-        'piiServerUrl is not configured'
-      );
+    it('should respond with an error', () => {
+      const missingPiiServerUrl = () =>
+        orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+      expect(missingPiiServerUrl).toThrow(ConfigurationError);
+      expect(missingPiiServerUrl).toThrow('`piiServerUrl` is not configured');
     });
   });
 
@@ -68,10 +71,11 @@ describe('v5 order-recipients', () => {
       );
     });
 
-    it('should respond with an error if there is a bad config', () => {
-      expect(() => orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode)).toThrow(
-        'supportedLocales is not configured'
-      );
+    it('should respond with an error', () => {
+      const missingSupportedLocales = () =>
+        orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+      expect(missingSupportedLocales).toThrow(ConfigurationError);
+      expect(missingSupportedLocales).toThrow('`supportedLocales` is not configured');
     });
   });
 
