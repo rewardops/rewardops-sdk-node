@@ -1,18 +1,11 @@
+const faker = require('faker');
 const nock = require('nock');
+
 const RO = require('../../..');
 const fixtures = require('../../fixtures/v4/program-orders.fixtures');
 const { mockConfig } = require('../../test-helpers/mock-config');
 
-RO.config.init(
-  mockConfig({
-    apiVersion: 'v4',
-    piiServerUrl: null,
-    clientId: 'programTest123',
-    clientSecret: 'itsATestGetUsedToIt',
-  })
-);
-
-describe('v4 RO.program()', () => {
+describe('v4 `RO.program`', () => {
   beforeEach(() => {
     fixtures();
   });
@@ -21,10 +14,25 @@ describe('v4 RO.program()', () => {
     nock.cleanAll();
   });
 
-  describe('orders', () => {
-    const programId = 33;
-    const program = RO.program(programId);
+  describe('typical orders (without PII)', () => {
+    const programId = faker.random.number();
     const programOrdersUrl = `/programs/${programId}/orders`;
+    let program;
+
+    beforeAll(() => {
+      RO.config.init(
+        mockConfig({
+          clientId: 'programTest123',
+          clientSecret: 'itsATestGetUsedToIt',
+        })
+      );
+
+      program = RO.program(programId);
+    });
+
+    afterAll(() => {
+      RO.config.reset();
+    });
 
     it('should have the correct context ID', () => {
       expect(program.orders.contextId).toEqual(programId);
@@ -34,7 +42,9 @@ describe('v4 RO.program()', () => {
       expect(program.orders.contextTypeName).toEqual('programs');
     });
 
-    describe('getSummary()', () => {
+    describe('#getSummary', () => {
+      it.todo('should call the base API URL');
+
       it('should fire the callback with an error when the params object is missing', () => {
         return new Promise(done => {
           program.orders.getSummary((error, data) => {
@@ -65,7 +75,7 @@ describe('v4 RO.program()', () => {
             });
 
           program.orders.getSummary(params, (error, data) => {
-            expect(typeof data).toBe('object');
+            expect(data).toEqual(expect.any(Object));
 
             done();
           });
@@ -99,7 +109,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('getAll()', () => {
+    describe('#getAll', () => {
       it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
@@ -178,7 +188,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('get()', () => {
+    describe('#get', () => {
       it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
@@ -252,7 +262,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('create()', () => {
+    describe('#create', () => {
       it('should fire the callback with an error when the params object is missing a member object', () => {
         return new Promise(done => {
           const params = {
@@ -382,7 +392,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('update()', () => {
+    describe('#update', () => {
       const orderId = 'abcd1234asdf0987';
       const orderUpdateUrl = `/programs/${programId}/orders/${orderId}`;
 
@@ -473,7 +483,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('updateOrderItems()', () => {
+    describe('#updateOrderItems', () => {
       const orderId = 'abcd1234asdf0987';
       const updateOrderItemsUrl = `/programs/${programId}/orders/${orderId}/order_items`;
 
