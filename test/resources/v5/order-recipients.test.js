@@ -37,17 +37,16 @@ describe('v5 order-recipients', () => {
 
   it('throws an error if not provided a `programs` context', () => {
     const missingProgramsContext = () =>
-      orderRecipients.orderRecipientFactory('something else', mockProgramId, mockProgramCode);
+      orderRecipients.orderRecipientFactory('invalid-context', mockProgramId, mockProgramCode);
     expect(missingProgramsContext).toThrow(ConfigurationError);
     expect(missingProgramsContext).toThrow('Can only create an order recipient object for programs');
   });
 
-  describe('when piiServerUrl not configured', () => {
+  describe('when `piiServerUrl` not configured', () => {
     beforeEach(() => {
       RO.config.reset();
       RO.config.init(
         mockConfig({
-          piiServerUrl: null,
           supportedLocales: [],
         })
       );
@@ -61,11 +60,12 @@ describe('v5 order-recipients', () => {
     });
   });
 
-  describe('when supportedLocales not configured', () => {
+  describe('when `supportedLocales` not configured', () => {
     beforeEach(() => {
       RO.config.reset();
       RO.config.init(
         mockConfig({
+          piiServerUrl: faker.internet.url(),
           supportedLocales: undefined,
         })
       );
