@@ -28,7 +28,7 @@ describe('storeOrderRecipientSchema.validate()', () => {
   test('it reject an id that is an empty string', async () => {
     const params = { id: '', accept_language: testLocale };
 
-    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('Id must be a number or UUID');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('ID must be a number or UUID');
   });
 
   test('it reject an id that is undefined', async () => {
