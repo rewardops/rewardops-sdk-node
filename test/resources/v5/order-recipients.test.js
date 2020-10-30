@@ -15,67 +15,59 @@ const mockPiiServerUrl = faker.internet.url();
 const mockProgramId = faker.random.number();
 const mockProgramCode = faker.random.word();
 const testError = { error: 'testError' };
-const mockOrderRecipientCode = '011a0032-162f-497d-9856-b9b7a9fb31b8';
+const mockOrderRecipientCode = faker.random.uuid();
 
 describe('v5 order-recipients', () => {
   let orderRecipient;
 
-  beforeEach(() => {
-    RO.config.init(
-      mockConfig({
-        supportedLocales: ['en-CA', 'fr-CA'],
-        piiServerUrl: mockPiiServerUrl,
-      })
-    );
-    orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
-  });
-
   afterEach(() => {
-    RO.config.reset();
     jest.clearAllMocks();
+    RO.config.reset();
   });
 
-  it('throws an error if not provided a `programs` context', () => {
-    const missingProgramsContext = () =>
-      orderRecipients.orderRecipientFactory('invalid-context', mockProgramId, mockProgramCode);
-    expect(missingProgramsContext).toThrow(ConfigurationError);
-    expect(missingProgramsContext).toThrow('Can only create an order recipient object for programs');
-  });
-
-  describe('when `piiServerUrl` not configured', () => {
-    beforeEach(() => {
-      RO.config.reset();
+  describe('error handling', () => {
+    it('responds with an error when `piiServerUrl` not configured', () => {
       RO.config.init(
         mockConfig({
           supportedLocales: [],
         })
       );
-    });
 
-    it('should respond with an error', () => {
       const missingPiiServerUrl = () =>
         orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+
       expect(missingPiiServerUrl).toThrow(ConfigurationError);
       expect(missingPiiServerUrl).toThrow('`piiServerUrl` is not configured');
     });
-  });
 
-  describe('when `supportedLocales` not configured', () => {
-    beforeEach(() => {
-      RO.config.reset();
+    it('responds with an error when `supportedLocales` not configured', () => {
       RO.config.init(
         mockConfig({
           piiServerUrl: faker.internet.url(),
           supportedLocales: undefined,
         })
       );
-    });
 
-    it('should respond with an error', () => {
       const missingSupportedLocales = () =>
         orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+
       expect(missingSupportedLocales).toThrow(ConfigurationError);
       expect(missingSupportedLocales).toThrow('`supportedLocales` is not configured');
+    });
+
+    it('throws an error if not provided a `programs` context', () => {
+      RO.config.init(
+        mockConfig({
+          supportedLocales: ['en-CA', 'fr-CA'],
+          piiServerUrl: mockPiiServerUrl,
+        })
+      );
+
+      const missingProgramsContext = () =>
+        orderRecipients.orderRecipientFactory('invalid-context', mockProgramId, mockProgramCode);
+
+      expect(missingProgramsContext).toThrow(ConfigurationError);
+      expect(missingProgramsContext).toThrow('Can only create an order recipient object for programs');
     });
   });
 
@@ -88,80 +80,112 @@ describe('v5 order-recipients', () => {
       validation_signature: `${faker.random.uuid()}FA==`,
     };
 
+    const mockPiiConfig = mockConfig({
+      supportedLocales: ['en-CA', 'fr-CA'],
+      piiServerUrl: mockPiiServerUrl,
+    });
+
     const mockStoreOrderRecipientCall = () =>
-      nock(mockPiiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
+      nock(mockPiiConfig.piiServerUrl).post(`/api/v5/programs/${mockProgramCode}/order_recipients`, member);
 
     const mockCreateOrderCall = () =>
-      nock(mockPiiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, {
+      nock(mockPiiConfig.apiServerUrl).post(`/api/v4/programs/${mockProgramId}/orders`, {
         ...mockStoreOrderRecipientResponse,
         amount: 100,
       });
 
+    beforeEach(() => {
+      RO.config.init(mockPiiConfig);
+
+      orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+    });
+
+    afterEach(() => {
+      nock.cleanAll();
+    });
+
     describe('#storeOrderRecipient', () => {
-      it('should return props from `storeOrderRecipient` when it receives a 200', async () => {
-        mockStoreOrderRecipientCall().reply(200, {
+      it('call to PII server URL and returns props from `storeOrderRecipient` when it receives a 200', async () => {
+        const call = mockStoreOrderRecipientCall().reply(200, {
           result: mockStoreOrderRecipientResponse,
         });
 
         const orderRecipientData = await orderRecipients.storeOrderRecipient({ programCode: mockProgramCode })(member);
 
+        expect(call.isDone()).toBe(true);
         expect(orderRecipientData).toEqual(mockStoreOrderRecipientResponse);
       });
     });
 
     describe('#create', () => {
-      it('should respond with an error if the request params are empty', async () => {
-        const requestBody = {};
+      describe('error handling', () => {
+        it('responds with an error if the request params are empty', async () => {
+          const requestBody = {};
 
-        await orderRecipient.create(requestBody, mockCallBack);
+          await orderRecipient.create(requestBody, mockCallBack);
 
-        expect(mockCallBack).toHaveBeenCalledWith(['accept_language is a required field']);
+          expect(mockCallBack).toHaveBeenCalledWith(['accept_language is a required field']);
+        });
+
+        it('returns the error to the callback if an error occurs during auth', async () => {
+          setPiiToken.mockRejectedValueOnce('testError');
+
+          await orderRecipient.create({ member }, mockCallBack);
+
+          expect(mockCallBack).toBeCalledWith(testError);
+        });
+
+        it('returns the error to the callback if an error occurs during store order recipient', async () => {
+          mockStoreOrderRecipientCall().reply(422, testError);
+
+          await orderRecipient.create({ member }, mockCallBack);
+
+          expect(mockCallBack).toBeCalledWith({ error: expect.objectContaining({ status: 422, data: testError }) });
+        });
+
+        it('returns the error to the callback if an error occurs during order create', async () => {
+          mockStoreOrderRecipientCall().reply(200, {
+            result: mockStoreOrderRecipientResponse,
+          });
+
+          mockCreateOrderCall().reply(422, testError);
+
+          await orderRecipient.create({ member, amount: 100 }, mockCallBack);
+
+          expect(mockCallBack).toBeCalledWith(testError);
+        });
       });
 
-      it('should return the error to the callback if an error occurs during auth', async () => {
-        setPiiToken.mockRejectedValueOnce('testError');
-
-        await orderRecipient.create({ member }, mockCallBack);
-
-        expect(mockCallBack).toBeCalledWith(testError);
-      });
-
-      it('should return the error to the callback if an error occurs during store order recipient', async () => {
-        mockStoreOrderRecipientCall().reply(422, testError);
-
-        await orderRecipient.create({ member }, mockCallBack);
-
-        expect(mockCallBack).toBeCalledWith({ error: expect.objectContaining({ status: 422, data: testError }) });
-      });
-
-      it('should return the error to the callback if an error occurs during order create', async () => {
+      it('calls API server URL and returns the response to the callback if the create was successful', async () => {
         mockStoreOrderRecipientCall().reply(200, {
           result: mockStoreOrderRecipientResponse,
         });
 
-        mockCreateOrderCall().reply(422, testError);
+        const createOrderCall = mockCreateOrderCall().reply(200, { result: 'testData' });
 
         await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
-        expect(mockCallBack).toBeCalledWith(testError);
-      });
+        expect(createOrderCall.isDone()).toBe(true);
 
-      it('should return the response to the callback if the create was successful', async () => {
-        mockStoreOrderRecipientCall().reply(200, {
-          result: mockStoreOrderRecipientResponse,
-        });
-
-        mockCreateOrderCall().reply(200, { result: 'testData' });
-
-        await orderRecipient.create({ member, amount: 100 }, mockCallBack);
-        // PII create order should have the same callback signature as orders#create
+        // NOTE: PII create order should have the same callback signature as orders#create
         expect(mockCallBack).toBeCalledWith(null, 'testData', { result: 'testData' });
       });
     });
   });
 
   describe('#getOrderRecipient', () => {
-    it('should return the error to the callback if an error occurs during auth', async () => {
+    beforeEach(() => {
+      RO.config.init(
+        mockConfig({
+          supportedLocales: ['en-CA', 'fr-CA'],
+          piiServerUrl: mockPiiServerUrl,
+        })
+      );
+
+      orderRecipient = orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
+    });
+
+    it('returns the error to the callback if an error occurs during auth', async () => {
       setPiiToken.mockRejectedValueOnce('testError');
 
       await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
@@ -169,13 +193,14 @@ describe('v5 order-recipients', () => {
       expect(mockCallBack).toBeCalledWith('testError');
     });
 
-    it('should respond with an error if the params are invalid', async () => {
-      nock(mockPiiServerUrl)
+    it('calls PII server URL and returns the response to the callback if call was successful', async () => {
+      const call = nock(mockPiiServerUrl)
         .get(`/api/v5/programs/${mockProgramCode}/order_recipients/${mockOrderRecipientCode}`)
         .reply(200, { foo: 'bar', result: 42 });
 
       await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
 
+      expect(call.isDone()).toBe(true);
       expect(mockCallBack).toHaveBeenCalledWith(null, 42, { foo: 'bar', result: 42 });
     });
   });
