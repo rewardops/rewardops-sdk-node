@@ -5,6 +5,9 @@ docs/
 jsdoc.json
 commitlint.config.js
 
+jest.*.js
+coverage/
+examples/
 .buildkite/
 __tests__/
 test/
