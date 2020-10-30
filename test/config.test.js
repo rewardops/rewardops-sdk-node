@@ -2,7 +2,7 @@ const { omit } = require('lodash');
 const mockConsole = require('jest-mock-console');
 
 const config = require('../lib/config');
-const { ConfigurationError } = require('../lib/utils/error');
+const { SDKError } = require('../lib/utils/error');
 const { minimalMockConfig, mockConfig } = require('./test-helpers/mock-config');
 
 const REQUIRED_PROPS = ['clientId', 'clientSecret'];
@@ -51,7 +51,7 @@ describe('config', () => {
       config.init(minimalMockConfig);
 
       const secondInitCall = () => config.init();
-      expect(secondInitCall).toThrowError(ConfigurationError);
+      expect(secondInitCall).toThrowError(SDKError);
       expect(secondInitCall).toThrowError('Cannot initialize configuration more than once');
     });
 

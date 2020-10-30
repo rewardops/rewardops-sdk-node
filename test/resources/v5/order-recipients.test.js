@@ -4,7 +4,7 @@ const nock = require('nock');
 const RO = require('../../..');
 const orderRecipients = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
-const { ConfigurationError } = require('../../../lib/utils/error');
+const { SDKError } = require('../../../lib/utils/error');
 const { mockConfig } = require('../../test-helpers/mock-config');
 
 jest.mock('../../../lib/utils/axios-helpers');
@@ -36,7 +36,7 @@ describe('v5 order-recipients', () => {
       const missingPiiServerUrl = () =>
         orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
 
-      expect(missingPiiServerUrl).toThrow(ConfigurationError);
+      expect(missingPiiServerUrl).toThrow(SDKError);
       expect(missingPiiServerUrl).toThrow('`piiServerUrl` is not configured');
     });
 
@@ -51,7 +51,7 @@ describe('v5 order-recipients', () => {
       const missingSupportedLocales = () =>
         orderRecipients.orderRecipientFactory('programs', mockProgramId, mockProgramCode);
 
-      expect(missingSupportedLocales).toThrow(ConfigurationError);
+      expect(missingSupportedLocales).toThrow(SDKError);
       expect(missingSupportedLocales).toThrow('`supportedLocales` is not configured');
     });
 
@@ -66,7 +66,7 @@ describe('v5 order-recipients', () => {
       const missingProgramsContext = () =>
         orderRecipients.orderRecipientFactory('invalid-context', mockProgramId, mockProgramCode);
 
-      expect(missingProgramsContext).toThrow(ConfigurationError);
+      expect(missingProgramsContext).toThrow(SDKError);
       expect(missingProgramsContext).toThrow('Can only create an order recipient object for programs');
     });
   });
