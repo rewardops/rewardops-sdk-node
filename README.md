@@ -1,5 +1,10 @@
 ## RewardOps Node SDK
 
+[![npm version](https://img.shields.io/npm/v/@rewardops/sdk-node)](https://www.npmjs.com/package/@rewardops/sdk-node)
+[![Node support](https://img.shields.io/node/v/@rewardops/sdk-node)]()
+[![license](https://img.shields.io/npm/l/@rewardops/sdk-node)]()
+[![Conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
 The RewardOps Node SDK dramatically simplifies OAuth as well as typical interfacing with our public APIs. Simply add your `clientId` and `clientSecret` to the config and you're ready to go.
 
 _Note: The SDK currently supports v4 and v3 of the RewardOps API. In addition, v5 endpoints are partially implemented._
@@ -131,8 +136,6 @@ For examples of the SDK in use, see [the `examples/` directory](https://github.c
 Shane Martin <[shane.martin@rewardops.com](mailto:shane.martin@rewardops.com)>
 
 ## Contributing
-
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 NOTE: This section is for developers maintaining the `rewardops-sdk-node` library, rather than those consuming the npm package.
 
