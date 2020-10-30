@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> emitter</title>
+  <title> utils/error.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,228 +75,48 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>emitter</h1>
+                    <p>Source</p>
+                    <h1>utils/error.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Event emitter</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="emitter.js.html" class="button">View Source</a>
-            <span>
-                <a href="emitter.js.html">emitter.js</a>, <a href="emitter.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Members</h1>
-            <div class="members">
-            
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">EventEmitter</span>
-
-
-    </span>
-
-<h4 class="name" id="~emitter">
-    <a class="href-link" href="#~emitter">#</a>
-    
-        
-            <span class='tag'>inner</span>
-        
-            <span class='tag'>constant</span>
-        
-    
-    <span class="code-name">
-        emitter
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Event emitter instance</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="emitter.js.html" class="button">View Source</a>
-            <span>
-                <a href="emitter.js.html">emitter.js</a>, <a href="emitter.js.html#line17">line 17</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { LOG_PREFIX } = require('../constants');
+
+/**
+ * Class representing a RewardOps SDK error.
+ *
+ * @augments Error
+ */
+class SDKError extends Error {
+  /**
+   * Create a configuration error.
+   *
+   * @param {string} message Error message
+   * @param  {...any} params Other Error params
+   */
+  constructor(message, ...params) {
+    const configMessage = `${LOG_PREFIX} ERROR: ${message}`;
+
+    super(configMessage, ...params);
+
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, SDKError);
+    }
+
+    this.name = 'SDKError';
+  }
+}
+
+module.exports = { SDKError };
+</code></pre>
+        </article>
+    </section>
 
 
 

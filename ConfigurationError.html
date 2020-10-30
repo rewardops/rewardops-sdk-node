@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> utils/auth</title>
+  <title> ConfigurationError</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -66,15 +66,15 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="ConfigurationError.html">ConfigurationError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
                 
             </nav>
         </div>
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>utils/auth</h1>
+                    <p>Class</p>
+                    <h1>ConfigurationError</h1>
                 </header>
                 
 
@@ -85,8 +85,9 @@
 
 <header>
     
+        <h2><span class="attribs"><span class="type-signature"></span></span>ConfigurationError<span class="signature">(message, &hellip;params)</span><span class="type-signature"></span></h2>
         
-            
+            <div class="class-description"><p>Class representing a configuration error.</p></div>
         
     
 </header>
@@ -95,127 +96,22 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Authorization helpers</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="utils_auth.js.html" class="button">View Source</a>
-            <span>
-                <a href="utils_auth.js.html">utils/auth.js</a>, <a href="utils_auth.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Methods</h1>
-            <div class="members">
-            
-                <div class="member">
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
 
 
     
-    <h4 class="name" id="~generateBasicAuthToken">
-        <a class="href-link" href="#~generateBasicAuthToken">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
+    <h4 class="name" id="ConfigurationError">
+        <a class="href-link" href="#ConfigurationError">#</a>
         
         <span class="code-name">
             
-                generateBasicAuthToken<span class="signature">(clientId, clientSecret)</span><span class="type-signature"> &rarr; {object}</span>
+                new ConfigurationError<span class="signature">(message, &hellip;params)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -224,7 +120,7 @@
     
     
     <div class="description">
-        <p>Generate <code>Basic</code>-type header authorization token for RewardOps API</p>
+        <p>Create a configuration error.</p>
     </div>
     
 
@@ -249,6 +145,8 @@
             <th>Type</th>
 
             
+            <th>Attributes</th>
+            
 
             
 
@@ -262,7 +160,7 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>clientId</code></td>
+      <td class="name"><code>message</code></td>
   
 
   <td class="type">
@@ -275,10 +173,18 @@
   </td>
 
   
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
 
   
 
-  <td class="description last"><p>RewardOps API client ID</p></td>
+  <td class="description last"><p>Error message</p></td>
 </tr>
 
 
@@ -287,23 +193,33 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>clientSecret</code></td>
+      <td class="name"><code>params</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">string</span>
+<span class="param-type">any</span>
 
 
   
   </td>
 
   
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
 
   
 
-  <td class="description last"><p>RewardOps API client secret</p></td>
+  <td class="description last"><p>Error params</p></td>
 </tr>
 
 
@@ -349,9 +265,9 @@
 
     
         <p class="tag-source">
-            <a href="utils_auth.js.html" class="button">View Source</a>
+            <a href="utils_error.js.html" class="button">View Source</a>
             <span>
-                <a href="utils_auth.js.html">utils/auth.js</a>, <a href="utils_auth.js.html#line19">line 19</a>
+                <a href="utils_error.js.html">utils/error.js</a>, <a href="utils_error.js.html#line15">line 15</a>
             </span>
         </p>
     
@@ -374,46 +290,42 @@
 
 
 
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>Object with <code>Basic</code>-type <code>Authorization</code> header property</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">object</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
 
 
 
 
-    <h5>Example</h5>
-    
-    
-        <pre class="prettyprint"><code>generateBasicAuthToken('abc123', 'xyz987')
-// => { Authorization: 'Basic YWJjMTIzOnh5ejk4Nw==' }</code></pre>
-    
-
-
-</div>
-            
+                    </div>
+                </div>
             </div>
-        </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Error</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     

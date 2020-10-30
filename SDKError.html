@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> utils/logger</title>
+  <title> SDKError</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,8 +73,8 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>utils/logger</h1>
+                    <p>Class</p>
+                    <h1>SDKError</h1>
                 </header>
                 
 
@@ -85,8 +85,9 @@
 
 <header>
     
+        <h2><span class="attribs"><span class="type-signature"></span></span>SDKError<span class="signature">(message, &hellip;params)</span><span class="type-signature"></span></h2>
         
-            
+            <div class="class-description"><p>Class representing a RewardOps SDK error.</p></div>
         
     
 </header>
@@ -95,129 +96,22 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Logging helper</p>
-<p>we use the winston library to simplify logging
-see: https://github.com/winstonjs/winston for API docs</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="utils_logger.js.html" class="button">View Source</a>
-            <span>
-                <a href="utils_logger.js.html">utils/logger.js</a>, <a href="utils_logger.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Methods</h1>
-            <div class="members">
-            
-                <div class="member">
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
 
 
     
-    <h4 class="name" id="~log">
-        <a class="href-link" href="#~log">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
+    <h4 class="name" id="SDKError">
+        <a class="href-link" href="#SDKError">#</a>
         
         <span class="code-name">
             
-                log<span class="signature">(message, options)</span><span class="type-signature"> &rarr; {winston.log|null}</span>
+                new SDKError<span class="signature">(message, &hellip;params)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -226,9 +120,7 @@ see: https://github.com/winstonjs/winston for API docs</p></div>
     
     
     <div class="description">
-        <p>Log a message to console in accordance with the SDK configuration</p>
-<p>NOTE: If an Error object is passed as the message, it will log both the error's
-message and stack trace.</p>
+        <p>Create a configuration error.</p>
     </div>
     
 
@@ -252,6 +144,8 @@ message and stack trace.</p>
 
             <th>Type</th>
 
+            
+            <th>Attributes</th>
             
 
             
@@ -279,10 +173,18 @@ message and stack trace.</p>
   </td>
 
   
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
 
   
 
-  <td class="description last"><p>Log message</p></td>
+  <td class="description last"><p>Error message</p></td>
 </tr>
 
 
@@ -291,254 +193,33 @@ message and stack trace.</p>
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>options</code></td>
+      <td class="name"><code>params</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">object</span>
+<span class="param-type">any</span>
 
 
   
   </td>
 
   
-
-  
-
-  <td class="description last"><p>Options object</p></td>
-</tr>
-
-  
-  
-    
-<tr class="deep-level-1">
-  
-      <td class="name"><code>level</code></td>
-  
-
-  <td class="type">
-  
+      <td class="attributes">
       
-<span class="param-type">string</span>
 
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Log level</p></td>
-</tr>
-
-  
-    
-<tr class="deep-level-1">
-  
-      <td class="name"><code>meta</code></td>
-  
-
-  <td class="type">
-  
       
-<span class="param-type">object</span>
 
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Optional log metadata</p></td>
-</tr>
-
-  
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="utils_logger.js.html" class="button">View Source</a>
-            <span>
-                <a href="utils_logger.js.html">utils/logger.js</a>, <a href="utils_logger.js.html#line209">line 209</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>Returns a log message, along with optional metadata
-(if the <a href="module-config.html"><code>module:config</code></a> option <code>verbose</code> is <code>true</code>).</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">winston.log</span>
-|
-
-<span class="param-type">null</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~setLogFilePath">
-        <a class="href-link" href="#~setLogFilePath">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                setLogFilePath<span class="signature">(path)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Sets the path for the log file and enable file logging.</p>
-<p>NOTE: Runs on module initialization.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>path</code></td>
-  
-
-  <td class="type">
-  
       
-<span class="param-type">string</span>
-
-
-  
-  </td>
-
+          &lt;repeatable><br>
+      
+      </td>
   
 
   
 
-  <td class="description last"><p>Log file path</p></td>
+  <td class="description last"><p>Other Error params</p></td>
 </tr>
 
 
@@ -584,9 +265,9 @@ message and stack trace.</p>
 
     
         <p class="tag-source">
-            <a href="utils_logger.js.html" class="button">View Source</a>
+            <a href="utils_error.js.html" class="button">View Source</a>
             <span>
-                <a href="utils_logger.js.html">utils/logger.js</a>, <a href="utils_logger.js.html#line187">line 187</a>
+                <a href="utils_error.js.html">utils/error.js</a>, <a href="utils_error.js.html#line15">line 15</a>
             </span>
         </p>
     
@@ -612,10 +293,39 @@ message and stack trace.</p>
 
 
 
-</div>
-            
+
+                    </div>
+                </div>
             </div>
-        </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Error</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     

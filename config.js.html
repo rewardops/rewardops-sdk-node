@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
                 
             </nav>
         </div>
@@ -93,9 +93,11 @@
  */
 
 const path = require('path');
-
 const { cloneDeep, omitBy, isNil } = require('lodash');
+
+const { LOG_PREFIX } = require('./constants');
 const { configSchema } = require('./schemas/config');
+const { SDKError } = require('./utils/error');
 
 /**
  * Default SDK configuration options
@@ -168,7 +170,7 @@ const getAll = () => cloneDeep(config);
  */
 const set = (key, value) => {
   // NOTE: we cannot use `log` function here as this module is a dependency of logger module.
-  console.warn('config.set is deprecated, please use config.init instead');
+  console.warn(`${LOG_PREFIX}: 'config.set' is deprecated, please use 'config.init' instead`);
 
   config = { ...config, [key]: value };
   return value;
@@ -205,7 +207,7 @@ const reset = () => {
  */
 const init = initialConfig => {
   if (configInitialized) {
-    throw new Error('cannot initialize config more than once');
+    throw new SDKError('Cannot initialize configuration more than once');
   }
 
   configInitialized = true;
