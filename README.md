@@ -1,8 +1,9 @@
 ## RewardOps Node SDK
 
 [![npm version](https://img.shields.io/npm/v/@rewardops/sdk-node)](https://www.npmjs.com/package/@rewardops/sdk-node)
-[![Node support](https://img.shields.io/node/v/@rewardops/sdk-node)]()
 [![Build status](https://badge.buildkite.com/f1d80294c7e25b393a4431650344ef58c5c8e43e1a9a74e8f6.svg?branch=master)](https://buildkite.com/rewardops/rewardops-sdk-node)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@rewardops/sdk-node)
+[![Node support](https://img.shields.io/node/v/@rewardops/sdk-node)]()
 [![license](https://img.shields.io/npm/l/@rewardops/sdk-node)]()
 [![Conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
