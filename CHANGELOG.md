@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.1.0...v2.2.0) (2020-10-30)
+
+### Features
+
+- **perf:** make all create order calls directly to global API ([177bb4b](https://github.com/rewardops/rewardops-sdk-node/commit/177bb4b60039b824b2d9c1e9a6299d1d8164a309))
+- make config errors more descriptive ([d62ffd8](https://github.com/rewardops/rewardops-sdk-node/commit/d62ffd8f23841d17c463908e61cda07ccf9fe67e))
+
 ## [2.1.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.0.0...v2.1.0) (2020-10-27)
 
 ### Features
