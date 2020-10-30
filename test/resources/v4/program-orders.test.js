@@ -1,18 +1,13 @@
+const faker = require('faker');
 const nock = require('nock');
-const RO = require('../../..');
+
 const fixtures = require('../../fixtures/v4/program-orders.fixtures');
 const { mockConfig } = require('../../test-helpers/mock-config');
+const RO = require('../../..');
+const orders = require('../../../lib/resources/orders');
+const { orderRecipientFactory } = require('../../../lib/resources/order-recipients');
 
-RO.config.init(
-  mockConfig({
-    apiVersion: 'v4',
-    piiServerUrl: null,
-    clientId: 'programTest123',
-    clientSecret: 'itsATestGetUsedToIt',
-  })
-);
-
-describe('v4 RO.program()', () => {
+describe('RO.program.orders', () => {
   beforeEach(() => {
     fixtures();
   });
@@ -21,10 +16,27 @@ describe('v4 RO.program()', () => {
     nock.cleanAll();
   });
 
-  describe('orders', () => {
-    const programId = 33;
-    const program = RO.program(programId);
+  describe.each([undefined, faker.internet.url()])('`piiServerUrl` set to %s', piiServerUrl => {
+    const LOCALE = 'en-CA';
+    const programId = faker.random.number();
     const programOrdersUrl = `/programs/${programId}/orders`;
+    let program;
+
+    beforeAll(() => {
+      const config = mockConfig({
+        piiServerUrl,
+        supportedLocales: piiServerUrl ? [LOCALE] : undefined,
+        clientId: 'programTest123',
+        clientSecret: 'itsATestGetUsedToIt',
+      });
+      RO.config.init(config);
+
+      program = RO.program(programId);
+    });
+
+    afterAll(() => {
+      RO.config.reset();
+    });
 
     it('should have the correct context ID', () => {
       expect(program.orders.contextId).toEqual(programId);
@@ -34,7 +46,9 @@ describe('v4 RO.program()', () => {
       expect(program.orders.contextTypeName).toEqual('programs');
     });
 
-    describe('getSummary()', () => {
+    describe('#getSummary', () => {
+      it.todo('should call the base API URL');
+
       it('should fire the callback with an error when the params object is missing', () => {
         return new Promise(done => {
           program.orders.getSummary((error, data) => {
@@ -65,7 +79,7 @@ describe('v4 RO.program()', () => {
             });
 
           program.orders.getSummary(params, (error, data) => {
-            expect(typeof data).toBe('object');
+            expect(data).toEqual(expect.any(Object));
 
             done();
           });
@@ -99,7 +113,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('getAll()', () => {
+    describe('#getAll', () => {
       it('should pass an array to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
@@ -178,7 +192,7 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('get()', () => {
+    describe('#get', () => {
       it('should pass an object to the callback', () => {
         return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
@@ -252,169 +266,185 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('create()', () => {
-      it('should fire the callback with an error when the params object is missing a member object', () => {
-        return new Promise(done => {
-          const params = {
-            items: [{}],
-          };
-
-          program.orders.create(params, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
-
-            expect(data).toEqual(undefined);
-
-            done();
-          });
-        });
+    describe('#create', () => {
+      it('invokes the correct order `create` method', () => {
+        const expectedFn = () => (piiServerUrl ? orderRecipientFactory('programs').create : orders('programs').create);
+        expect(program.orders.create.toString()).toEqual(expectedFn().toString());
       });
 
-      it('should fire the callback with an error when the params object is missing an items array', () => {
-        return new Promise(done => {
-          const params = {
-            member: { id: 'hoo_ah' },
-          };
+      // FIXME: create order method is different for PII and non-PII configs
+      if (!piiServerUrl) {
+        describe('validation', () => {
+          it('should fire the callback with an error when the params object is missing a member object', () => {
+            return new Promise(done => {
+              const params = {
+                items: [{}],
+              };
 
-          program.orders.create(params, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
+              program.orders.create(params, (error, data) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('must pass a member object in the params object to `orders.create()`');
 
-            expect(data).toEqual(undefined);
+                expect(data).toEqual(undefined);
 
-            done();
-          });
-        });
-      });
-
-      it('should pass an object to the callback', () => {
-        return new Promise(done => {
-          const newOrder = {
-            member: {
-              id: 'abc123ppp',
-            },
-            items: [{}],
-          };
-
-          nock(RO.urls.getApiBaseUrl(), {
-            reqHeaders: {
-              Authorization: 'Bearer abcd1234rewardTime',
-            },
-          })
-            .post(programOrdersUrl, newOrder)
-            .reply(200, {
-              result: {},
+                done();
+              });
             });
+          });
 
-          program.orders.create(newOrder, (error, result) => {
-            expect(error).toEqual(null);
-            expect(typeof result).toBe('object');
+          it('should fire the callback with an error when the params object is missing an items array', () => {
+            return new Promise(done => {
+              const params = {
+                member: { id: 'hoo_ah' },
+              };
 
-            done();
+              program.orders.create(params, (error, data) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('must pass an items array in the params object to `orders.create()`');
+
+                expect(data).toEqual(undefined);
+
+                done();
+              });
+            });
+          });
+
+          it("should pass an error to the callback when a params object isn't passed", () => {
+            return new Promise(done => {
+              RO.program(133000).orders.create((error, result) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('A params object is required');
+
+                expect(result).toEqual(undefined);
+
+                done();
+              });
+            });
           });
         });
-      });
 
-      it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
-          const newOrder = {
-            member: {
-              id: 'ab098765',
-              full_name: 'Prit Kaur',
-              email: 'prit@hotmail.co.uk',
-              phone: '123-456-7890',
-              address: {
-                address: '123 Some Town',
-                city: 'Sheffield',
-                country_code: 'UK',
-                postal_code: 'S32 5N9',
+        it('should pass an object to the callback', () => {
+          return new Promise(done => {
+            const newOrder = {
+              member: {
+                id: faker.random.uuid(),
+                accept_language: LOCALE,
               },
-            },
-            items: [
-              {
-                item_order_token: '3o2u4902u3joo4',
-                quantity: 2,
-                member_spend: [
-                  {
-                    currency_code: 'XRO-ABC',
-                    amount: '1000',
-                  },
-                ],
-                retail_value: {
-                  currency_code: 'USD',
-                  amount: '20',
+              items: [{}],
+            };
+
+            const createOrderCall = nock(RO.urls.getApiBaseUrl(), {
+              reqHeaders: {
+                Authorization: 'Bearer abcd1234rewardTime',
+              },
+            })
+              .post(programOrdersUrl, newOrder)
+              .reply(200, {
+                result: {},
+              });
+
+            program.orders.create(newOrder, (error, result) => {
+              expect(createOrderCall.isDone()).toBe(true);
+              expect(error).toEqual(null);
+              expect(typeof result).toBe('object');
+
+              done();
+            });
+          });
+        });
+
+        it('should make an HTTP get request to the correct URL', () => {
+          return new Promise(done => {
+            const newOrder = {
+              member: {
+                id: faker.random.uuid(),
+                full_name: 'Prit Kaur',
+                email: 'prit@hotmail.co.uk',
+                phone: '123-456-7890',
+                address: {
+                  address: '123 Some Town',
+                  city: 'Sheffield',
+                  country_code: 'UK',
+                  postal_code: 'S32 5N9',
                 },
+                accept_language: LOCALE,
               },
-            ],
-          };
-          const apiCall = nock(RO.urls.getApiBaseUrl(), {
-            reqHeaders: {
-              Authorization: 'Bearer abcd1234rewardTime',
-            },
-          })
-            .post(programOrdersUrl, newOrder)
-            .reply(200, {
-              result: { status: 'OK' },
+              items: [
+                {
+                  item_order_token: '3o2u4902u3joo4',
+                  quantity: 2,
+                  member_spend: [
+                    {
+                      currency_code: 'XRO-ABC',
+                      amount: '1000',
+                    },
+                  ],
+                  retail_value: {
+                    currency_code: 'USD',
+                    amount: '20',
+                  },
+                },
+              ],
+            };
+
+            const apiCall = nock(RO.urls.getApiBaseUrl(), {
+              reqHeaders: {
+                Authorization: 'Bearer abcd1234rewardTime',
+              },
+            })
+              .post(programOrdersUrl, newOrder)
+              .reply(200, {
+                result: { status: 'OK' },
+              });
+
+            RO.program(programId).orders.create(newOrder, (error, result) => {
+              expect(error).toEqual(null);
+
+              expect(result).toEqual({ status: 'OK' });
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
             });
-
-          RO.program(programId).orders.create(newOrder, (error, result) => {
-            expect(error).toEqual(null);
-
-            expect(result).toEqual({ status: 'OK' });
-            expect(apiCall.isDone()).toEqual(true);
-
-            done();
           });
         });
-      });
-
-      it("should pass an error to the callback when a params object isn't passed", () => {
-        return new Promise(done => {
-          RO.program(133000).orders.create((error, result) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual('A params object is required');
-
-            expect(result).toEqual(undefined);
-
-            done();
-          });
-        });
-      });
+      }
     });
 
-    describe('update()', () => {
+    describe('#update', () => {
       const orderId = 'abcd1234asdf0987';
       const orderUpdateUrl = `/programs/${programId}/orders/${orderId}`;
 
-      it('should fire the callback with an error when no id is passed as the first argument', () => {
-        return new Promise(done => {
-          const params = {
-            payment_status: 'PAID',
-            payment_status_notes: 'The user paid, and we thank them for it.',
-          };
+      describe('validation', () => {
+        it('should fire the callback with an error when no id is passed as the first argument', () => {
+          return new Promise(done => {
+            const params = {
+              payment_status: 'PAID',
+              payment_status_notes: 'The user paid, and we thank them for it.',
+            };
 
-          program.orders.update(params, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass an order (external) ID as the first argument to `orders.update()`'
-            );
+            program.orders.update(params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual(
+                'must pass an order (external) ID as the first argument to `orders.update()`'
+              );
 
-            expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-            done();
+              done();
+            });
           });
         });
-      });
 
-      it('should fire the callback with an error when no params object is passed', () => {
-        return new Promise(done => {
-          program.orders.update(orderId, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual('A params object is required');
+        it('should fire the callback with an error when no params object is passed', () => {
+          return new Promise(done => {
+            program.orders.update(orderId, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual('A params object is required');
 
-            expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-            done();
+              done();
+            });
           });
         });
       });
@@ -473,39 +503,41 @@ describe('v4 RO.program()', () => {
       });
     });
 
-    describe('updateOrderItems()', () => {
+    describe('#updateOrderItems', () => {
       const orderId = 'abcd1234asdf0987';
       const updateOrderItemsUrl = `/programs/${programId}/orders/${orderId}/order_items`;
 
-      it('should fire the callback with an error when no id is passed as the first argument', () => {
-        return new Promise(done => {
-          const params = {
-            order_item_payment_status: 'PAID',
-            status_notes: 'The user paid, and we thank them for it.',
-          };
+      describe('validation', () => {
+        it('should fire the callback with an error when no id is passed as the first argument', () => {
+          return new Promise(done => {
+            const params = {
+              order_item_payment_status: 'PAID',
+              status_notes: 'The user paid, and we thank them for it.',
+            };
 
-          program.orders.updateOrderItems(params, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual(
-              'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`'
-            );
+            program.orders.updateOrderItems(params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual(
+                'must pass an order (external) ID as the first argument to `orders.updateOrderItems()`'
+              );
 
-            expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-            done();
+              done();
+            });
           });
         });
-      });
 
-      it('should fire the callback with an error when no params object is passed', () => {
-        return new Promise(done => {
-          program.orders.updateOrderItems(orderId, (error, data) => {
-            expect(error).toBeInstanceOf(Error);
-            expect(error.message).toEqual('A params object is required');
+        it('should fire the callback with an error when no params object is passed', () => {
+          return new Promise(done => {
+            program.orders.updateOrderItems(orderId, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual('A params object is required');
 
-            expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-            done();
+              done();
+            });
           });
         });
       });

@@ -1,10 +1,6 @@
-const faker = require('faker');
-
 const context = require('../lib/context');
-const config = require('../lib/config');
 const { orderRecipientFactory } = require('../lib/resources/order-recipients');
 const orders = require('../lib/resources/orders');
-const { mockConfig } = require('../test/test-helpers/mock-config');
 
 jest.mock('../lib/resources/order-recipients');
 orderRecipientFactory.mockReturnValue({ create: jest.fn() });
@@ -53,25 +49,6 @@ describe('context', () => {
       expect(program.contextTypeName).toEqual('programs');
       expect(program.id).toEqual(33);
       expect(typeof program.orders).toBe('object');
-    });
-  });
-
-  describe('piiServerUrl logic', () => {
-    beforeEach(() => {
-      config.reset();
-    });
-
-    it('should return mockOrderRecipientFactory.create if piiServerUrl is present', () => {
-      config.init(mockConfig({ piiServerUrl: faker.internet.url() }));
-      const program = context.contextInstance('programs');
-
-      expect(program.orders.create).toEqual(orderRecipientFactory().create);
-    });
-
-    it('should return mockOrders.create if piiServerUrl is undefined', () => {
-      const program = context.contextInstance('programs');
-
-      expect(program.orders.create).toEqual(orders().create);
     });
   });
 });

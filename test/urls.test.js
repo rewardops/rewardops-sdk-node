@@ -1,3 +1,5 @@
+const faker = require('faker');
+
 const config = require('../lib/config');
 const urls = require('../lib/urls');
 const { mockConfig } = require('./test-helpers/mock-config');
@@ -15,69 +17,43 @@ describe('urls', () => {
     config.reset();
   });
 
-  describe('getApiServerUrl()', () => {
-    afterAll(() => {
+  describe('#getApiServerUrl', () => {
+    afterEach(() => {
       config.reset();
     });
 
-    it('should have the correct server url in the development env', () => {
-      process.env.REWARDOPS_ENV = 'development';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.DEVELOPMENT);
+    it.each`
+      input            | expected
+      ${'development'} | ${'DEVELOPMENT'}
+      ${'qa'}          | ${'QA'}
+      ${'integration'} | ${'INTEGRATION'}
+      ${'uat'}         | ${'UAT'}
+      ${'UAT'}         | ${'UAT'}
+      ${'production'}  | ${'PRODUCTION'}
+      ${'invalid'}     | ${'PRODUCTION'}
+      ${undefined}     | ${'PRODUCTION'}
+    `('sets the correct server url when `REWARDOPS_ENV` environment variable is `$input`', ({ input, expected }) => {
+      process.env.REWARDOPS_ENV = input;
+      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS[expected]);
     });
 
-    it('should have the correct server url in the QA env', () => {
-      process.env.REWARDOPS_ENV = 'qa';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.QA);
-    });
-
-    it('should have the correct server url in the integration env', () => {
-      process.env.REWARDOPS_ENV = 'integration';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.INTEGRATION);
-    });
-
-    it('should have the correct server url in the UAT env', () => {
-      process.env.REWARDOPS_ENV = 'uat';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.UAT);
-    });
-
-    it('should have the correct server url in the UAT env (uppercase)', () => {
-      process.env.REWARDOPS_ENV = 'UAT';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.UAT);
-    });
-
-    it('should have the correct server url in production environment', () => {
-      process.env.REWARDOPS_ENV = 'production';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.PRODUCTION);
-    });
-
-    it('should have the correct server url in arbitrary environment', () => {
-      process.env.REWARDOPS_ENV = 'just some arbitrary string';
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.PRODUCTION);
-    });
-
-    it('should have the production server url in unknown environment', () => {
-      // reset, just in case
-      process.env.REWARDOPS_ENV = undefined;
-
-      expect(urls.getApiServerUrl()).toEqual(urls.ENVIRONMENT_URLS.PRODUCTION);
-    });
-
-    it('should return the apiServerUrl from the config if it is set', () => {
-      const EXAMPLE_URL = 'http://example.com/test';
+    it('returns the set `apiServerUrl` config, even if `REWARDOPS_ENV` variable also set', () => {
+      const mockApiServerUrl = faker.internet.url();
 
       process.env.REWARDOPS_ENV = 'development';
 
-      config.init(mockConfig({ apiServerUrl: EXAMPLE_URL }));
+      config.init(mockConfig({ apiServerUrl: mockApiServerUrl }));
 
-      expect(urls.getApiServerUrl()).toEqual(EXAMPLE_URL);
-      expect(urls.getApiBaseUrl()).toEqual(`${EXAMPLE_URL}/api/${config.get('apiVersion')}`);
+      expect(urls.getApiServerUrl()).toEqual(mockApiServerUrl);
+      expect(urls.getApiBaseUrl()).toEqual(`${mockApiServerUrl}/api/${config.get('apiVersion')}`);
+    });
+
+    it('should not be altered when `piiServerUrl` is set', () => {
+      const mockPiiServerUrl = faker.internet.url();
+
+      config.init(mockConfig({ piiServerUrl: mockPiiServerUrl }));
+
+      expect(urls.getApiServerUrl()).not.toEqual(expect.stringContaining(mockPiiServerUrl));
     });
   });
 
