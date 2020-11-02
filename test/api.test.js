@@ -5,6 +5,7 @@ const RO = require('..');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 const emitter = require('../lib/emitter');
 const { mockConfig } = require('../test/test-helpers/mock-config');
+const auth = require('../lib/auth');
 
 const defaultConfig = mockConfig({ apiVersion: 'v4' });
 
@@ -19,6 +20,32 @@ describe('api', () => {
 
   it('should be an object', () => {
     expect(typeof RO.api).toBe('object');
+  });
+
+  it('should handle 5XX responses', () => {
+    jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback(null, 'testToken'));
+
+    nock(RO.urls.getApiBaseUrl())
+      .get('/timeout-error')
+      .once()
+      .reply(504);
+    return new Promise(done => {
+      RO.api.get(
+        {
+          path: '/timeout-error',
+          config: {},
+        },
+        (error, data, response) => {
+          expect(error.name).toEqual('Error');
+          expect(error.status).toEqual(504);
+
+          expect(data).toEqual(undefined);
+          expect(response).toEqual(undefined);
+
+          done();
+        }
+      );
+    });
   });
 
   it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', () => {
