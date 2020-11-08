@@ -30,14 +30,10 @@ const mockV5AuthAPI = () =>
     .basicAuth({ user: clientId, pass: clientSecret });
 
 describe('setPiiToken', () => {
+  let ordersClient;
+
   beforeEach(() => {
-    axios.defaults.headers.common.Authorization = undefined;
-    axios.defaults.tokenData = undefined;
-  });
-  // clean up after all tests in this file have run.
-  afterAll(() => {
-    axios.defaults.headers.common.Authorization = undefined;
-    axios.defaults.tokenData = undefined;
+    ordersClient = axios.create();
   });
 
   it('should set the accessToken', async () => {
@@ -49,14 +45,14 @@ describe('setPiiToken', () => {
       created_at: Date.now(),
     });
 
-    await setPiiToken();
+    await setPiiToken(ordersClient);
 
-    expect(axios.defaults.headers.common.Authorization).toEqual(`Bearer ${expectedTestToken}`);
+    expect(ordersClient.defaults.headers.common.Authorization).toEqual(`Bearer ${expectedTestToken}`);
   });
 
   it('should return the error from `auth.getToken` callback', async () => {
-    jest.spyOn(auth, 'getToken').mockImplementation((_, callback) => callback('testError'));
+    jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback('testError'));
 
-    await expect(setPiiToken()).rejects.toMatch('testError');
+    await expect(setPiiToken(ordersClient)).rejects.toMatch('testError');
   });
 });

@@ -29,7 +29,7 @@ describe('api', () => {
       .get('/timeout-error')
       .once()
       .reply(504);
-      
+
     return new Promise(done => {
       RO.api.get(
         {
