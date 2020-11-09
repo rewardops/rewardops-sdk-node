@@ -48,6 +48,8 @@ describe('setPiiToken', () => {
     await setPiiToken(ordersClient);
 
     expect(ordersClient.defaults.headers.common.Authorization).toEqual(`Bearer ${expectedTestToken}`);
+    // assert that the global defaults are not mutated.
+    expect(axios.defaults.headers.common.Authorization).toEqual(undefined);
   });
 
   it('should return the error from `auth.getToken` callback', async () => {
