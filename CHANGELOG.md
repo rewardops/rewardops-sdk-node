@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.2.0...v2.2.1) (2020-11-10)
+
+### Bug Fixes
+
+- catch all 5XX and 4XX statusCodes ([#56](https://github.com/rewardops/rewardops-sdk-node/issues/56)) ([637a5e8](https://github.com/rewardops/rewardops-sdk-node/commit/637a5e841368e4b721e77567414cbd54eff9a732))
+- create instance of axios for PII calls MX-1388 ([#57](https://github.com/rewardops/rewardops-sdk-node/issues/57)) ([1ac41cf](https://github.com/rewardops/rewardops-sdk-node/commit/1ac41cf48bdbca1673df2051360a5d3e107d3476))
+
 ## [2.2.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.1.0...v2.2.0) (2020-10-30)
 
 ### Features
