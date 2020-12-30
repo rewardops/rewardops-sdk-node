@@ -39,7 +39,13 @@ describe('api', () => {
         (error, _, __, request) => {
           expect(error).toEqual(null);
 
-          expect(request).toEqual(expect.objectContaining({ headers: expect.any(Object) }));
+          expect(request).toEqual(
+            expect.objectContaining({
+              headers: expect.any(Object),
+              method: 'GET',
+              uri: expect.any(Object),
+            })
+          );
 
           done();
         }
