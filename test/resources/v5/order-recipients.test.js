@@ -168,7 +168,12 @@ describe('v5 order-recipients', () => {
         expect(createOrderCall.isDone()).toBe(true);
 
         // NOTE: PII create order should have the same callback signature as orders#create
-        expect(mockCallBack).toBeCalledWith(null, 'testData', { result: 'testData' });
+        expect(mockCallBack).toBeCalledWith(
+          null,
+          'testData',
+          { result: 'testData' },
+          expect.objectContaining({ headers: expect.any(Object) })
+        );
       });
     });
   });
@@ -201,7 +206,12 @@ describe('v5 order-recipients', () => {
       await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
 
       expect(call.isDone()).toBe(true);
-      expect(mockCallBack).toHaveBeenCalledWith(null, 42, { foo: 'bar', result: 42 });
+      expect(mockCallBack).toHaveBeenCalledWith(
+        null,
+        42,
+        { foo: 'bar', result: 42 },
+        expect.objectContaining({ headers: expect.any(Object) })
+      );
     });
   });
 });
