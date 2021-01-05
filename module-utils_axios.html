@@ -219,7 +219,7 @@
         
         <span class="code-name">
             
-                setPiiToken<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+                setPiiToken<span class="signature">(client)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
             
         </span>
     </h4>
@@ -239,6 +239,57 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>client</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">axios.AxiosInstance.&lt;void></span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Avoids polluting the global axios object.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -279,7 +330,7 @@
         <p class="tag-source">
             <a href="utils_axios-helpers.js.html" class="button">View Source</a>
             <span>
-                <a href="utils_axios-helpers.js.html">utils/axios-helpers.js</a>, <a href="utils_axios-helpers.js.html#line24">line 24</a>
+                <a href="utils_axios-helpers.js.html">utils/axios-helpers.js</a>, <a href="utils_axios-helpers.js.html#line26">line 26</a>
             </span>
         </p>
     
@@ -334,7 +385,7 @@ promise will reject, otherwise it will resolve.</p></div>
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>await setPiiToken()</code></pre>
+        <pre class="prettyprint"><code>await setPiiToken(client)</code></pre>
     
 
 

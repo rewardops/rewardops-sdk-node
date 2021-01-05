@@ -160,7 +160,7 @@ function apiCall(httpMethod, options, callback) {
 
       log(`Request: ${httpMethod} ${urls.getApiBaseUrl()}${options.path}`);
 
-      request(requestOptions, (err, { statusCode, headers } = {}, responseBody) => {
+      request(requestOptions, (err, { statusCode = 500, headers, request: req } = {}, responseBody) => {
         const meta = {
           request: requestOptions,
           response: {
@@ -195,10 +195,18 @@ function apiCall(httpMethod, options, callback) {
 
           error = getError(responseBody.result.error.detail, statusCode, responseBody.result);
           callback(error);
+        } else if (['5', '4'].includes(String(statusCode)[0])) {
+          /**
+           * Handle unexpected errors 5XX or 4XX (i.e. 504: GatewayTimeout)
+           */
+          log(`API Error: Unknown cause, status ${statusCode}`, { level: 'error', meta });
+
+          error = getError(null, statusCode, null);
+          callback(error);
         } else {
           log(`Success: ${statusCode} ${urls.getApiBaseUrl()}${options.path}`);
 
-          callback(null, responseBody.result, responseBody);
+          callback(null, responseBody.result, responseBody, req);
         }
       });
     }
@@ -256,6 +264,7 @@ module.exports = api;
  * @param {(Error|null)} error Either an `Error` object or `null` if there's no error
  * @param {object} responseBody The 'result' object from the API response body
  * @param {object} response The full body of the response from the API. This includes pagination details, if present
+ * @param {object} [req] The full request object from the request library.
  */
 </code></pre>
         </article>

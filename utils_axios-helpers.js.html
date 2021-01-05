@@ -100,15 +100,17 @@ const config = require('../config');
  * Set axios' default auth header to OAuth Bearer Token from v5 RO API
  *
  * @async
+ *
+ * @param {axios.AxiosInstance&lt;void>} client Avoids polluting the global axios object.
  * @returns {Promise&lt;void>} If an error is returned from `auth.getToken` the
  * promise will reject, otherwise it will resolve.
  *
  * @example
- * await setPiiToken()
+ * await setPiiToken(client)
  *
  * @protected
  */
-const setPiiToken = () =>
+const setPiiToken = client =>
   new Promise((resolve, reject) => {
     auth.getToken(
       { ...config.getAll(), apiVersion: 'v5', apiServerUrl: config.get('piiServerUrl') },
@@ -117,7 +119,7 @@ const setPiiToken = () =>
           reject(error.toString());
         }
 
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        client.defaults.headers.common.Authorization = `Bearer ${token}`;
         resolve();
       }
     );
