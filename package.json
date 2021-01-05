@@ -73,7 +73,7 @@
     "standard-version": "^9.0.0"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "lodash": "^4.17.15",
     "redact-secrets": "^1.0.0",
     "request": "^2.88.0",
