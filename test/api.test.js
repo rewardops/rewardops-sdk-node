@@ -22,6 +22,37 @@ describe('api', () => {
     expect(typeof RO.api).toBe('object');
   });
 
+  it('should pass the request object to the callback', () => {
+    jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback(null, 'testToken'));
+
+    nock(RO.urls.getApiBaseUrl())
+      .get('/')
+      .once()
+      .reply(200, { result: 'foo' });
+
+    return new Promise(done => {
+      RO.api.get(
+        {
+          path: '/',
+          config: {},
+        },
+        (error, _, __, request) => {
+          expect(error).toEqual(null);
+
+          expect(request).toEqual(
+            expect.objectContaining({
+              headers: expect.any(Object),
+              method: 'GET',
+              uri: expect.any(Object),
+            })
+          );
+
+          done();
+        }
+      );
+    });
+  });
+
   it('should handle 5XX responses', () => {
     jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback(null, 'testToken'));
 
