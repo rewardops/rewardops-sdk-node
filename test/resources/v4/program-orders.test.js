@@ -595,5 +595,124 @@ describe('RO.program.orders', () => {
         });
       });
     });
+    describe('#cancel', () => {
+      it('invokes the correct order `cancel` method', () => {
+        const expectedFn = () => orders('programs').cancel;
+        expect(program.orders.cancel.toString()).toEqual(expectedFn().toString());
+      });
+      const orderId = 'abcd1234asdf0987';
+      const params = {
+        order_suppliers: [{}],
+      };
+      const refundReasonDescription = 'reason';
+      const programOrderCancelUrl = `${programOrdersUrl}/${orderId}/refunds?refund_reason_description=${refundReasonDescription}`;
+
+      describe('validation', () => {
+        it('should fire the callback with an error when the orderId param is missing', () => {
+          return new Promise(done => {
+            program.orders.cancel({
+              refundReasonDescription,
+              params,
+              callback: (error, data) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('must pass an orderId to `orders.cancel()`');
+
+                expect(data).toEqual(undefined);
+
+                done();
+              },
+            });
+          });
+        });
+
+        it('should fire the callback with an error when the params is missing', () => {
+          return new Promise(done => {
+            program.orders.cancel({
+              orderId,
+              refundReasonDescription,
+              callback: (error, data) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('A params object is required');
+
+                expect(data).toEqual(undefined);
+
+                done();
+              },
+            });
+          });
+        });
+
+        it('should fire the callback with an error when the param refund_reason_description is missing', () => {
+          return new Promise(done => {
+            program.orders.cancel({
+              orderId,
+              params,
+              callback: (error, data) => {
+                expect(error).toBeInstanceOf(Error);
+                expect(error.message).toEqual('must pass an refund_reason_description param to `orders.cancel()`');
+
+                expect(data).toEqual(undefined);
+
+                done();
+              },
+            });
+          });
+        });
+
+        it('should pass an object to the callback', () => {
+          return new Promise(done => {
+            const cancelOrderCall = nock(RO.urls.getApiBaseUrl(), {
+              reqHeaders: {
+                Authorization: 'Bearer abcd1234rewardTime',
+              },
+            })
+              .post(programOrderCancelUrl, params)
+              .reply(200, {
+                result: {},
+              });
+
+            program.orders.cancel({
+              orderId,
+              refundReasonDescription,
+              params,
+              callback: (error, result) => {
+                expect(cancelOrderCall.isDone()).toBe(true);
+                expect(error).toEqual(null);
+                expect(typeof result).toBe('object');
+
+                done();
+              },
+            });
+          });
+        });
+
+        it('should make an HTTP get request to the correct URL', () => {
+          return new Promise(done => {
+            const apiCall = nock(RO.urls.getApiBaseUrl(), {
+              reqHeaders: {
+                Authorization: 'Bearer abcd1234rewardTime',
+              },
+            })
+              .post(programOrderCancelUrl, params)
+              .reply(200, {
+                result: { status: 'OK' },
+              });
+            RO.program(programId).orders.cancel({
+              orderId,
+              refundReasonDescription,
+              params,
+              callback: (error, result) => {
+                expect(error).toEqual(null);
+
+                expect(result).toEqual({ status: 'OK' });
+                expect(apiCall.isDone()).toEqual(true);
+
+                done();
+              },
+            });
+          });
+        });
+      });
+    });
   });
 });
