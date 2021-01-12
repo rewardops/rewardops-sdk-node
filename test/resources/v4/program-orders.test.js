@@ -642,14 +642,14 @@ describe('RO.program.orders', () => {
           });
         });
 
-        it('should fire the callback with an error when the param refund_reason_description is missing', () => {
+        it('should fire the callback with an error when the param refundReasonDescription is missing', () => {
           return new Promise(done => {
             program.orders.cancel({
               orderId,
               params,
               callback: (error, data) => {
                 expect(error).toBeInstanceOf(Error);
-                expect(error.message).toEqual('must pass an refund_reason_description param to `orders.cancel()`');
+                expect(error.message).toEqual('must pass an refundReasonDescription param to `orders.cancel()`');
 
                 expect(data).toEqual(undefined);
 
