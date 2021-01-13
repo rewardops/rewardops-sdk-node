@@ -595,66 +595,63 @@ describe('RO.program.orders', () => {
         });
       });
     });
+
     describe('#cancel', () => {
+      let orderId;
+      let params;
+      let refundReasonDescription;
+      let programOrderCancelUrl;
+
+      beforeEach(() => {
+        orderId = faker.random.uuid();
+        params = {
+          order_suppliers: [{}],
+        };
+        refundReasonDescription = faker.lorem.word();
+        programOrderCancelUrl = `${programOrdersUrl}/${orderId}/refunds?refund_reason_description=${refundReasonDescription}`;
+      });
+
       it('invokes the correct order `cancel` method', () => {
         const expectedFn = () => orders('programs').cancel;
         expect(program.orders.cancel.toString()).toEqual(expectedFn().toString());
       });
-      const orderId = 'abcd1234asdf0987';
-      const params = {
-        order_suppliers: [{}],
-      };
-      const refundReasonDescription = 'reason';
-      const programOrderCancelUrl = `${programOrdersUrl}/${orderId}/refunds?refund_reason_description=${refundReasonDescription}`;
 
       describe('validation', () => {
         it('should fire the callback with an error when the orderId param is missing', () => {
           return new Promise(done => {
-            program.orders.cancel({
-              refundReasonDescription,
-              params,
-              callback: (error, data) => {
-                expect(error).toBeInstanceOf(Error);
-                expect(error.message).toEqual('must pass an orderId to `orders.cancel()`');
+            program.orders.cancel(undefined, refundReasonDescription, params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual('must pass an orderId to `orders.cancel()`');
 
-                expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-                done();
-              },
+              done();
             });
           });
         });
 
         it('should fire the callback with an error when the params is missing', () => {
           return new Promise(done => {
-            program.orders.cancel({
-              orderId,
-              refundReasonDescription,
-              callback: (error, data) => {
-                expect(error).toBeInstanceOf(Error);
-                expect(error.message).toEqual('A params object is required');
+            program.orders.cancel(orderId, refundReasonDescription, undefined, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual('A params object is required');
 
-                expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-                done();
-              },
+              done();
             });
           });
         });
 
         it('should fire the callback with an error when the param refundReasonDescription is missing', () => {
           return new Promise(done => {
-            program.orders.cancel({
-              orderId,
-              params,
-              callback: (error, data) => {
-                expect(error).toBeInstanceOf(Error);
-                expect(error.message).toEqual('must pass an refundReasonDescription param to `orders.cancel()`');
+            program.orders.cancel(orderId, undefined, params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message).toEqual('must pass an refundReasonDescription param to `orders.cancel()`');
 
-                expect(data).toEqual(undefined);
+              expect(data).toEqual(undefined);
 
-                done();
-              },
+              done();
             });
           });
         });
@@ -671,17 +668,12 @@ describe('RO.program.orders', () => {
                 result: {},
               });
 
-            program.orders.cancel({
-              orderId,
-              refundReasonDescription,
-              params,
-              callback: (error, result) => {
-                expect(cancelOrderCall.isDone()).toBe(true);
-                expect(error).toEqual(null);
-                expect(typeof result).toBe('object');
+            program.orders.cancel(orderId, refundReasonDescription, params, (error, result) => {
+              expect(cancelOrderCall.isDone()).toBe(true);
+              expect(error).toEqual(null);
+              expect(typeof result).toBe('object');
 
-                done();
-              },
+              done();
             });
           });
         });
@@ -697,18 +689,13 @@ describe('RO.program.orders', () => {
               .reply(200, {
                 result: { status: 'OK' },
               });
-            RO.program(programId).orders.cancel({
-              orderId,
-              refundReasonDescription,
-              params,
-              callback: (error, result) => {
-                expect(error).toEqual(null);
+            RO.program(programId).orders.cancel(orderId, refundReasonDescription, params, (error, result) => {
+              expect(error).toEqual(null);
 
-                expect(result).toEqual({ status: 'OK' });
-                expect(apiCall.isDone()).toEqual(true);
+              expect(result).toEqual({ status: 'OK' });
+              expect(apiCall.isDone()).toEqual(true);
 
-                done();
-              },
+              done();
             });
           });
         });
