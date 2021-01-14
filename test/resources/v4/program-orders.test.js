@@ -605,7 +605,42 @@ describe('RO.program.orders', () => {
       beforeEach(() => {
         orderId = faker.random.uuid();
         params = {
-          order_suppliers: [{}],
+          order_suppliers: [
+            {
+              supplier_id: 0,
+              fulfillment: {
+                member_paid: [
+                  {
+                    amount: 0,
+                    currency_code: 'CAD',
+                  },
+                ],
+                program_cost: [
+                  {
+                    amount: 0,
+                    currency_code: 'CAD',
+                  },
+                ],
+              },
+              order_items: [
+                {
+                  order_item_external_id: '',
+                  member_paid: [
+                    {
+                      amount: 0,
+                      currency_code: 'CAD',
+                    },
+                  ],
+                  program_cost: [
+                    {
+                      amount: 0,
+                      currency_code: 'CAD',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         };
         refundReasonDescription = faker.lorem.word();
         programOrderCancelUrl = `${programOrdersUrl}/${orderId}/refunds?refund_reason_description=${refundReasonDescription}`;
