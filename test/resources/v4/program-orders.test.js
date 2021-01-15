@@ -678,6 +678,54 @@ describe('RO.program.orders', () => {
           });
         });
 
+        it('should fire the callback with an error when the order_items is missing in params', () => {
+          return new Promise(done => {
+            params.order_suppliers[0].order_items = undefined;
+            program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message.toString()).toEqual(
+                'ValidationError: order_suppliers[0].order_items is a required field'
+              );
+
+              expect(data).toEqual(undefined);
+
+              done();
+            });
+          });
+        });
+
+        it('should fire the callback with an error when the fulfillment is missing in params', () => {
+          return new Promise(done => {
+            params.order_suppliers[0].fulfillment = undefined;
+            program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message.toString()).toEqual(
+                'ValidationError: order_suppliers[0].fulfillment.program_cost is a required field'
+              );
+
+              expect(data).toEqual(undefined);
+
+              done();
+            });
+          });
+        });
+
+        it('should fire the callback with an error when the supplier_id is missing in params', () => {
+          return new Promise(done => {
+            params.order_suppliers[0].supplier_id = undefined;
+            program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
+              expect(error).toBeInstanceOf(Error);
+              expect(error.message.toString()).toEqual(
+                'ValidationError: order_suppliers[0].supplier_id is a required field'
+              );
+
+              expect(data).toEqual(undefined);
+
+              done();
+            });
+          });
+        });
+
         it('should fire the callback with an error when the param refundReasonDescription is missing', () => {
           return new Promise(done => {
             program.orders.cancel(orderId, undefined, params, (error, data) => {
