@@ -609,12 +609,7 @@ describe('RO.program.orders', () => {
             {
               supplier_id: 0,
               fulfillment: {
-                member_paid: [
-                  {
-                    amount: 0,
-                    currency_code: 'CAD',
-                  },
-                ],
+                member_paid: [],
                 program_cost: [
                   {
                     amount: 0,
@@ -624,19 +619,19 @@ describe('RO.program.orders', () => {
               },
               order_items: [
                 {
-                  order_item_external_id: '',
                   member_paid: [
                     {
-                      amount: 0,
+                      amount: '0',
                       currency_code: 'CAD',
                     },
                   ],
                   program_cost: [
                     {
-                      amount: 0,
+                      amount: '0',
                       currency_code: 'CAD',
                     },
                   ],
+                  order_item_external_id: '',
                 },
               ],
             },
