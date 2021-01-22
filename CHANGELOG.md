@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.4.0...v2.4.1) (2021-01-22)
+
+### Bug Fixes
+
+- adjust order cancel schema ([#65](https://github.com/rewardops/rewardops-sdk-node/issues/65)) ([c8eae65](https://github.com/rewardops/rewardops-sdk-node/commit/c8eae65739cf37467f1c59dddd741ebe9f76116a))
+
 ## [2.4.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.3.0...v2.4.0) (2021-01-19)
 
 ### Features
