@@ -151,6 +151,24 @@ Install:
 npm install
 ```
 
+Developing:
+
+Use [`npm link`](https://docs.npmjs.com/cli/v6/commands/npm-link)
+
+1. run `npm link` in the directory of the SDK. This will create a symlink with the global npm folder.
+
+```sh
+npm link
+```
+
+2. run `npm link @rewardops/sdk-node` in the directory of your app. This will create a symlink from the global npm folder to your app.
+
+```sh
+npm link @rewardops/sdk-node
+```
+
+**NOTE** There is no hot reloading, if you make code changes to the SDK, you will have to re-run step 2 for you changes to appear in your app. Running `yarn install` will also remove the symlink.
+
 To run the library test suite:
 
 ```sh
