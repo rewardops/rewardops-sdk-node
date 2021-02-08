@@ -181,11 +181,19 @@ To build the documentation locally:
 npm run build:docs
 ```
 
-To publish a new version, in a new `release/*` branch, run:
+To publish a new version, run:
 
 ```sh
+git checkout master
+git pull
+npm run release -- --dry-run # note outputted version number
+git checkout -b release/[outputted version]
 npm run release
 # review CHANGELOGS for accuracy
-# follow console output from the `release` script
-npm run publish:docs
+git push --set-upstream origin release/[outputted version]
+# create a PR
+# once approved, merge PR into master
+git checkout master
+git pull
+npm test && npm publish && npm run publish:docs
 ```
