@@ -35,6 +35,7 @@
   },
   "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "test": "jest",
