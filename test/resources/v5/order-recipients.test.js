@@ -18,6 +18,23 @@ const mockProgramCode = faker.random.word();
 const testError = { error: 'testError' };
 const mockOrderRecipientCode = faker.random.uuid();
 
+/**
+ * This helper simulates middleware that you may use to inject headers into requests e.g. Data Dog
+ *
+ * @param {object} client Axios instance
+ * @param {string} httpMethod Any valid http method e.g. 'post', 'get'
+ * @param {object} [headers] Headers to be injected to the request object
+ *
+ * @example simulateHeaderInjection(testClient, 'post') // void
+ */
+const simulateHeaderInjection = (client, httpMethod, headers = { 'X-Custom-Header': 'foobar' }) => {
+  jest.spyOn(client, httpMethod).mockImplementation((...params) => {
+    const instance = axios.create({ headers });
+
+    return instance[httpMethod](...params);
+  });
+};
+
 describe('v5 order-recipients', () => {
   let orderRecipient;
 
@@ -157,34 +174,47 @@ describe('v5 order-recipients', () => {
         });
       });
 
-      it('calls API server URL and returns the response to the callback if the create was successful', async () => {
-        // We want to simulate custom headers being injected into the request
-        jest.spyOn(ordersClient, 'post').mockImplementation((...params) => {
-          const instance = axios.create({
-            headers: { 'X-Custom-Header': 'foobar' },
+      describe('Successful order creation', () => {
+        let createOrderCall = () => {};
+
+        beforeEach(() => {
+          mockStoreOrderRecipientCall().reply(200, {
+            result: mockStoreOrderRecipientResponse,
           });
 
-          return instance.post(...params);
+          createOrderCall = mockCreateOrderCall().reply(200, { result: 'testData' });
         });
 
-        mockStoreOrderRecipientCall().reply(200, {
-          result: mockStoreOrderRecipientResponse,
+        it('calls API server URL and returns the response to the callback if the create was successful', async () => {
+          await orderRecipient.create({ member, amount: 100 }, mockCallBack);
+
+          expect(createOrderCall.isDone()).toBe(true);
+
+          // NOTE: PII create order should have the same callback signature as orders#create
+          expect(mockCallBack).toBeCalledWith(
+            null,
+            'testData',
+            { result: 'testData' },
+            expect.objectContaining({ headers: expect.not.objectContaining({ 'x-custom-header': 'foobar' }) })
+          );
         });
 
-        const createOrderCall = mockCreateOrderCall().reply(200, { result: 'testData' });
+        it('returns any injected headers to the callback', async () => {
+          // We want to simulate custom headers being injected into the request
+          simulateHeaderInjection(ordersClient, 'post');
 
-        await orderRecipient.create({ member, amount: 100 }, mockCallBack);
+          await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
-        expect(createOrderCall.isDone()).toBe(true);
+          expect(createOrderCall.isDone()).toBe(true);
 
-        // NOTE: PII create order should have the same callback signature as orders#create
-        expect(mockCallBack).toBeCalledWith(
-          null,
-          'testData',
-          { result: 'testData' },
-          // Assert that the request headers are returned
-          expect.objectContaining({ headers: expect.objectContaining({ 'x-custom-header': 'foobar' }) })
-        );
+          expect(mockCallBack).toBeCalledWith(
+            null,
+            'testData',
+            { result: 'testData' },
+            // Assert that the request headers are returned
+            expect.objectContaining({ headers: expect.objectContaining({ 'x-custom-header': 'foobar' }) })
+          );
+        });
       });
     });
   });
@@ -209,31 +239,45 @@ describe('v5 order-recipients', () => {
       expect(mockCallBack).toBeCalledWith('testError');
     });
 
-    it('calls PII server URL and returns the response to the callback if call was successful', async () => {
-      // We want to simulate custom headers being injected into the request
-      jest.spyOn(ordersClient, 'get').mockImplementation((...params) => {
-        const instance = axios.create({
-          headers: { 'X-Custom-Header': 'foobar' },
-        });
+    describe('Successful GET order recipient', () => {
+      let call = () => {};
 
-        return instance.get(...params);
+      beforeEach(() => {
+        call = nock(mockPiiServerUrl)
+          .get(`/api/v5/programs/${mockProgramCode}/order_recipients/${mockOrderRecipientCode}`)
+          .reply(200, { foo: 'bar', result: 42 });
       });
 
-      const call = nock(mockPiiServerUrl)
-        .get(`/api/v5/programs/${mockProgramCode}/order_recipients/${mockOrderRecipientCode}`)
-        .reply(200, { foo: 'bar', result: 42 });
+      it('calls PII server URL and returns the response to the callback if call was successful', async () => {
+        await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
 
-      await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
+        expect(call.isDone()).toBe(true);
+        expect(mockCallBack).toHaveBeenCalledWith(
+          null,
+          42,
+          { foo: 'bar', result: 42 },
+          expect.objectContaining({
+            headers: expect.not.objectContaining({ 'x-custom-header': 'foobar' }),
+          })
+        );
+      });
 
-      expect(call.isDone()).toBe(true);
-      expect(mockCallBack).toHaveBeenCalledWith(
-        null,
-        42,
-        { foo: 'bar', result: 42 },
-        expect.objectContaining({
-          headers: expect.objectContaining({ 'x-custom-header': 'foobar' }),
-        })
-      );
+      it('returns injected headers to the callback', async () => {
+        // We want to simulate custom headers being injected into the request
+        simulateHeaderInjection(ordersClient, 'get');
+
+        await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
+
+        expect(call.isDone()).toBe(true);
+        expect(mockCallBack).toHaveBeenCalledWith(
+          null,
+          42,
+          { foo: 'bar', result: 42 },
+          expect.objectContaining({
+            headers: expect.objectContaining({ 'x-custom-header': 'foobar' }),
+          })
+        );
+      });
     });
   });
 });

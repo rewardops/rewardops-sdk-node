@@ -151,7 +151,7 @@ Install:
 npm install
 ```
 
-Developing:
+Developing with an application:
 
 Use [`npm link`](https://docs.npmjs.com/cli/v6/commands/npm-link)
 

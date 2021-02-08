@@ -71,8 +71,8 @@ describe('api', () => {
           expect(error.name).toEqual('Error');
           expect(error.status).toEqual(504);
 
-          expect(data).toEqual(null);
-          expect(response).toEqual(null);
+          expect(data).toEqual(undefined);
+          expect(response).toEqual(undefined);
           expect(request).toEqual(expect.objectContaining({ headers: expect.any(Object) }));
 
           done();
