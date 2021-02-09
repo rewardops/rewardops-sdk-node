@@ -154,14 +154,7 @@ const filteredPIIData = {
   email: '[REDACTED]',
   phone: '[REDACTED]',
   accept_language: 'en-CA',
-  address: {
-    address: '[REDACTED]',
-    address_2: '[REDACTED]',
-    city: '[REDACTED]',
-    country_code: '[REDACTED]',
-    country_subregion_code: '[REDACTED]',
-    postal_code: '[REDACTED]',
-  },
+  address: '[REDACTED]',
   gift: false,
   ip_address: '[REDACTED]',
 };
