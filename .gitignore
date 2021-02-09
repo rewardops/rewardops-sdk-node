@@ -132,4 +132,7 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Folder containing settings file
+.vscode/
+
 # End of https://www.toptal.com/developers/gitignore/api/node

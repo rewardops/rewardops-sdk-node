@@ -67,12 +67,13 @@ describe('api', () => {
           path: '/timeout-error',
           config: {},
         },
-        (error, data, response) => {
+        (error, data, response, request) => {
           expect(error.name).toEqual('Error');
           expect(error.status).toEqual(504);
 
           expect(data).toEqual(undefined);
           expect(response).toEqual(undefined);
+          expect(request).toEqual(expect.objectContaining({ headers: expect.any(Object) }));
 
           done();
         }

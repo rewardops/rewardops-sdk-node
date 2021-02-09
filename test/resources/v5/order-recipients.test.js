@@ -1,8 +1,9 @@
 const faker = require('faker');
 const nock = require('nock');
+const axios = require('axios');
 
 const RO = require('../../..');
-const orderRecipients = require('../../../lib/resources/order-recipients');
+const { ordersClient, ...orderRecipients } = require('../../../lib/resources/order-recipients');
 const { setPiiToken } = require('../../../lib/utils/axios-helpers');
 const { SDKError } = require('../../../lib/utils/error');
 const { mockConfig } = require('../../test-helpers/mock-config');
@@ -16,6 +17,23 @@ const mockProgramId = faker.random.number();
 const mockProgramCode = faker.random.word();
 const testError = { error: 'testError' };
 const mockOrderRecipientCode = faker.random.uuid();
+
+/**
+ * This helper simulates middleware that you may use to inject headers into requests e.g. Data Dog
+ *
+ * @param {object} client Axios instance
+ * @param {string} httpMethod Any valid http method e.g. 'post', 'get'
+ * @param {object} [headers] Headers to be injected to the request object
+ *
+ * @example simulateHeaderInjection(testClient, 'post') // void
+ */
+const simulateHeaderInjection = (client, httpMethod, headers = { 'X-Custom-Header': 'foobar' }) => {
+  jest.spyOn(client, httpMethod).mockImplementation((...params) => {
+    const instance = axios.create({ headers });
+
+    return instance[httpMethod](...params);
+  });
+};
 
 describe('v5 order-recipients', () => {
   let orderRecipient;
@@ -156,24 +174,47 @@ describe('v5 order-recipients', () => {
         });
       });
 
-      it('calls API server URL and returns the response to the callback if the create was successful', async () => {
-        mockStoreOrderRecipientCall().reply(200, {
-          result: mockStoreOrderRecipientResponse,
+      describe('Successful order creation', () => {
+        let createOrderCall = () => {};
+
+        beforeEach(() => {
+          mockStoreOrderRecipientCall().reply(200, {
+            result: mockStoreOrderRecipientResponse,
+          });
+
+          createOrderCall = mockCreateOrderCall().reply(200, { result: 'testData' });
         });
 
-        const createOrderCall = mockCreateOrderCall().reply(200, { result: 'testData' });
+        it('calls API server URL and returns the response to the callback if the create was successful', async () => {
+          await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
-        await orderRecipient.create({ member, amount: 100 }, mockCallBack);
+          expect(createOrderCall.isDone()).toBe(true);
 
-        expect(createOrderCall.isDone()).toBe(true);
+          // NOTE: PII create order should have the same callback signature as orders#create
+          expect(mockCallBack).toBeCalledWith(
+            null,
+            'testData',
+            { result: 'testData' },
+            expect.objectContaining({ headers: expect.not.objectContaining({ 'x-custom-header': 'foobar' }) })
+          );
+        });
 
-        // NOTE: PII create order should have the same callback signature as orders#create
-        expect(mockCallBack).toBeCalledWith(
-          null,
-          'testData',
-          { result: 'testData' },
-          expect.objectContaining({ headers: expect.any(Object) })
-        );
+        it('returns any injected headers to the callback', async () => {
+          // We want to simulate custom headers being injected into the request
+          simulateHeaderInjection(ordersClient, 'post');
+
+          await orderRecipient.create({ member, amount: 100 }, mockCallBack);
+
+          expect(createOrderCall.isDone()).toBe(true);
+
+          expect(mockCallBack).toBeCalledWith(
+            null,
+            'testData',
+            { result: 'testData' },
+            // Assert that the request headers are returned
+            expect.objectContaining({ headers: expect.objectContaining({ 'x-custom-header': 'foobar' }) })
+          );
+        });
       });
     });
   });
@@ -198,20 +239,45 @@ describe('v5 order-recipients', () => {
       expect(mockCallBack).toBeCalledWith('testError');
     });
 
-    it('calls PII server URL and returns the response to the callback if call was successful', async () => {
-      const call = nock(mockPiiServerUrl)
-        .get(`/api/v5/programs/${mockProgramCode}/order_recipients/${mockOrderRecipientCode}`)
-        .reply(200, { foo: 'bar', result: 42 });
+    describe('Successful GET order recipient', () => {
+      let call = () => {};
 
-      await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
+      beforeEach(() => {
+        call = nock(mockPiiServerUrl)
+          .get(`/api/v5/programs/${mockProgramCode}/order_recipients/${mockOrderRecipientCode}`)
+          .reply(200, { foo: 'bar', result: 42 });
+      });
 
-      expect(call.isDone()).toBe(true);
-      expect(mockCallBack).toHaveBeenCalledWith(
-        null,
-        42,
-        { foo: 'bar', result: 42 },
-        expect.objectContaining({ headers: expect.any(Object) })
-      );
+      it('calls PII server URL and returns the response to the callback if call was successful', async () => {
+        await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
+
+        expect(call.isDone()).toBe(true);
+        expect(mockCallBack).toHaveBeenCalledWith(
+          null,
+          42,
+          { foo: 'bar', result: 42 },
+          expect.objectContaining({
+            headers: expect.not.objectContaining({ 'x-custom-header': 'foobar' }),
+          })
+        );
+      });
+
+      it('returns injected headers to the callback', async () => {
+        // We want to simulate custom headers being injected into the request
+        simulateHeaderInjection(ordersClient, 'get');
+
+        await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
+
+        expect(call.isDone()).toBe(true);
+        expect(mockCallBack).toHaveBeenCalledWith(
+          null,
+          42,
+          { foo: 'bar', result: 42 },
+          expect.objectContaining({
+            headers: expect.objectContaining({ 'x-custom-header': 'foobar' }),
+          })
+        );
+      });
     });
   });
 });
