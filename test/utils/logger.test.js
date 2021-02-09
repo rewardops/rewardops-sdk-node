@@ -6,9 +6,17 @@ const config = require('../../lib/config');
 const { LOG_PREFIX } = require('../../lib/constants');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const { formatMessage, getLogLevel, log, logFormat, prettyPrint, redactSecrets, REDACTED_MESSAGE } = jest.requireActual(
-  '../../lib/utils/logger'
-);
+const {
+  formatMessage,
+  getLogLevel,
+  log,
+  logFormat,
+  prettyPrint,
+  redactSecrets,
+  REDACTED_MESSAGE,
+  filterLogData,
+  processLogData,
+} = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -122,6 +130,78 @@ describe('#getLogLevel', () => {
   });
 });
 
+const PIIData = {
+  id: '01a7f22d-f092-4f0d-b9d1-d95970e13d8f',
+  full_name: 'Miss Drew Flatley',
+  email: 'Javon85@gmail.com',
+  phone: '2684524256',
+  accept_language: 'en-CA',
+  address: {
+    address: 'Crawford Corners',
+    address_2: 'Fay Roads',
+    city: 'Leannonborough',
+    country_code: 'CA',
+    country_subregion_code: 'AB',
+    postal_code: 'S0S 6V0',
+  },
+  gift: false,
+  ip_address: '::ffff:127.0.0.1',
+};
+
+const filteredPIIData = {
+  id: '01a7f22d-f092-4f0d-b9d1-d95970e13d8f',
+  full_name: '[REDACTED]',
+  email: '[REDACTED]',
+  phone: '[REDACTED]',
+  accept_language: 'en-CA',
+  address: {
+    address: '[REDACTED]',
+    address_2: '[REDACTED]',
+    city: '[REDACTED]',
+    country_code: '[REDACTED]',
+    country_subregion_code: '[REDACTED]',
+    postal_code: '[REDACTED]',
+  },
+  gift: false,
+  ip_address: '[REDACTED]',
+};
+
+describe('#filterLogData', () => {
+  it.each([[], null, undefined, 1, 'foo', new Error()])('returns %p since it is not an object', input => {
+    expect(filterLogData(input)).toBe(input);
+  });
+
+  it('should filter out nested data', () => {
+    const input = {
+      endpoint: 'https://authEndpoint/token',
+      queryParams: 'grant_type=refresh_token&refresh_token=refreshToken',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        // this is the target to filter
+        Authorization: 'Basic BearerToken',
+      },
+    };
+
+    const output = filterLogData(input);
+
+    expect(output.headers).toEqual(expect.objectContaining({ Authorization: REDACTED_MESSAGE }));
+  });
+
+  it('should filter out PII', () => {
+    const output = filterLogData(PIIData);
+
+    expect(output).toEqual(filteredPIIData);
+  });
+});
+
+describe('#processLogData', () => {
+  it('should filter then pretty print the log data', () => {
+    const output = processLogData(PIIData);
+
+    expect(output).toEqual(prettyPrint(filteredPIIData));
+  });
+});
+
 describe('#logFormat', () => {
   const mockTimestamp = new Date().toISOString();
   const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
@@ -164,7 +244,7 @@ describe('#logFormat', () => {
   });
 
   it('filters PII from log messages', () => {
-    expect.assertions(4);
+    expect.assertions(5);
 
     const mockClientId = faker.random.uuid();
     const messageWithPii = {
@@ -172,6 +252,7 @@ describe('#logFormat', () => {
       clientSecret: faker.random.uuid(),
       foo: 'bar',
       apiToken: faker.random.uuid(),
+      access_token: faker.random.uuid(),
     };
     const formattedLog = logFormat({ level: mockLogLevel, message: messageWithPii, timestamp: mockTimestamp });
 
@@ -180,6 +261,7 @@ describe('#logFormat', () => {
       `"clientSecret": "${REDACTED_MESSAGE}"`,
       `"foo": "bar"`,
       `"apiToken": "${REDACTED_MESSAGE}"`,
+      `"access_token": "${REDACTED_MESSAGE}"`,
     ];
     EXPECTED_SUBSTRINGS.forEach(substring => {
       expect(formattedLog).toEqual(expect.stringContaining(substring));
