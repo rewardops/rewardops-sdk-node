@@ -130,16 +130,18 @@ describe('#getLogLevel', () => {
   });
 });
 
+const id = faker.random.uuid();
+
 const PIIData = {
-  id: '01a7f22d-f092-4f0d-b9d1-d95970e13d8f',
-  full_name: 'Miss Drew Flatley',
-  email: 'Javon85@gmail.com',
-  phone: '2684524256',
+  id,
+  full_name: faker.name.findName(),
+  email: faker.internet.email(),
+  phone: faker.phone.phoneNumber(),
   accept_language: 'en-CA',
   address: {
-    address: 'Crawford Corners',
-    address_2: 'Fay Roads',
-    city: 'Leannonborough',
+    address: faker.address.streetAddress(),
+    address_2: faker.address.streetAddress(),
+    city: faker.address.city(),
     country_code: 'CA',
     country_subregion_code: 'AB',
     postal_code: 'S0S 6V0',
@@ -149,7 +151,7 @@ const PIIData = {
 };
 
 const filteredPIIData = {
-  id: '01a7f22d-f092-4f0d-b9d1-d95970e13d8f',
+  id,
   full_name: '[REDACTED]',
   email: '[REDACTED]',
   phone: '[REDACTED]',
@@ -171,7 +173,7 @@ describe('#filterLogData', () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         // this is the target to filter
-        Authorization: 'Basic BearerToken',
+        Authorization: `Basic ${faker.random.alphaNumeric()}`,
       },
     };
 
