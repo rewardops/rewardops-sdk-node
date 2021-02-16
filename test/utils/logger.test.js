@@ -26,6 +26,7 @@ const mockConsole = { log: jest.fn(), warn: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 
+// fixtures
 const id = faker.random.uuid();
 
 const PIIData = {
@@ -56,6 +57,9 @@ const filteredPIIData = {
   gift: false,
   ip_address: '[REDACTED]',
 };
+
+const secrets = { username: 'Nick', password: 'Jonas' };
+const redactedSecrets = { username: 'Nick', password: REDACTED_MESSAGE };
 
 describe('#prettyPrint', () => {
   it('should stringify an object', () => {
@@ -162,8 +166,26 @@ describe('#getLogLevel', () => {
 });
 
 describe('#filterLogData', () => {
-  it.each([[], null, undefined, 1, 'foo', new Error()])('returns %p since it is not an object', input => {
+  it.each([[], null, undefined, 1, 'foo'])('returns %p since it is not an object', input => {
     expect(filterLogData(input)).toBe(input);
+  });
+
+  it('should filter out PII data from an Error object', () => {
+    const error = new Error();
+    error.metaData = PIIData;
+
+    const output = filterLogData(error);
+
+    expect(output.metaData).toEqual(filteredPIIData);
+  });
+
+  it('should redact secrets from an Error object', () => {
+    const error = new Error();
+    error.metaData = secrets;
+
+    const output = filterLogData(error);
+
+    expect(output.metaData).toEqual(redactedSecrets);
   });
 
   it('should filter out nested data', () => {
@@ -293,9 +315,6 @@ describe('#log', () => {
   });
 
   test('logs filter PII and secrets when passed as data', () => {
-    const secrets = { username: 'Nick', password: 'Jonas' };
-    const redactedSecrets = { username: 'Nick', password: REDACTED_MESSAGE };
-
     log('here are my {secrets}, and {PIIData}', {
       data: { secrets, PIIData },
     });
