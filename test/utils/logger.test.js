@@ -26,6 +26,37 @@ const mockConsole = { log: jest.fn(), warn: jest.fn() };
 // freeze time
 mockDate.set(timestamp);
 
+const id = faker.random.uuid();
+
+const PIIData = {
+  id,
+  full_name: faker.name.findName(),
+  email: faker.internet.email(),
+  phone: faker.phone.phoneNumber(),
+  accept_language: 'en-CA',
+  address: {
+    address: faker.address.streetAddress(),
+    address_2: faker.address.streetAddress(),
+    city: faker.address.city(),
+    country_code: 'CA',
+    country_subregion_code: 'AB',
+    postal_code: 'S0S 6V0',
+  },
+  gift: false,
+  ip_address: '::ffff:127.0.0.1',
+};
+
+const filteredPIIData = {
+  id,
+  full_name: '[REDACTED]',
+  email: '[REDACTED]',
+  phone: '[REDACTED]',
+  accept_language: 'en-CA',
+  address: '[REDACTED]',
+  gift: false,
+  ip_address: '[REDACTED]',
+};
+
 describe('#prettyPrint', () => {
   it('should stringify an object', () => {
     const result = prettyPrint({
@@ -129,37 +160,6 @@ describe('#getLogLevel', () => {
     });
   });
 });
-
-const id = faker.random.uuid();
-
-const PIIData = {
-  id,
-  full_name: faker.name.findName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  accept_language: 'en-CA',
-  address: {
-    address: faker.address.streetAddress(),
-    address_2: faker.address.streetAddress(),
-    city: faker.address.city(),
-    country_code: 'CA',
-    country_subregion_code: 'AB',
-    postal_code: 'S0S 6V0',
-  },
-  gift: false,
-  ip_address: '::ffff:127.0.0.1',
-};
-
-const filteredPIIData = {
-  id,
-  full_name: '[REDACTED]',
-  email: '[REDACTED]',
-  phone: '[REDACTED]',
-  accept_language: 'en-CA',
-  address: '[REDACTED]',
-  gift: false,
-  ip_address: '[REDACTED]',
-};
 
 describe('#filterLogData', () => {
   it.each([[], null, undefined, 1, 'foo', new Error()])('returns %p since it is not an object', input => {
@@ -273,6 +273,35 @@ describe('#log', () => {
     // eslint-disable-next-line no-global-assign
     console = originalConsole;
     mockDate.reset();
+  });
+
+  test('logs replace placeholders with the passed in data', () => {
+    log('here is my {message}', { data: { message: 'foobar' } });
+
+    expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('foobar'));
+  });
+
+  test('logs replace multiple placeholders with the passed in data', () => {
+    const shoes = { brand: 'Nike', size: 12 };
+
+    log('here is my {firstMessage}, and {shoes}', {
+      data: { firstMessage: 'foobar', shoes },
+    });
+
+    expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('foobar'));
+    expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(prettyPrint(shoes)));
+  });
+
+  test('logs filter PII and secrets when passed as data', () => {
+    const secrets = { username: 'Nick', password: 'Jonas' };
+    const redactedSecrets = { username: 'Nick', password: REDACTED_MESSAGE };
+
+    log('here are my {secrets}, and {PIIData}', {
+      data: { secrets, PIIData },
+    });
+
+    expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(prettyPrint(filteredPIIData)));
+    expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(prettyPrint(redactedSecrets)));
   });
 
   const expectedDate = new Date(timestamp);
