@@ -170,6 +170,15 @@ describe('#filterLogData', () => {
     expect(filterLogData(input)).toBe(input);
   });
 
+  it('should convert an Error object to a plain object', () => {
+    const error = new Error('test error');
+
+    const output = filterLogData(error);
+
+    expect(output instanceof Error).toBe(false);
+    expect(output).toEqual({ message: 'test error', name: 'Error', stack: expect.any(String) });
+  });
+
   it('should filter out PII data from an Error object', () => {
     const error = new Error();
     error.metaData = PIIData;
