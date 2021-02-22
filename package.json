@@ -77,7 +77,9 @@
     "axios": "^0.21.1",
     "lodash": "^4.17.15",
     "redact-secrets": "^1.0.0",
+    "redactyl.js": "^1.4.3",
     "request": "^2.88.0",
+    "serialize-error": "^8.0.1",
     "winston": "^3.3.3",
     "yup": "^0.29.3"
   },

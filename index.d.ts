@@ -31,7 +31,8 @@ declare module '@rewardops/sdk-node' {
     segment_id?: number;
     segment_code?: string;
     accept_language?: string;
-  };
+    // Allow BaseParams to be extended
+  } & Record<string, unknown>;
 
   type ItemsParams = {
     filter?: string;
