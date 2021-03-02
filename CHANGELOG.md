@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-- filter sensitive data from logs MX-1252 ([#70](https://github.com/rewardops/rewardops-sdk-node/issues/70)) ([06e373e](https://github.com/rewardops/rewardops-sdk-node/commit/06e373eda51b2fa53c669f485786917fff8e8f19))
-- return headers for all api calls MX-1260 ([#69](https://github.com/rewardops/rewardops-sdk-node/issues/69)) ([95f3126](https://github.com/rewardops/rewardops-sdk-node/commit/95f3126e43e15ad5ee107510243d64e7d8b19c65))
+- filter sensitive data from logs ([#70](https://github.com/rewardops/rewardops-sdk-node/issues/70)) ([06e373e](https://github.com/rewardops/rewardops-sdk-node/commit/06e373eda51b2fa53c669f485786917fff8e8f19))
+- return headers for all api calls ([#69](https://github.com/rewardops/rewardops-sdk-node/issues/69)) ([95f3126](https://github.com/rewardops/rewardops-sdk-node/commit/95f3126e43e15ad5ee107510243d64e7d8b19c65))
 
 ### Bug Fixes
 
