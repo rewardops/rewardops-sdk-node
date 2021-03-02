@@ -98,7 +98,7 @@ const { isEmpty } = require('lodash');
 const auth = require('./auth');
 const emitter = require('./emitter');
 const urls = require('./urls');
-const { log, prettyPrint } = require('./utils/logger');
+const { log } = require('./utils/logger');
 
 /**
  * Generate extended `Error` object with `message`, `status`, and `result` properties.
@@ -164,7 +164,7 @@ function apiCall(httpMethod, options, callback) {
         const meta = {
           request: requestOptions,
           response: {
-            responseBody: prettyPrint(responseBody),
+            responseBody,
             statusCode,
             headers,
           },
@@ -172,7 +172,7 @@ function apiCall(httpMethod, options, callback) {
         if (err) {
           log(err, { meta });
 
-          callback(err);
+          callback(err, undefined, undefined, req);
         } else if (statusCode === 401) {
           if (token === auth.token.access_token) {
             /*
@@ -186,15 +186,19 @@ function apiCall(httpMethod, options, callback) {
 
           apiCall(httpMethod, options, callback);
         } else if (responseBody &amp;&amp; responseBody.error) {
-          log(`API Error: ${prettyPrint(responseBody)}`, { level: 'error', meta });
+          log('API Error: {responseBody}', { level: 'error', meta, data: { responseBody } });
 
           error = getError(responseBody.error, statusCode, responseBody.result);
-          callback(error);
+          callback(error, undefined, undefined, req);
         } else if (responseBody &amp;&amp; responseBody.result &amp;&amp; responseBody.result.error) {
-          log(`API Error: ${prettyPrint(responseBody.result.error.detail)}`, { level: 'error', meta });
+          log('API Error: {errorDetails}', {
+            level: 'error',
+            meta,
+            data: { errorDetails: responseBody.result.error.detail },
+          });
 
           error = getError(responseBody.result.error.detail, statusCode, responseBody.result);
-          callback(error);
+          callback(error, undefined, undefined, req);
         } else if (['5', '4'].includes(String(statusCode)[0])) {
           /**
            * Handle unexpected errors 5XX or 4XX (i.e. 504: GatewayTimeout)
@@ -202,7 +206,7 @@ function apiCall(httpMethod, options, callback) {
           log(`API Error: Unknown cause, status ${statusCode}`, { level: 'error', meta });
 
           error = getError(null, statusCode, null);
-          callback(error);
+          callback(error, undefined, undefined, req);
         } else {
           log(`Success: ${statusCode} ${urls.getApiBaseUrl()}${options.path}`);
 

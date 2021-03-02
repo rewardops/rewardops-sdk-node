@@ -129,9 +129,7 @@ const getAllProgramCustomCategories = programId => {
       callback = params;
     }
 
-    api.get(options, (error, data, response) => {
-      callback(error, data, response);
-    });
+    api.get(options, callback);
   };
 };
 
@@ -208,9 +206,7 @@ const getProgramCustomCategory = programId => {
       callback = params;
     }
 
-    api.get(options, (err, data, response) => {
-      callback(err, data, response);
-    });
+    api.get(options, callback);
   };
 };
 

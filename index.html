@@ -206,6 +206,19 @@ myProgram.items.get(938, callback);
 <p>Install:</p>
 <pre class="prettyprint source lang-sh"><code>npm install
 </code></pre>
+<p>Developing with an application:</p>
+<p>Use <a href="https://docs.npmjs.com/cli/v6/commands/npm-link"><code>npm link</code></a></p>
+<ol>
+<li>run <code>npm link</code> in the directory of the SDK. This will create a symlink with the global npm folder.</li>
+</ol>
+<pre class="prettyprint source lang-sh"><code>npm link
+</code></pre>
+<ol start="2">
+<li>run <code>npm link @rewardops/sdk-node</code> in the directory of your app. This will create a symlink from the global npm folder to your app.</li>
+</ol>
+<pre class="prettyprint source lang-sh"><code>npm link @rewardops/sdk-node
+</code></pre>
+<p><strong>NOTE</strong> There is no hot reloading, if you make code changes to the SDK, you will have to re-run step 2 for you changes to appear in your app. Running <code>yarn install</code> will also remove the symlink.</p>
 <p>To run the library test suite:</p>
 <pre class="prettyprint source lang-sh"><code>npm test
 </code></pre>

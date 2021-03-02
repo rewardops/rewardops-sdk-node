@@ -97,7 +97,7 @@ const request = require('request');
 const emitter = require('./emitter');
 const urls = require('./urls');
 const { generateBasicAuthToken } = require('./utils/auth');
-const { log, prettyPrint } = require('./utils/logger');
+const { log, processLogData } = require('./utils/logger');
 
 /**
  * Token lock status
@@ -208,7 +208,7 @@ function requestToken(requestOptions, retryStrategy, callback) {
     const meta = {
       request: requestOptions,
       response: {
-        responseBody: prettyPrint(body),
+        responseBody: body,
         statusCode,
         headers,
       },
@@ -266,10 +266,8 @@ function requestToken(requestOptions, retryStrategy, callback) {
 
         log(`Auth error: ${error}`, { level: 'error', meta });
 
-        err.metaData = {
-          body: JSON.stringify(body, undefined, 2),
-          requestOptions: JSON.stringify(requestOptions, undefined, 2),
-        };
+        // redact &amp; filter data before passing it to the callback
+        err.metaData = processLogData({ body, requestOptions });
 
         emitter.emit('unlockToken', err);
       } else {
@@ -292,7 +290,7 @@ function requestToken(requestOptions, retryStrategy, callback) {
         expires: new Date((body.created_at + body.expires_in) * 1000),
       };
 
-      log(`Success: ${statusCode}\nToken: ${prettyPrint(auth.token)}`);
+      log('Success: {statusCode}\nToken: {authToken}', { data: { statusCode, authToken: auth.token } });
 
       emitter.emit('unlockToken', null, auth.token.access_token);
     }
@@ -329,7 +327,7 @@ const getToken = (config, callback) => {
    * Then make a call to the oauth2 server for
    * a new token as usual.
    *
-   * All of this is to avoid a race condition where mutiple
+   * All of this is to avoid a race condition where multiple
    * calls for a new token happen at once.
    */
   const retryStrategy = {

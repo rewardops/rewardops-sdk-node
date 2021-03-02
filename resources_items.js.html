@@ -129,9 +129,7 @@ const getAllProgramItems = programId => {
       callback = params;
     }
 
-    api.get(options, (error, data, response) => {
-      callback(error, data, response);
-    });
+    api.get(options, callback);
   };
 };
 
@@ -184,9 +182,7 @@ const getProgramItem = programId => {
       callback = params;
     }
 
-    api.get(options, (error, data, response) => {
-      callback(error, data, response);
-    });
+    api.get(options, callback);
   };
 };
 
@@ -244,9 +240,7 @@ const getProgramItemParameters = programId => {
       callback = params;
     }
 
-    api.get(options, (error, data, response) => {
-      callback(error, data, response);
-    });
+    api.get(options, callback);
   };
 };
 
