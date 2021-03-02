@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.4.0...v2.5.0) (2021-03-02)
+
+### Features
+
+- filter sensitive data from logs MX-1252 ([#70](https://github.com/rewardops/rewardops-sdk-node/issues/70)) ([06e373e](https://github.com/rewardops/rewardops-sdk-node/commit/06e373eda51b2fa53c669f485786917fff8e8f19))
+- return headers for all api calls MX-1260 ([#69](https://github.com/rewardops/rewardops-sdk-node/issues/69)) ([95f3126](https://github.com/rewardops/rewardops-sdk-node/commit/95f3126e43e15ad5ee107510243d64e7d8b19c65))
+
+### Bug Fixes
+
+- adjust order cancel schema ([#65](https://github.com/rewardops/rewardops-sdk-node/issues/65)) ([c8eae65](https://github.com/rewardops/rewardops-sdk-node/commit/c8eae65739cf37467f1c59dddd741ebe9f76116a))
+
 ### [2.4.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.4.0...v2.4.1) (2021-01-22)
 
 ### Bug Fixes
