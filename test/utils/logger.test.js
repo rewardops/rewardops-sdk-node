@@ -233,14 +233,6 @@ describe('#logFormat', () => {
   const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
   const mockMessage = faker.lorem.sentence();
 
-  it('logs with correct format', () => {
-    const formattedLog = logFormat({ level: mockLogLevel, message: mockMessage, timestamp: mockTimestamp });
-
-    const expectedLog = `[${mockTimestamp}] [${LOG_PREFIX} ${mockLogLevel.toUpperCase()}] [${mockMessage}]`;
-
-    expect(formattedLog).toEqual(expectedLog);
-  });
-
   it('logs SDK prefix, timestamp, and log level', () => {
     expect.assertions(4);
 
@@ -301,6 +293,14 @@ describe('#logFormat', () => {
     EXPECTED_SUBSTRINGS.forEach(substring => {
       expect(formattedLog).toEqual(expect.stringContaining(substring));
     });
+  });
+
+  it('logs inputs with correct format', () => {
+    const formattedLog = logFormat({ level: mockLogLevel, message: mockMessage, timestamp: mockTimestamp });
+
+    const expectedLog = `[${mockTimestamp}] [${LOG_PREFIX} ${mockLogLevel.toUpperCase()}] [${mockMessage}]`;
+
+    expect(formattedLog).toEqual(expectedLog);
   });
 });
 
