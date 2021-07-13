@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.5.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.0...v2.5.1) (2021-07-08)
+
+### Refactor
+
+- unify log format with mx-apps ([#79](https://github.com/rewardops/rewardops-sdk-node/issues/79)) ([42b3403](https://github.com/rewardops/rewardops-sdk-node/commit/179754b8360d0dcf1932d6ec0c6223454135c5c9))
+
 ## [2.5.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.4.0...v2.5.0) (2021-03-02)
 
 ### Features
