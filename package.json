@@ -38,6 +38,7 @@
   "types": "index.d.ts",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
+    "lint": "eslint --cache --ignore-path .gitignore .",
     "test": "jest",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
