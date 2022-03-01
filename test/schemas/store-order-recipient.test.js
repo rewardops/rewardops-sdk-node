@@ -5,7 +5,7 @@ const { storeOrderRecipientSchema, isNumberOrUuid } = require('../../lib/schemas
 const { mockConfig } = require('../test-helpers/mock-config');
 
 const testLocale = faker.random.locale();
-const testNumber = faker.random.number();
+const testNumber = faker.datatype.number();
 
 describe('storeOrderRecipientSchema.validate()', () => {
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('storeOrderRecipientSchema.validate()', () => {
   });
 
   test('it accepts a uuid as a id', () => {
-    const params = { id: faker.random.uuid(), accept_language: testLocale };
+    const params = { id: faker.datatype.uuid(), accept_language: testLocale };
 
     expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
@@ -54,19 +54,19 @@ describe('storeOrderRecipientSchema.validate()', () => {
 
 describe('isNumberOrUuid', () => {
   test.each`
-    value                     | expected
-    ${{}}                     | ${false}
-    ${[]}                     | ${false}
-    ${{ foo: 42 }}            | ${false}
-    ${[1, 2, 3]}              | ${false}
-    ${null}                   | ${false}
-    ${undefined}              | ${false}
-    ${-100}                   | ${false}
-    ${''}                     | ${false}
-    ${'fakeUuid'}             | ${false}
-    ${faker.random.boolean()} | ${false}
-    ${faker.random.number()}  | ${true}
-    ${faker.random.uuid()}    | ${true}
+    value                       | expected
+    ${{}}                       | ${false}
+    ${[]}                       | ${false}
+    ${{ foo: 42 }}              | ${false}
+    ${[1, 2, 3]}                | ${false}
+    ${null}                     | ${false}
+    ${undefined}                | ${false}
+    ${-100}                     | ${false}
+    ${''}                       | ${false}
+    ${'fakeUuid'}               | ${false}
+    ${faker.datatype.boolean()} | ${false}
+    ${faker.datatype.number()}  | ${true}
+    ${faker.datatype.uuid()}    | ${true}
   `('given $value, $expected is returned', ({ value, expected }) => {
     expect(isNumberOrUuid(value)).toBe(expected);
   });

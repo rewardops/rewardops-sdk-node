@@ -18,7 +18,7 @@ describe('RO.program.orders', () => {
 
   describe.each([undefined, faker.internet.url()])('`piiServerUrl` set to %s', piiServerUrl => {
     const LOCALE = 'en-CA';
-    const programId = faker.random.number();
+    const programId = faker.datatype.number();
     const programOrdersUrl = `/programs/${programId}/orders`;
     let program;
 
@@ -327,7 +327,7 @@ describe('RO.program.orders', () => {
           return new Promise(done => {
             const newOrder = {
               member: {
-                id: faker.random.uuid(),
+                id: faker.datatype.uuid(),
                 accept_language: LOCALE,
               },
               items: [{}],
@@ -357,7 +357,7 @@ describe('RO.program.orders', () => {
           return new Promise(done => {
             const newOrder = {
               member: {
-                id: faker.random.uuid(),
+                id: faker.datatype.uuid(),
                 full_name: 'Prit Kaur',
                 email: 'prit@hotmail.co.uk',
                 phone: '123-456-7890',
@@ -603,7 +603,7 @@ describe('RO.program.orders', () => {
       let programOrderCancelUrl;
 
       beforeEach(() => {
-        orderId = faker.random.uuid();
+        orderId = faker.datatype.uuid();
         params = {
           order_suppliers: [
             {

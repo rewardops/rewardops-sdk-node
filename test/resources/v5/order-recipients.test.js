@@ -13,10 +13,10 @@ setPiiToken.mockResolvedValue();
 
 const mockCallBack = jest.fn();
 const mockPiiServerUrl = faker.internet.url();
-const mockProgramId = faker.random.number();
+const mockProgramId = faker.datatype.number();
 const mockProgramCode = faker.random.word();
 const testError = { error: 'testError' };
-const mockOrderRecipientCode = faker.random.uuid();
+const mockOrderRecipientCode = faker.datatype.uuid();
 
 /**
  * This helper simulates middleware that you may use to inject headers into requests e.g. Data Dog
@@ -91,11 +91,11 @@ describe('v5 order-recipients', () => {
 
   describe('when configured', () => {
     /** Minimal Member props */
-    const member = { id: faker.random.number(), accept_language: 'en-CA' };
+    const member = { id: faker.datatype.number(), accept_language: 'en-CA' };
 
     const mockStoreOrderRecipientResponse = {
       mockOrderRecipientCode,
-      validation_signature: `${faker.random.uuid()}FA==`,
+      validation_signature: `${faker.datatype.uuid()}FA==`,
     };
 
     const mockPiiConfig = mockConfig({
