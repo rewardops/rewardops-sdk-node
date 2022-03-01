@@ -1,7 +1,7 @@
-const RO = require('../');
-const packageJSON = require('../package');
+const RO = require('..');
+const packageJSON = require('../package.json');
 const config = require('../lib/config');
-const { mockConfig } = require('../test/test-helpers/mock-config');
+const { mockConfig } = require('./test-helpers/mock-config');
 
 describe('RO', () => {
   describe('defaults', () => {

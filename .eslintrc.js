@@ -17,5 +17,8 @@ module.exports = {
   rules: {
     'no-param-reassign': 0,
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+
+    // JSDoc
+    'jsdoc/tag-lines': ['error', 'any', { noEndLines: true }],
   },
 };

@@ -1,10 +1,10 @@
 const nock = require('nock');
 
 const fixtures = require('./fixtures/api.fixtures');
+const { mockConfig } = require('./test-helpers/mock-config');
 const RO = require('..');
 const { generateBasicAuthToken } = require('../lib/utils/auth');
 const emitter = require('../lib/emitter');
-const { mockConfig } = require('../test/test-helpers/mock-config');
 const auth = require('../lib/auth');
 
 const defaultConfig = mockConfig({ apiVersion: 'v4' });

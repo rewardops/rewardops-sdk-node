@@ -27,7 +27,7 @@ const mockConsole = { log: jest.fn(), warn: jest.fn() };
 mockDate.set(timestamp);
 
 // fixtures
-const id = faker.random.uuid();
+const id = faker.datatype.uuid();
 
 const PIIData = {
   id,
@@ -114,12 +114,12 @@ describe('#prettyPrint', () => {
 
 describe('#redactSecrets', () => {
   it.each`
-    input                                        | secretPropPath
-    ${{ secret: 'sauce' }}                       | ${['secret']}
-    ${{ clientSecret: faker.random.uuid() }}     | ${['clientSecret']}
-    ${{ creditCard: '1234 1234 1234 1234' }}     | ${['creditCard']}
-    ${[{ password: faker.random.words() }]}      | ${[0, 'password']}
-    ${[{ api: { token: faker.random.uuid() } }]} | ${[0, 'api', 'token']}
+    input                                          | secretPropPath
+    ${{ secret: 'sauce' }}                         | ${['secret']}
+    ${{ clientSecret: faker.datatype.uuid() }}     | ${['clientSecret']}
+    ${{ creditCard: '1234 1234 1234 1234' }}       | ${['creditCard']}
+    ${[{ password: faker.random.words() }]}        | ${[0, 'password']}
+    ${[{ api: { token: faker.datatype.uuid() } }]} | ${[0, 'api', 'token']}
   `('should redact secrets from JSON-stringifiable objects', ({ input, secretPropPath }) => {
     expect(_.get(redactSecrets(input), secretPropPath)).toEqual(REDACTED_MESSAGE);
   });
@@ -273,13 +273,13 @@ describe('#logFormat', () => {
   it('filters PII from log messages', () => {
     expect.assertions(5);
 
-    const mockClientId = faker.random.uuid();
+    const mockClientId = faker.datatype.uuid();
     const messageWithPii = {
       clientId: mockClientId,
-      clientSecret: faker.random.uuid(),
+      clientSecret: faker.datatype.uuid(),
       foo: 'bar',
-      apiToken: faker.random.uuid(),
-      access_token: faker.random.uuid(),
+      apiToken: faker.datatype.uuid(),
+      access_token: faker.datatype.uuid(),
     };
     const formattedLog = logFormat({ level: mockLogLevel, message: messageWithPii, timestamp: mockTimestamp });
 

@@ -10,7 +10,7 @@ const { mockConfig } = require('../test-helpers/mock-config');
 
 const apiServerUrl = faker.internet.url();
 const piiServerUrl = faker.internet.url();
-const clientId = faker.random.uuid();
+const clientId = faker.datatype.uuid();
 const clientSecret = faker.internet.password();
 
 config.init(
