@@ -65,17 +65,17 @@
     "husky": "^3.1.0",
     "jest": "^26.4.2",
     "jest-mock-console": "^1.0.1",
-    "jsdoc": "^3.6.3",
+    "jsdoc": "^3.6.10",
     "lint-staged": "^9.4.3",
     "mockdate": "^3.0.2",
     "nock": "^9.6.1",
     "prettier": "^1.19.1",
     "sinon": "^1.17.7",
-    "standard-version": "^9.0.0"
+    "standard-version": "^9.3.2"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "lodash": "^4.17.15",
+    "axios": "^0.21.4",
+    "lodash": "^4.17.21",
     "redact-secrets": "^1.0.0",
     "redactyl.js": "^1.4.3",
     "request": "^2.88.0",
