@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.5.2](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.1...v2.5.2) (2022-03-01)
+
+### Bug fixes
+
+- upgrade core packages with known vulnerabilities
+
+### Refactor
+
+- switch to Node v12 for development
+- fix new lint errors (following development dependency upgrades)
+
 ### [2.5.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.0...v2.5.1) (2021-07-08)
 
 ### Refactor
