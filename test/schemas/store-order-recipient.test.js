@@ -1,7 +1,7 @@
 const faker = require('faker');
 const config = require('../../lib/config');
 
-const { storeOrderRecipientSchema, isNumberOrUuid } = require('../../lib/schemas/store-order-recipient');
+const { storeOrderRecipientSchema, isNumberOrString } = require('../../lib/schemas/store-order-recipient');
 const { mockConfig } = require('../test-helpers/mock-config');
 
 const testLocale = faker.random.locale();
@@ -25,13 +25,13 @@ describe('storeOrderRecipientSchema.validate()', () => {
     expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
-  test('it reject an id that is an empty string', async () => {
+  test('it does not reject an id that is an empty string', async () => {
     const params = { id: '', accept_language: testLocale };
 
-    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('ID must be a number or UUID');
+    await expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
-  test('it reject an id that is undefined', async () => {
+  test('it should not reject an id that is undefined', async () => {
     const params = { id: undefined, accept_language: testLocale };
 
     await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('id is a required field');
@@ -61,13 +61,13 @@ describe('isNumberOrUuid', () => {
     ${[1, 2, 3]}                | ${false}
     ${null}                     | ${false}
     ${undefined}                | ${false}
-    ${-100}                     | ${false}
-    ${''}                       | ${false}
-    ${'fakeUuid'}               | ${false}
+    ${-100}                     | ${true}
+    ${''}                       | ${true}
+    ${'fakeUuid'}               | ${true}
     ${faker.datatype.boolean()} | ${false}
     ${faker.datatype.number()}  | ${true}
     ${faker.datatype.uuid()}    | ${true}
   `('given $value, $expected is returned', ({ value, expected }) => {
-    expect(isNumberOrUuid(value)).toBe(expected);
+    expect(isNumberOrString(value)).toBe(expected);
   });
 });
