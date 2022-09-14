@@ -26,12 +26,14 @@ describe('storeOrderRecipientSchema.validate()', () => {
   });
 
   test('it does not reject an id that is an empty string', async () => {
+    // Pangea does not have any validation on the member.id, it even allows for empty memberIds. Hence this should be the expected behavior.
     const params = { id: '', accept_language: testLocale };
 
     await expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
   test('it should not reject an id that is undefined', async () => {
+    // Pangea does not have any validation on the member.id, it even allows for empty memberIds. Hence this should be the expected behavior.
     const params = { id: undefined, accept_language: testLocale };
 
     await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('id is a required field');
