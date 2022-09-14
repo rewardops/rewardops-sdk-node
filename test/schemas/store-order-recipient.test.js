@@ -26,14 +26,12 @@ describe('storeOrderRecipientSchema.validate()', () => {
   });
 
   test('it does not reject an id that is an empty string', async () => {
-    // Pangea does not have any validation on the member.id, it even allows for empty memberIds. Hence this should be the expected behavior.
     const params = { id: '', accept_language: testLocale };
 
     await expect(storeOrderRecipientSchema.validateSync(params)).toEqual(params);
   });
 
   test('it should not reject an id that is undefined', async () => {
-    // Pangea does not have any validation on the member.id, it even allows for empty memberIds. Hence this should be the expected behavior.
     const params = { id: undefined, accept_language: testLocale };
 
     await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('id is a required field');
@@ -56,19 +54,19 @@ describe('storeOrderRecipientSchema.validate()', () => {
 
 describe('isNumberOrUuid', () => {
   test.each`
-    value                       | expected
-    ${{}}                       | ${false}
-    ${[]}                       | ${false}
-    ${{ foo: 42 }}              | ${false}
-    ${[1, 2, 3]}                | ${false}
-    ${null}                     | ${false}
-    ${undefined}                | ${false}
-    ${-100}                     | ${true}
-    ${''}                       | ${true}
-    ${'fakeUuid'}               | ${true}
-    ${faker.datatype.boolean()} | ${false}
-    ${faker.datatype.number()}  | ${true}
-    ${faker.datatype.uuid()}    | ${true}
+    value                          | expected
+    ${{}}                          | ${false}
+    ${[]}                          | ${false}
+    ${{ foo: 42 }}                 | ${false}
+    ${[1, 2, 3]}                   | ${false}
+    ${null}                        | ${false}
+    ${undefined}                   | ${false}
+    ${-100}                        | ${true}
+    ${''}                          | ${true}
+    ${faker.random.alphaNumeric()} | ${true}
+    ${faker.datatype.boolean()}    | ${false}
+    ${faker.datatype.number()}     | ${true}
+    ${faker.datatype.uuid()}       | ${true}
   `('given $value, $expected is returned', ({ value, expected }) => {
     expect(isNumberOrString(value)).toBe(expected);
   });
