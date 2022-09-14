@@ -39,7 +39,7 @@
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "lint": "eslint --cache --ignore-path .gitignore .",
-    "test": "jest --watch",
+    "test": "jest",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
     "release": "standard-version",
