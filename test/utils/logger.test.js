@@ -151,17 +151,22 @@ describe('#getLogLevel', () => {
 
   describe('config settings', () => {
     test.each`
-      verbose  | quiet    | expected
-      ${false} | ${false} | ${'info'}
-      ${true}  | ${false} | ${'verbose'}
-      ${false} | ${true}  | ${'warn'}
-      ${true}  | ${true}  | ${'verbose'}
-    `(`returns '$expected' when 'verbose' is $verbose and 'quiet' is $quiet`, ({ verbose, quiet, expected }) => {
-      config.set('verbose', verbose);
-      config.set('quiet', quiet);
+      silent   | verbose  | quiet    | expected
+      ${false} | ${false} | ${false} | ${'info'}
+      ${false} | ${true}  | ${false} | ${'verbose'}
+      ${false} | ${false} | ${true}  | ${'warn'}
+      ${false} | ${true}  | ${true}  | ${'verbose'}
+      ${true}  | ${true}  | ${true}  | ${'crit'}
+    `(
+      `returns '$expected' when 'silent' is $silent, 'verbose' is $verbose, and 'quiet' is $quiet`,
+      ({ silent, verbose, quiet, expected }) => {
+        config.set('silent', silent);
+        config.set('verbose', verbose);
+        config.set('quiet', quiet);
 
-      expect(getLogLevel()).toEqual(expected);
-    });
+        expect(getLogLevel()).toEqual(expected);
+      }
+    );
   });
 });
 
