@@ -1,3 +1,4 @@
+// NOTE: Logger exports are imported using `jest.requireActual` as they are globally mocked
 const mockDate = require('mockdate');
 const faker = require('faker');
 const _ = require('lodash');
@@ -6,17 +7,7 @@ const config = require('../../lib/config');
 const { LOG_PREFIX } = require('../../lib/constants');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const {
-  formatMessage,
-  getLogLevel,
-  log,
-  logFormat,
-  prettyPrint,
-  redactSecrets,
-  REDACTED_MESSAGE,
-  filterLogData,
-  processLogData,
-} = jest.requireActual('../../lib/utils/logger');
+const { prettyPrint, REDACTED_MESSAGE } = jest.requireActual('../../lib/utils/logger');
 
 // test setup
 const timestamp = Date.now();
@@ -113,6 +104,8 @@ describe('#prettyPrint', () => {
 });
 
 describe('#redactSecrets', () => {
+  const { redactSecrets } = jest.requireActual('../../lib/utils/logger');
+
   it.each`
     input                                          | secretPropPath
     ${{ secret: 'sauce' }}                         | ${['secret']}
@@ -126,6 +119,8 @@ describe('#redactSecrets', () => {
 });
 
 describe('#formatMessage', () => {
+  const { formatMessage } = jest.requireActual('../../lib/utils/logger');
+
   it.each`
     input                         | expectedSubstring
     ${{}}                         | ${'{}'}
@@ -145,6 +140,8 @@ describe('#formatMessage', () => {
 });
 
 describe('#getLogLevel', () => {
+  const { getLogLevel } = jest.requireActual('../../lib/utils/logger');
+
   beforeEach(() => {
     jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
@@ -171,6 +168,8 @@ describe('#getLogLevel', () => {
 });
 
 describe('#filterLogData', () => {
+  const { filterLogData } = jest.requireActual('../../lib/utils/logger');
+
   it.each([[], null, undefined, 1, 'foo'])('returns %p since it is not an object', input => {
     expect(filterLogData(input)).toBe(input);
   });
@@ -226,6 +225,8 @@ describe('#filterLogData', () => {
 });
 
 describe('#processLogData', () => {
+  const { processLogData } = jest.requireActual('../../lib/utils/logger');
+
   it('should filter then pretty print the log data', () => {
     const output = processLogData(PIIData);
 
@@ -234,6 +235,8 @@ describe('#processLogData', () => {
 });
 
 describe('#logFormat', () => {
+  const { logFormat } = jest.requireActual('../../lib/utils/logger');
+
   const mockTimestamp = new Date().toISOString();
   const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
   const mockMessage = faker.lorem.sentence();
@@ -310,6 +313,8 @@ describe('#logFormat', () => {
 });
 
 describe('#log', () => {
+  const { log } = jest.requireActual('../../lib/utils/logger');
+
   beforeEach(() => {
     // eslint-disable-next-line no-global-assign
     console = mockConsole;
@@ -387,8 +392,15 @@ describe('#log', () => {
   });
 
   describe('config settings', () => {
-    test('options.meta is present in the log when `verbose` is true', () => {
+    beforeEach(() => {
       config.reset();
+    });
+
+    afterEach(() => {
+      config.reset();
+    });
+
+    test('options.meta is present in the log when `verbose` is true', () => {
       config.init(mockConfig({ verbose: true }));
 
       log('testLog', { meta: { foo: 'bar' } });
@@ -397,7 +409,6 @@ describe('#log', () => {
     });
 
     test('options.meta is not present in the log when `verbose` is `false`', () => {
-      config.reset();
       config.init(mockConfig({ verbose: false }));
 
       log('testLog', { meta: { foo: 'bar' } });
@@ -406,7 +417,6 @@ describe('#log', () => {
     });
 
     test('message is logged when `quiet` is true', () => {
-      config.reset();
       config.init(mockConfig({ quiet: true }));
 
       log('testLog');
