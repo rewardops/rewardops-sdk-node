@@ -2,11 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.3...v2.6.0) (2022-11-25)
+
+### Features
+
+- add `silent` config option ([8701c17](https://github.com/rewardops/rewardops-sdk-node/commit/8701c17488f326ecfab8df758d71c810cc30f8be))
+
+### Bug Fixes
+
+- ensure configured log level is set post-initialization ([d8bffda](https://github.com/rewardops/rewardops-sdk-node/commit/d8bffda26d1a216d073bfd22370b44747041b1a3))
+
 ### [2.5.3](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.1...v2.5.3) (2022-09-15)
 
 ### Refactor
 
-- Change store-order-recipient schema to only validate member.Id field to be string or number
+- change store-order-recipient schema to only validate member.Id field to be string or number
 
 ### [2.5.2](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.1...v2.5.2) (2022-03-01)
 

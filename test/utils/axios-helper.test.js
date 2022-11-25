@@ -1,6 +1,6 @@
 const nock = require('nock');
 const axios = require('axios');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 const config = require('../../lib/config');
 const auth = require('../../lib/auth');
