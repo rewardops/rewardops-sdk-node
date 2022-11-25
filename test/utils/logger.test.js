@@ -145,7 +145,8 @@ describe('#getLogLevel', () => {
       ${false} | ${true}  | ${false} | ${'verbose'}
       ${false} | ${false} | ${true}  | ${'warn'}
       ${false} | ${true}  | ${true}  | ${'verbose'}
-      ${true}  | ${true}  | ${true}  | ${'crit'}
+      ${true}  | ${true}  | ${true}  | ${'verbose'}
+      ${true}  | ${false} | ${true}  | ${'warn'}
     `(
       `returns '$expected' when 'silent' is $silent, 'verbose' is $verbose, and 'quiet' is $quiet`,
       ({ silent, verbose, quiet, expected }) => {
