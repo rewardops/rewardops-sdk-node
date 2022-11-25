@@ -16,6 +16,7 @@ const OPTIONAL_PROPS = [
   'timeout',
   'verbose',
   'quiet',
+  'silent',
 ];
 
 describe('config', () => {

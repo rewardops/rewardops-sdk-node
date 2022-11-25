@@ -1,12 +1,19 @@
 {
   "name": "@rewardops/sdk-node",
   "version": "2.5.3",
-  "engines": {
-    "node": ">=10"
-  },
   "description": "Node.js SDK for the RewardOps API",
-  "author": "RewardOps",
+  "keywords": [
+    "RewardOps",
+    "rewards",
+    "API"
+  ],
+  "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rewardops/rewardops-sdk-node.git"
+  },
   "license": "MIT",
+  "author": "RewardOps",
   "contributors": [
     {
       "name": "Michael Yeung",
@@ -29,27 +36,40 @@
       "email": "alex.cheng@rewardops.com"
     }
   ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:rewardops/rewardops-sdk-node.git"
-  },
-  "homepage": "https://rewardops.github.io/rewardops-sdk-node/",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
     "build:docs": "jsdoc -c jsdoc.json lib/rewardops.js",
     "lint": "eslint --cache --ignore-path .gitignore .",
-    "test": "jest",
+    "prepare": "husky install",
     "prepublish:docs": "npm run build:docs",
     "publish:docs": "gh-pages -d docs",
     "release": "standard-version",
-    "prepare": "husky install"
+    "test": "jest"
   },
-  "keywords": [
-    "RewardOps",
-    "rewards",
-    "API"
-  ],
+  "lint-staged": {
+    "*.{js,md,json,yaml}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "lodash": "^4.17.21",
+    "redact-secrets": "^1.0.0",
+    "redactyl.js": "^1.4.3",
+    "request": "^2.88.2",
+    "serialize-error": "^8.1.0",
+    "winston": "^3.6.0",
+    "yup": "^0.29.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
@@ -73,26 +93,10 @@
     "nock": "^9.6.1",
     "prettier": "^1.19.1",
     "sinon": "^1.17.7",
+    "sort-package-json": "^2.1.0",
     "standard-version": "^9.3.2"
   },
-  "dependencies": {
-    "axios": "^0.21.4",
-    "lodash": "^4.17.21",
-    "redact-secrets": "^1.0.0",
-    "redactyl.js": "^1.4.3",
-    "request": "^2.88.2",
-    "serialize-error": "^8.1.0",
-    "winston": "^3.6.0",
-    "yup": "^0.29.3"
-  },
-  "lint-staged": {
-    "*.{js,md,json,yaml}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+  "engines": {
+    "node": ">=10"
   }
 }
