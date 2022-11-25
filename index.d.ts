@@ -17,6 +17,7 @@ declare module '@rewardops/sdk-node' {
     timeout?: number;
     verbose: boolean;
     quiet?: boolean;
+    silent?: boolean;
   };
 
   interface RequestCallback<Data = unknown, Res = unknown> extends Function {
