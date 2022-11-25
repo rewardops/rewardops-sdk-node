@@ -1,6 +1,6 @@
 // NOTE: Logger exports are imported using `jest.requireActual` as they are globally mocked
 const mockDate = require('mockdate');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const _ = require('lodash');
 
 const config = require('../../lib/config');
@@ -14,9 +14,9 @@ const id = faker.datatype.uuid();
 
 const PIIData = {
   id,
-  full_name: faker.name.findName(),
+  full_name: faker.name.fullName(),
   email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
+  phone: faker.phone.number(),
   accept_language: 'en-CA',
   address: {
     address: faker.address.streetAddress(),
@@ -231,7 +231,7 @@ describe('#logFormat', () => {
   const { logFormat } = jest.requireActual('../../lib/utils/logger');
 
   const mockTimestamp = new Date().toISOString();
-  const mockLogLevel = faker.random.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
+  const mockLogLevel = faker.helpers.arrayElement(['error', 'warn', 'info', 'debug', 'verbose']);
   const mockMessage = faker.lorem.sentence();
 
   it('logs SDK prefix, timestamp, and log level', () => {

@@ -1,7 +1,7 @@
 const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const request = require('request');
 
 const { mockConfig } = require('./test-helpers/mock-config');

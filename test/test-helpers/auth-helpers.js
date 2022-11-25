@@ -1,4 +1,4 @@
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 /**
  * Since OAuth Bearer tokens don't have a defined structure, we will

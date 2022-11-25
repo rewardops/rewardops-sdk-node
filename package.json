@@ -73,6 +73,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
+    "@faker-js/faker": "^7.6.0",
     "async": "^2.6.4",
     "better-docs": "^2.7.2",
     "eslint": "^8.28.0",
@@ -82,7 +83,6 @@
     "eslint-plugin-jest": "^26.9.0",
     "eslint-plugin-jsdoc": "^37.9.7",
     "eslint-plugin-prettier": "^4.2.1",
-    "faker": "^5.5.3",
     "gh-pages": "^2.2.0",
     "husky": "^7.0.0",
     "jest": "^27.5.1",

@@ -1,4 +1,4 @@
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const nock = require('nock');
 
 const fixtures = require('../../fixtures/v4/program-orders.fixtures');
