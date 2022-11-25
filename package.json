@@ -73,7 +73,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
-    "async": "^2.6.3",
+    "async": "^2.6.4",
     "better-docs": "^2.7.2",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
