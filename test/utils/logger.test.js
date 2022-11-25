@@ -9,14 +9,6 @@ const { mockConfig } = require('../test-helpers/mock-config');
 
 const { prettyPrint, REDACTED_MESSAGE } = jest.requireActual('../../lib/utils/logger');
 
-// test setup
-const timestamp = Date.now();
-
-const originalConsole = console;
-const mockConsole = { log: jest.fn(), warn: jest.fn() };
-// freeze time
-mockDate.set(timestamp);
-
 // fixtures
 const id = faker.datatype.uuid();
 
@@ -315,13 +307,21 @@ describe('#logFormat', () => {
 describe('#log', () => {
   const { log } = jest.requireActual('../../lib/utils/logger');
 
+  const timestamp = Date.now();
+
+  const originalConsole = console;
+  let mockConsole;
   beforeEach(() => {
+    mockConsole = { log: jest.fn(), warn: jest.fn(), error: jest.fn() };
     // eslint-disable-next-line no-global-assign
     console = mockConsole;
+
+    mockDate.set(timestamp);
   });
-  afterAll(() => {
+  afterEach(() => {
     // eslint-disable-next-line no-global-assign
     console = originalConsole;
+
     mockDate.reset();
   });
 
@@ -392,18 +392,17 @@ describe('#log', () => {
   });
 
   describe('config settings', () => {
-    beforeEach(() => {
-      config.reset();
-    });
+    const { resetLoggerSetup } = jest.requireActual('../../lib/utils/logger');
 
     afterEach(() => {
       config.reset();
+      resetLoggerSetup();
     });
 
     test('options.meta is present in the log when `verbose` is true', () => {
       config.init(mockConfig({ verbose: true }));
 
-      log('testLog', { meta: { foo: 'bar' } });
+      log('options.meta testLog', { meta: { foo: 'bar' } });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('"foo": "bar"'));
     });
@@ -411,17 +410,25 @@ describe('#log', () => {
     test('options.meta is not present in the log when `verbose` is `false`', () => {
       config.init(mockConfig({ verbose: false }));
 
-      log('testLog', { meta: { foo: 'bar' } });
+      log('options.meta testLog', { meta: { foo: 'bar' } });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.not.stringContaining('"foo": "bar"'));
     });
 
-    test('message is logged when `quiet` is true', () => {
-      config.init(mockConfig({ quiet: true }));
+    test.each(['error', 'warn'])('%s message is logged when `quiet` is `true` and `verbose` is `false`', level => {
+      config.init(mockConfig({ verbose: false, quiet: true }));
 
-      log('testLog');
+      log('quiet testLog', { level });
 
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('testLog'));
+    });
+
+    test.each(['info', 'debug'])('%s message is NOT logged when `quiet` is `true` and `verbose` is `false`', level => {
+      config.init(mockConfig({ verbose: false, quiet: true }));
+
+      log('quiet testLog', { level });
+
+      expect(mockConsole.log).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
     });
   });
 });

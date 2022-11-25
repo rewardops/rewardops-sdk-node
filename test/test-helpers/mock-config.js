@@ -29,10 +29,11 @@ const mockConfig = ({
   clientSecret = getTestAccessToken(),
   logToFile = false,
   timeout = 20000,
-  verbose = true,
-  quiet = true,
   supportedLocales = undefined,
   logFilePath = faker.system.filePath(),
+  silent = false,
+  verbose = false,
+  quiet = false,
 } = {}) => ({
   apiServerUrl,
   apiVersion,
@@ -41,9 +42,10 @@ const mockConfig = ({
   clientSecret,
   logToFile,
   timeout,
-  verbose,
   supportedLocales,
   logFilePath,
+  silent,
+  verbose,
   quiet,
 });
 
