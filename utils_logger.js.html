@@ -214,7 +214,6 @@ const processLogData = flow([filterLogData, prettyPrint]);
  * @param {*} message Log message
  *
  * @returns {string} Formatted message
- *
  * @private
  */
 const formatMessage = message => (isJSON(message) ? prettyPrint(redactSecrets(message)) : message);
@@ -223,7 +222,6 @@ const formatMessage = message => (isJSON(message) ? prettyPrint(redactSecrets(me
  * Get Winston log level based on SDK configuration.
  *
  * @returns {string} Log level
- *
  * @private
  */
 const getLogLevel = () => {
@@ -258,6 +256,14 @@ const logFormat = ({ level, message = '', timestamp, meta = {} }) =>
     .trim();
 
 /**
+ * Create Winston Console Transport
+ *
+ * @returns Winston Console Transport with configured log level
+ * @private
+ */
+const consoleTransport = new winston.transports.Console({ level: getLogLevel(), silent: config.get('silent') });
+
+/**
  * Winston logger configuration
  *
  * @type {winston.Logger}
@@ -265,7 +271,7 @@ const logFormat = ({ level, message = '', timestamp, meta = {} }) =>
  */
 const logger = winston.createLogger({
   format: combine(timestampFormatter(), printf(logFormat)),
-  transports: [new winston.transports.Console({ level: getLogLevel() })],
+  transports: [consoleTransport],
 });
 
 /**
@@ -312,12 +318,12 @@ const removeFileLogger = () => {
 };
 
 /**
- * Toggle log-to-file configuration for `logger`.
+ * Set/Reset log-to-file configuration for `logger`.
  *
  * @see {@link logger} for more information.
  * @private
  */
-const toggleFileLogger = () => {
+const setFileLogger = () => {
   if (isFileLoggerEnabled) {
     removeFileLogger();
   }
@@ -336,8 +342,44 @@ function setLogFilePath(path) {
     config.set('logFilePath', path);
   }
 
-  toggleFileLogger();
+  setFileLogger();
 }
+
+/** Flag for whether logger setup has completed (following config module init) */
+let isLoggerSetupComplete = false;
+
+/**
+ * Update logger setup with Console Transform and optional File Transform.
+ *
+ * Used following library config initialization to adjust logging, if necessary.
+ *
+ * @private
+ */
+const completeLogSetup = () => {
+  if (config.isInitialized()) {
+    isLoggerSetupComplete = true;
+
+    consoleTransport.level = getLogLevel();
+    consoleTransport.silent = config.get('silent');
+
+    // TODO: implement this logic as an event process (triggered by config.init) using the emitter module.
+    // This is a breaking change, so it should be a part of the next major release.
+    if (config.get('logToFile')) {
+      setLogFilePath();
+    }
+  }
+};
+
+/**
+ * Reset logger setup.
+ *
+ * Used for testing purposes.
+ *
+ * @private
+ */
+const resetLoggerSetup = () => {
+  isLoggerSetupComplete = false;
+};
 
 /**
  * Takes a message string and a data object, returning a string with redacted and filtered data.
@@ -373,6 +415,10 @@ const mergeMessageAndData = (message, data) => {
  * (if the {@link module:config} option `verbose` is `true`).
  */
 function log(message, { level = 'info', meta = {}, data = {} } = {}) {
+  if (!isLoggerSetupComplete) {
+    completeLogSetup();
+  }
+
   if (message instanceof Error) {
     const error = message;
     message = `${error.message}\n${error.stack}`;
@@ -382,12 +428,6 @@ function log(message, { level = 'info', meta = {}, data = {} } = {}) {
   }
 
   return logger.log(level, { message, meta: config.get('verbose') &amp;&amp; filterLogData(meta) });
-}
-
-// TODO: implement this logic as an event process (triggered by config.init) using the emitter module.
-// This is a breaking change, so it should be a part of the next major release.
-if (config.get('logToFile')) {
-  setLogFilePath();
 }
 
 module.exports = {
@@ -401,6 +441,7 @@ module.exports = {
   REDACTED_MESSAGE,
   filterLogData,
   processLogData,
+  resetLoggerSetup,
 };
 </code></pre>
         </article>

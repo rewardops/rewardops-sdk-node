@@ -118,6 +118,7 @@ const defaultConfig = {
   logToFile: false,
   verbose: false,
   quiet: false,
+  silent: false,
 };
 
 /**
@@ -179,7 +180,7 @@ const set = (key, value) => {
 /**
  * Boolean that indicates whether the config module has been initialized
  *
- * @protected
+ * @private
  */
 let configInitialized = false;
 
@@ -221,6 +222,13 @@ const init = initialConfig => {
   return Object.freeze(config);
 };
 
+/**
+ * Check whether the library config module has been initialized
+ *
+ * @private
+ */
+const isInitialized = () => configInitialized;
+
 module.exports = {
   mergeConfig,
   init,
@@ -228,6 +236,7 @@ module.exports = {
   getAll,
   set,
   reset,
+  isInitialized,
   defaultConfig,
 };
 
@@ -248,8 +257,9 @@ module.exports = {
  * @property {number} [timeout=20000] Timeout for HTTP requests (used by {@link https://github.com/request/request Request library}).
  * @property {string} [logFilePath='&lt;parent dir>/logs/ro.log'] Path for log output file.
  * @property {boolean} [logToFile=false] If `true` and if {@link config.verbose} is `true`, saves log messages to file.
- * @property {boolean} [verbose=false] Run SDK with verbose logging (as well as in optional file).
- * @property {boolean} [quiet=false] Run SDK with minimal logging(as well as in optional file). NOTE: Superceded by `verbose` if both are `true`.
+ * @property {boolean} [silent=false] Suppress console logging.
+ * @property {boolean} [verbose=false] Run SDK with verbose logging. NOTE: Superseded by `silent` if both are `true`.
+ * @property {boolean} [quiet=false] Run SDK with minimal logging. NOTE: Superseded by `verbose` if both are `true`.
  */
 </code></pre>
         </article>
