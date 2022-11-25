@@ -430,5 +430,14 @@ describe('#log', () => {
 
       expect(mockConsole.log).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
     });
+
+    test.each(['error', 'warn', 'info', 'debug'])('%s message is NOT logged when `silent` is `true`', level => {
+      config.init(mockConfig({ silent: true }));
+
+      log('silent testLog', { level });
+
+      const consoleFn = level === 'error' || level === 'warn' ? mockConsole[level] : mockConsole.log;
+      expect(consoleFn).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
+    });
   });
 });
