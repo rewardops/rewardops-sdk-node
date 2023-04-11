@@ -64,6 +64,14 @@ declare module '@rewardops/sdk-node' {
     include_descendants?: boolean;
   } & BaseParams;
 
+  type PostValidateParams = {
+    owner_type: string,
+    owner_code: string,
+    coupon_code: string,
+    external_member_id: string,
+    items: Array<object>
+  } & BaseParams;
+
   interface Program {
     details: any;
     items: {
@@ -113,6 +121,9 @@ declare module '@rewardops/sdk-node' {
       get: (code: string, params: GetCustomCategoriesParams, callback: RequestCallback) => void;
     };
     rewards: any;
+    coupons: {
+      postValidate: (params: PostValidateParams, callback: RequestCallback) => void;
+    };
     orders: {
       cancel: (
         orderId: string,
