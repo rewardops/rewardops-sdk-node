@@ -172,6 +172,25 @@ describe('v5', () => {
           );
         });
       });
+
+      it('should return an error: missing items', () => {
+        return new Promise(done => {
+          coupons.postValidate(
+            {
+              owner_type: 'program',
+              owner_code: 'am',
+              coupon_code: 'PRE-WGQY-7DSE',
+              external_member_id: '21dasd',
+            },
+            error => {
+              expect(error.message).toContain('items');
+              expect(error).not.toBeNull();
+
+              done();
+            }
+          );
+        });
+      });
     });
   });
 });
