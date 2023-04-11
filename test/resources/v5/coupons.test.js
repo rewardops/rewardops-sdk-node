@@ -28,7 +28,7 @@ describe('v5', () => {
     describe('postValidate()', () => {
       it('should pass an object to the callback', () => {
         return new Promise(done => {
-          nock(RO.urls.getApiBaseUrl(), {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
@@ -57,9 +57,115 @@ describe('v5', () => {
             },
             (error, data) => {
               expect(error).toBeNull();
+              expect(typeof data).toBe('object');
               expect(data.status).toBeDefined();
               expect(data.result).toBeDefined();
-              expect(typeof data.result === 'object').toBeTruthy();
+              expect(typeof data.result).toBe('object');
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
+            }
+          );
+        });
+      });
+
+      it('should return the api error', () => {
+        return new Promise(done => {
+          const apiCall = nock(RO.urls.getApiBaseUrl(), {
+            reqHeaders: {
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
+            },
+          })
+            .post('/coupon_preflight')
+            .reply(422, {});
+
+          coupons.postValidate(
+            {
+              owner_type: 'program',
+              owner_code: 'am',
+              coupon_code: 'PRE-WGQY-7DSE',
+              external_member_id: '21dasd',
+              items: [],
+            },
+            error => {
+              expect(error).not.toBeNull();
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
+            }
+          );
+        });
+      });
+
+      it('should return an error: missing coupon code', () => {
+        return new Promise(done => {
+          coupons.postValidate(
+            {
+              owner_type: 'program',
+              owner_code: 'am',
+              external_member_id: '21dasd',
+              items: [],
+            },
+            error => {
+              expect(error.message).toContain('coupon code');
+              expect(error).not.toBeNull();
+
+              done();
+            }
+          );
+        });
+      });
+
+      it('should return an error: missing external member id', () => {
+        return new Promise(done => {
+          coupons.postValidate(
+            {
+              owner_type: 'program',
+              owner_code: 'am',
+              coupon_code: 'PRE-WGQY-7DSE',
+              items: [],
+            },
+            error => {
+              expect(error.message).toContain('member id');
+              expect(error).not.toBeNull();
+
+              done();
+            }
+          );
+        });
+      });
+
+      it('should return an error: missing owner type', () => {
+        return new Promise(done => {
+          coupons.postValidate(
+            {
+              owner_code: 'am',
+              coupon_code: 'PRE-WGQY-7DSE',
+              external_member_id: '21dasd',
+              items: [],
+            },
+            error => {
+              expect(error.message).toContain('owner type');
+              expect(error).not.toBeNull();
+
+              done();
+            }
+          );
+        });
+      });
+
+      it('should return an error: missing owner code', () => {
+        return new Promise(done => {
+          coupons.postValidate(
+            {
+              owner_type: 'program',
+              coupon_code: 'PRE-WGQY-7DSE',
+              external_member_id: '21dasd',
+              items: [],
+            },
+            error => {
+              expect(error.message).toContain('owner code');
+              expect(error).not.toBeNull();
 
               done();
             }
