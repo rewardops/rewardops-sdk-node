@@ -40,20 +40,22 @@ describe('v5', () => {
 
           coupons.postValidate(
             {
-              owner_type: 'program',
-              owner_code: 'am',
-              coupon_code: 'PRE-WGQY-7DSE',
-              external_member_id: '21dasd',
-              items: [
-                {
-                  item_order_token: 'LVYR3nigGjsiWOkOwEmh5NhM_5Sd4C5Wn3-8BOipw9M=',
-                  quantity: 1,
-                },
-                {
-                  item_order_token: 'u5W97OqfDi-GknQEHFGQQYwTPZ0DcT4WCDAiiZsEP3M=',
-                  quantity: 2,
-                },
-              ],
+              coupon_preflight: {
+                owner_type: 'program',
+                owner_code: 'am',
+                coupon_code: 'PRE-WGQY-7DSE',
+                external_member_id: '21dasd',
+                items: [
+                  {
+                    item_order_token: 'LVYR3nigGjsiWOkOwEmh5NhM_5Sd4C5Wn3-8BOipw9M=',
+                    quantity: 1,
+                  },
+                  {
+                    item_order_token: 'u5W97OqfDi-GknQEHFGQQYwTPZ0DcT4WCDAiiZsEP3M=',
+                    quantity: 2,
+                  },
+                ],
+              },
             },
             (error, data) => {
               expect(error).toBeNull();
@@ -69,7 +71,7 @@ describe('v5', () => {
         });
       });
 
-      it('should return the api error', () => {
+      it('should return the api error (invalid coupon)', () => {
         return new Promise(done => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
@@ -81,11 +83,13 @@ describe('v5', () => {
 
           coupons.postValidate(
             {
-              owner_type: 'program',
-              owner_code: 'am',
-              coupon_code: 'PRE-WGQY-7DSE',
-              external_member_id: '21dasd',
-              items: [],
+              coupon_preflight: {
+                owner_type: 'program',
+                owner_code: 'am',
+                coupon_code: 'INVALID-COUPON',
+                external_member_id: '21dasd',
+                items: [],
+              },
             },
             error => {
               expect(error).not.toBeNull();
@@ -101,10 +105,12 @@ describe('v5', () => {
         return new Promise(done => {
           coupons.postValidate(
             {
-              owner_type: 'program',
-              owner_code: 'am',
-              external_member_id: '21dasd',
-              items: [],
+              coupon_preflight: {
+                owner_type: 'program',
+                owner_code: 'am',
+                external_member_id: '21dasd',
+                items: [],
+              },
             },
             error => {
               expect(error.message).toContain('coupon code');
@@ -120,10 +126,12 @@ describe('v5', () => {
         return new Promise(done => {
           coupons.postValidate(
             {
-              owner_type: 'program',
-              owner_code: 'am',
-              coupon_code: 'PRE-WGQY-7DSE',
-              items: [],
+              coupon_preflight: {
+                owner_type: 'program',
+                owner_code: 'am',
+                coupon_code: 'PRE-WGQY-7DSE',
+                items: [],
+              },
             },
             error => {
               expect(error.message).toContain('member id');
@@ -139,10 +147,12 @@ describe('v5', () => {
         return new Promise(done => {
           coupons.postValidate(
             {
-              owner_code: 'am',
-              coupon_code: 'PRE-WGQY-7DSE',
-              external_member_id: '21dasd',
-              items: [],
+              coupon_preflight: {
+                owner_code: 'am',
+                coupon_code: 'PRE-WGQY-7DSE',
+                external_member_id: '21dasd',
+                items: [],
+              },
             },
             error => {
               expect(error.message).toContain('owner type');
@@ -158,10 +168,12 @@ describe('v5', () => {
         return new Promise(done => {
           coupons.postValidate(
             {
-              owner_type: 'program',
-              coupon_code: 'PRE-WGQY-7DSE',
-              external_member_id: '21dasd',
-              items: [],
+              coupon_preflight: {
+                owner_type: 'program',
+                coupon_code: 'PRE-WGQY-7DSE',
+                external_member_id: '21dasd',
+                items: [],
+              },
             },
             error => {
               expect(error.message).toContain('owner code');
@@ -177,10 +189,12 @@ describe('v5', () => {
         return new Promise(done => {
           coupons.postValidate(
             {
-              owner_type: 'program',
-              owner_code: 'am',
-              coupon_code: 'PRE-WGQY-7DSE',
-              external_member_id: '21dasd',
+              coupon_preflight: {
+                owner_type: 'program',
+                owner_code: 'am',
+                coupon_code: 'PRE-WGQY-7DSE',
+                external_member_id: '21dasd',
+              },
             },
             error => {
               expect(error.message).toContain('items');

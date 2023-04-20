@@ -65,11 +65,14 @@ declare module '@rewardops/sdk-node' {
   } & BaseParams;
 
   type PostValidateParams = {
-    owner_type: string,
-    owner_code: string,
-    coupon_code: string,
-    external_member_id: string,
-    items: Array<object>
+    coupon_preflight: {
+      owner_type: string,
+      owner_code: string,
+      coupon_code: string,
+      external_member_id: string,
+      items: Array<object>
+    },
+    accept_language?: string
   } & BaseParams;
 
   interface Program {
