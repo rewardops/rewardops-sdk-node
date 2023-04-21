@@ -124,9 +124,6 @@ declare module '@rewardops/sdk-node' {
       get: (code: string, params: GetCustomCategoriesParams, callback: RequestCallback) => void;
     };
     rewards: any;
-    coupons: {
-      postValidate: (params: PostValidateParams, callback: RequestCallback) => void;
-    };
     orders: {
       cancel: (
         orderId: string,
@@ -139,6 +136,9 @@ declare module '@rewardops/sdk-node' {
   }
 
   const program = (id: number, code?: string) => ({} as Program);
+  const coupons = {
+    postValidate: (params: PostValidateParams, callback: RequestCallback) => ({} as Program)
+  }
 
   const config = {
     init: (params: Config) => ({} as Config),
@@ -151,5 +151,5 @@ declare module '@rewardops/sdk-node' {
     getApiBaseUrl: () => '',
   };
 
-  export { SDKError, Config, Sort, CustomCategoriesSort, SortOrder, Program, program, config, urls };
+  export { SDKError, Config, Sort, CustomCategoriesSort, SortOrder, Program, program, config, urls, coupons };
 }
