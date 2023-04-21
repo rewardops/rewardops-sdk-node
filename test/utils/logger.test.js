@@ -7,7 +7,7 @@ const config = require('../../lib/config');
 const { LOG_PREFIX } = require('../../lib/constants');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const { prettyPrint, REDACTED_MESSAGE, cleanMessage } = jest.requireActual('../../lib/utils/logger');
+const { prettyPrint, REDACTED_MESSAGE, formatErrorMessage } = jest.requireActual('../../lib/utils/logger');
 
 // fixtures
 const id = faker.datatype.uuid();
@@ -442,7 +442,7 @@ describe('#log', () => {
     });
   });
 
-  describe('clean message logger', () => {
+  describe('extract error message logger', () => {
     test.each([
       {
         data: {
@@ -452,6 +452,30 @@ describe('#log', () => {
           coupon_code: [{ message: 'coupon code not found' }],
         },
       },
+      {
+        data: {
+          coupon_code: ['coupon code not found', 'another error message', { message: 'different error' }],
+        },
+        expected: {
+          coupon_code: [{ message: 'coupon code not found' }, { message: 'another error message' }],
+        },
+      },
+      {
+        data: {
+          coupon_code: [],
+        },
+        expected: {
+          coupon_code: [],
+        },
+      },
+      // {
+      //   data: {
+      //     ids: ['1', '2'],
+      //   },
+      //   expected: {
+      //     ids: ['1', '2'],
+      //   },
+      // },
       {
         data: {
           status: 'OK',
@@ -535,7 +559,7 @@ describe('#log', () => {
         },
       },
     ])('should clean message', ({ data, expected }) => {
-      expect(cleanMessage(data)).toEqual(expected);
+      expect(formatErrorMessage(data)).toEqual(expected);
     });
   });
 });
