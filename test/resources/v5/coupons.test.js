@@ -23,7 +23,8 @@ describe('v5', () => {
   });
 
   describe('coupons', () => {
-    const { coupons } = RO;
+    const id = 33;
+    const program = RO.program(id);
 
     describe('postValidate()', () => {
       it('should pass an object to the callback', () => {
@@ -38,7 +39,7 @@ describe('v5', () => {
               result: { status: 'OK', result: {} },
             });
 
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
@@ -81,7 +82,7 @@ describe('v5', () => {
             .post('/coupon_preflight')
             .reply(422, {});
 
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
@@ -103,7 +104,7 @@ describe('v5', () => {
 
       it('should return an error: missing coupon code', () => {
         return new Promise(done => {
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
@@ -124,7 +125,7 @@ describe('v5', () => {
 
       it('should return an error: missing external member id', () => {
         return new Promise(done => {
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
@@ -145,7 +146,7 @@ describe('v5', () => {
 
       it('should return an error: missing owner type', () => {
         return new Promise(done => {
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_code: 'am',
@@ -166,7 +167,7 @@ describe('v5', () => {
 
       it('should return an error: missing owner code', () => {
         return new Promise(done => {
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
@@ -187,7 +188,7 @@ describe('v5', () => {
 
       it('should return an error: missing items', () => {
         return new Promise(done => {
-          coupons.postValidate(
+          program.coupons.postValidate(
             {
               coupon_preflight: {
                 owner_type: 'program',
