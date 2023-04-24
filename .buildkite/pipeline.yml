@@ -2,7 +2,7 @@
    command: 
          - "npm install"
          - "npm test"  
-   timeout_in_minutes: 20
+   timeout_in_minutes: 15
    retry:
      automatic:
        - exit_status: "*"
