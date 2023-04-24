@@ -7,7 +7,7 @@ const config = require('../../lib/config');
 const { LOG_PREFIX } = require('../../lib/constants');
 const { mockConfig } = require('../test-helpers/mock-config');
 
-const { prettyPrint, REDACTED_MESSAGE, formatErrorMessage } = jest.requireActual('../../lib/utils/logger');
+const { prettyPrint, REDACTED_MESSAGE } = jest.requireActual('../../lib/utils/logger');
 
 // fixtures
 const id = faker.datatype.uuid();
@@ -439,127 +439,6 @@ describe('#log', () => {
 
       const consoleFn = level === 'error' || level === 'warn' ? mockConsole[level] : mockConsole.log;
       expect(consoleFn).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
-    });
-  });
-
-  describe('extract error message logger', () => {
-    test.each([
-      {
-        data: {
-          coupon_code: ['coupon code not found'],
-        },
-        expected: {
-          coupon_code: [{ message: 'coupon code not found' }],
-        },
-      },
-      {
-        data: {
-          coupon_code: ['coupon code not found', 'another error message', { message: 'different error' }],
-        },
-        expected: {
-          coupon_code: [{ message: 'coupon code not found' }, { message: 'another error message' }],
-        },
-      },
-      {
-        data: {
-          coupon_code: [],
-        },
-        expected: {
-          coupon_code: [],
-        },
-      },
-      // {
-      //   data: {
-      //     ids: ['1', '2'],
-      //   },
-      //   expected: {
-      //     ids: ['1', '2'],
-      //   },
-      // },
-      {
-        data: {
-          status: 'OK',
-          result: {
-            id: 235,
-            name: {
-              'en-CA': 'Test codes',
-              'fr-CA': 'Le Nom',
-            },
-            description: {
-              'en-CA': 'test codes description',
-              'fr-CA': 'la description ici',
-            },
-            code_prefix: 'CAT',
-            code_count: 100,
-            starts_at: null,
-            ends_at: null,
-            state: 'REVIEW',
-            currency_code: 'XRO-ADM',
-            discount_rate: null,
-            volume_discount_count: 1,
-            bundle_item_offer_item_count: null,
-            global_usage_cap_limit: 1,
-            order_usage_cap_limit: null,
-            member_usage_cap_limit: null,
-            is_active: true,
-            updated_at: '2023-04-20T20:29:27.556Z',
-            created_at: '2023-04-20T20:29:27.556Z',
-            eligible_item_filter_definition: null,
-            bundle_offer_filter_definition: null,
-            owner: {
-              type: 'program',
-              code: 'aeroplan_program',
-            },
-            discount_fixed: {
-              amount: 100,
-              currency_code: 'XRO-ADM',
-            },
-            minimum_purchase_amount: null,
-          },
-        },
-        expected: {
-          status: 'OK',
-          result: {
-            id: 235,
-            name: {
-              'en-CA': 'Test codes',
-              'fr-CA': 'Le Nom',
-            },
-            description: {
-              'en-CA': 'test codes description',
-              'fr-CA': 'la description ici',
-            },
-            code_prefix: 'CAT',
-            code_count: 100,
-            starts_at: null,
-            ends_at: null,
-            state: 'REVIEW',
-            currency_code: 'XRO-ADM',
-            discount_rate: null,
-            volume_discount_count: 1,
-            bundle_item_offer_item_count: null,
-            global_usage_cap_limit: 1,
-            order_usage_cap_limit: null,
-            member_usage_cap_limit: null,
-            is_active: true,
-            updated_at: '2023-04-20T20:29:27.556Z',
-            created_at: '2023-04-20T20:29:27.556Z',
-            eligible_item_filter_definition: null,
-            bundle_offer_filter_definition: null,
-            owner: {
-              type: 'program',
-              code: 'aeroplan_program',
-            },
-            discount_fixed: {
-              amount: 100,
-              currency_code: 'XRO-ADM',
-            },
-            minimum_purchase_amount: null,
-          },
-        },
-      },
-    ])('should clean message', ({ data, expected }) => {
-      expect(formatErrorMessage(data)).toEqual(expected);
     });
   });
 });
