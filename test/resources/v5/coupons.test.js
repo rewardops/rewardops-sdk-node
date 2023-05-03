@@ -3,6 +3,7 @@ const RO = require('../../..');
 const fixtures = require('../../fixtures/v5/coupons.fixtures');
 const { mockConfig } = require('../../test-helpers/mock-config');
 const { CLIENT_ID, CLIENT_SECRET, ACCESS_TOKEN } = require('../../fixtures/v5/credentials');
+const { getInputErrorMessage } = require('../../../lib/resources/coupons');
 
 RO.config.init(
   mockConfig({
@@ -114,7 +115,7 @@ describe('v5', () => {
               },
             },
             error => {
-              expect(error.message).toContain('coupon code');
+              expect(error.message).toBe(getInputErrorMessage('coupon code', 'string'));
               expect(error).not.toBeNull();
 
               done();
@@ -135,7 +136,7 @@ describe('v5', () => {
               },
             },
             error => {
-              expect(error.message).toContain('member id');
+              expect(error.message).toBe(getInputErrorMessage('member id', 'string'));
               expect(error).not.toBeNull();
 
               done();
@@ -156,7 +157,7 @@ describe('v5', () => {
               },
             },
             error => {
-              expect(error.message).toContain('owner type');
+              expect(error.message).toBe(getInputErrorMessage('owner type', 'string'));
               expect(error).not.toBeNull();
 
               done();
@@ -177,7 +178,7 @@ describe('v5', () => {
               },
             },
             error => {
-              expect(error.message).toContain('owner code');
+              expect(error.message).toBe(getInputErrorMessage('owner code', 'string'));
               expect(error).not.toBeNull();
 
               done();
@@ -198,7 +199,7 @@ describe('v5', () => {
               },
             },
             error => {
-              expect(error.message).toContain('items');
+              expect(error.message).toBe(getInputErrorMessage('items', 'array'));
               expect(error).not.toBeNull();
 
               done();
