@@ -64,13 +64,18 @@ declare module '@rewardops/sdk-node' {
     include_descendants?: boolean;
   } & BaseParams;
 
+  type CouponPreflightItem = {
+    item_order_token: string;
+    quantity: number;
+  };
+
   type PostValidateParams = {
     coupon_preflight: {
       owner_type: string;
       owner_code: string;
       coupon_code: string;
       external_member_id: string;
-      items: Array<object>;
+      items: Array<CouponPreflightItem>;
     };
     accept_language?: string;
   } & BaseParams;
