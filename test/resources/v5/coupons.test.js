@@ -75,13 +75,14 @@ describe('v5', () => {
 
       it('should return the api error (invalid coupon)', () => {
         return new Promise(done => {
+          const errorObject = { error: 'invalidCoupon' };
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
           })
             .post('/coupon_preflight')
-            .reply(422, {});
+            .reply(422, { error: errorObject });
 
           program.coupons.postValidate(
             {
@@ -95,6 +96,7 @@ describe('v5', () => {
             },
             error => {
               expect(error).not.toBeNull();
+              expect(error.message).toMatchObject(errorObject);
               expect(apiCall.isDone()).toEqual(true);
 
               done();
