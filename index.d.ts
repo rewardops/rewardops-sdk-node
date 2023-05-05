@@ -64,6 +64,82 @@ declare module '@rewardops/sdk-node' {
     include_descendants?: boolean;
   } & BaseParams;
 
+  type CouponPreflightItem = {
+    item_order_token: string;
+    quantity: number;
+  };
+
+  type PostValidateParams = {
+    coupon_preflight: {
+      owner_type: string;
+      owner_code: string;
+      coupon_code: string;
+      external_member_id: string;
+      items: Array<CouponPreflightItem>;
+    };
+    accept_language?: string;
+  } & BaseParams;
+
+  type PostValidateResponse = {
+    status: string;
+    result: {
+      items: [
+        {
+          order_token: string;
+          supplier_item_variant_id: string;
+          quantity: number;
+          regular_price: {
+            amount: number;
+            currency_code: string;
+          };
+          sale_price: {
+            amount: number;
+            currency_code: string;
+          };
+          coupon_discount: {
+            amount: number;
+            currency_code: string;
+          };
+        }
+      ];
+      coupon_group: {
+        id: number;
+        name: string;
+        description: string;
+        code_prefix: string;
+        code_count: number;
+        starts_at: string;
+        ends_at: string;
+        state: string;
+        currency_code: string;
+        discount_rate: string | null;
+        volume_discount_count: number;
+        bundle_item_offer_item_count: number | null;
+        global_usage_cap_limit: number | null;
+        order_usage_cap_limit: number | null;
+        member_usage_cap_limit: number | null;
+        is_active: boolean;
+        updated_at: string;
+        created_at: string;
+        eligible_item_filter_definition: any; // TODO: put the correct type. Docs were not clear at the time
+        bundle_offer_filter_definition: any; // TODO: put the correct type. Docs were not clear at the time
+        owner: {
+          type: string;
+          code: string;
+        };
+        discount_fixed: {
+          amount: number;
+          currency_code: string;
+        } | null;
+        minimum_purchase_amount: {
+          amount: number;
+          currency_code: string;
+        } | null;
+      };
+      coupon_code: string;
+    };
+  };
+
   interface Program {
     details: any;
     items: {
@@ -121,6 +197,9 @@ declare module '@rewardops/sdk-node' {
         callback: RequestCallback
       ) => void;
       get: (orderId: string, requestBody: Record<string, unknown>, callback: RequestCallback) => void;
+    };
+    coupons: {
+      postValidate: (params: PostValidateParams, callback: RequestCallback) => PostValidateResponse;
     };
   }
 
