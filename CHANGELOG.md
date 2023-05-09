@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+- added coupon code feature support to the SDK.
+- Refactored `apiCall` function to consider pangea version.
 - add `silent` config option ([8701c17](https://github.com/rewardops/rewardops-sdk-node/commit/8701c17488f326ecfab8df758d71c810cc30f8be))
 
 ### Bug Fixes
