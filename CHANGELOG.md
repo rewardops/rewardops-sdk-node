@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.3...v2.7.0) (2023-05-09)
+
+### Features
+
+- add `silent` config option ([8701c17](https://github.com/rewardops/rewardops-sdk-node/commit/8701c17488f326ecfab8df758d71c810cc30f8be))
+
+### Bug Fixes
+
+- **client-ac:** set correct version when calling the api (v5) ([ac47b45](https://github.com/rewardops/rewardops-sdk-node/commit/ac47b45f67b3a4d56bd27c14fb715656c894076f))
+- ensure configured log level is set post-initialization ([d8bffda](https://github.com/rewardops/rewardops-sdk-node/commit/d8bffda26d1a216d073bfd22370b44747041b1a3))
+- **sdk:** log api call with the correct url ([f8b1400](https://github.com/rewardops/rewardops-sdk-node/commit/f8b140071675c2e68c836147c4c3c4b4304f857b))
+- **sdk:** not showing correct url when logging success ([dbfa34b](https://github.com/rewardops/rewardops-sdk-node/commit/dbfa34ba3652e2d1e2765d4458501763102c537c))
+
 ## [2.6.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.5.3...v2.6.0) (2022-11-25)
 
 ### Features
