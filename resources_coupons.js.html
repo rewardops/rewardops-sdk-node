@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> resources/programs.js</title>
+  <title> resources/coupons.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>resources/programs.js</h1>
+                    <h1>resources/coupons.js</h1>
                 </header>
                 
 
@@ -86,85 +86,79 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Programs resources
+ * Rewards resources
  *
- * @module resources/programs
- * @copyright 2015–2020 RewardOps Inc.
+ * @module resources/rewards
+ * @copyright 2015–2023 RewardOps Inc.
  */
 
-const items = require('./items');
-const customCategories = require('./custom-categories');
-const rewards = require('./rewards');
-const { contextInstance, contextType } = require('../context');
-const { coupons } = require('./coupons');
+const config = require('../config');
+const api = require('../api');
 
-/**
- * A program-specific context type object with `getAll` and `get` methods.
- *
- * NOTE: Response may be paginated if you have many programs.
- *
- * @type {object}
- *
- * @example
- * // Get a list of all programs available to you.
- * RO.programs.getAll((error, responseBody, response) => {
- *   if (error) {
- *     console.log(error);
- *   } else {
- *     console.log(result);
- *   }
- * });
- *
- * @see {@link module:context} for more information.
- */
-const programs = contextType('programs');
+const getInputErrorMessage = (parameterName, parameterType) =>
+  `must pass the ${parameterName} ${parameterType} in the params object to \`coupons.postValidate()\``;
 
 /**
- * Get details of a program.
+ * Checks if a coupon is valid or not.
  *
- * The program object has methods for accessing the program's rewards and orders.
+ * @param {{owner_type: string, owner_code: string, coupon_code: string, external_member_id: string, items: Array&lt;object>}} params Request params.
+ * @param {{Function}} callback function to be called after getting an API response
  *
- * @param {number} id The ID of a program
- * @param {string} code v5 uses `program_code` instead of `program_id`
- *
- * @returns {object} A program object for the program with the given ID
- *
- * @example
- * // Get details for program 123
- * const myProgram = RO.program(123);
- * myProgram.details((error, responseBody, response) => {
- *   if (error) {
- *     console.log(error);
- *   } else {
- *     console.log(result);
- *   }
- * });
+ * @protected
  */
-const program = (id, code) => {
-  if (typeof id !== 'number') {
-    return Error('Program ID must be a number');
+function postValidate(params, callback) {
+  let error;
+  let errorMessage;
+  const { coupon_preflight: couponPreflight, accept_language: acceptLanguage } = params;
+
+  // Argument validations.
+  if (typeof params !== 'object') {
+    errorMessage = 'a params object is required';
+  } else if (typeof couponPreflight !== 'object') {
+    errorMessage = getInputErrorMessage('coupon preflight', 'object');
+  } else if (typeof couponPreflight.owner_type !== 'string') {
+    errorMessage = getInputErrorMessage('owner type', 'string');
+  } else if (typeof couponPreflight.owner_code !== 'string') {
+    errorMessage = getInputErrorMessage('owner code', 'string');
+  } else if (typeof couponPreflight.coupon_code !== 'string') {
+    errorMessage = getInputErrorMessage('coupon code', 'string');
+  } else if (typeof couponPreflight.external_member_id !== 'string') {
+    errorMessage = getInputErrorMessage('member id', 'string');
+  } else if (!Array.isArray(couponPreflight.items)) {
+    errorMessage = getInputErrorMessage('items', 'array');
+  } else if (acceptLanguage !== undefined &amp;&amp; typeof acceptLanguage !== 'string') {
+    errorMessage = getInputErrorMessage('accept language', 'string');
   }
 
-  /**
-   * An alias of `programs.get(id)`.
-   *
-   * @param {module:api~requestCallback} callback Callback that handles the response.
-   */
-  const getProgramDetails = callback => {
-    programs.get(id, callback);
+  if (errorMessage) {
+    error = new Error();
+
+    error.message = errorMessage;
+
+    callback(error);
+
+    return;
+  }
+
+  const apiConfig = {
+    ...config.getAll(),
+    apiVersion: 'v5',
   };
 
-  return {
-    details: getProgramDetails,
-    items: items(id),
-    customCategories: customCategories(id),
-    rewards: rewards(id),
-    coupons,
-    ...contextInstance('programs', id, code),
+  const options = {
+    path: `/coupon_preflight`,
+    config: apiConfig,
+    params,
   };
+
+  api.post(options, callback);
+}
+
+const coupons = {
+  postValidate,
 };
 
-module.exports = { program, programs };
+module.exports = { coupons, getInputErrorMessage };
 </code></pre>
         </article>
     </section>
