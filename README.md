@@ -167,6 +167,11 @@ npm link
 npm link @rewardops/sdk-node
 ```
 
+## Running Locally
+
+Right now there is no way for this to run locally, because this project does not act as a server or something similar.
+One way to test your changes are correct are not are writing unit tests in their respective folders, for example if you added a new resource, you can add a test inside `test / resources / ${api_version_resource uses} / ${resouce}.js` file. You can then debug that in `VS Code`, the configuration is already added, you just have to update the first argument of the `args` array inside `launch.json`, change that to the name of the test file that you want to run and it will start debug with real values just to verify, after that you can mock the values when commiting your code.
+
 **NOTE** There is no hot reloading, if you make code changes to the SDK, you will have to re-run step 2 for you changes to appear in your app. Running `yarn install` will also remove the symlink.
 
 To run the library test suite:
