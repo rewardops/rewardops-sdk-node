@@ -1,8 +1,8 @@
+const nock = require('nock');
 const RO = require('../../..');
 const { mockConfig } = require('../../test-helpers/mock-config');
-const { CLIENT_ID, CLIENT_SECRET } = require('../../fixtures/v5/credentials');
+const { CLIENT_ID, CLIENT_SECRET, ACCESS_TOKEN } = require('../../fixtures/v5/credentials');
 
-// NOTE: for this test to work we have to use real CLIENT_ID and CLIENT_SECRET values instead of mock ones
 RO.config.init(
   mockConfig({
     apiVersion: 'v5',
@@ -25,6 +25,28 @@ describe('v5', () => {
 
     describe('registerMemberTags()', () => {
       it('should register member tags and return member UUID', () => {
+        // https://api-qa.ca.rewardops.io/api/v5/auth/token
+
+        nock('https://api-qa.ca.rewardops.io/')
+          .post('/api/v5/auth/token')
+          .reply(200, { token: ACCESS_TOKEN });
+
+        const apiCall = nock('https://api-qa.ca.rewardops.io/', {
+          reqHeaders: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        })
+          .post(`/api/v5/programs/${programCode}/members`)
+          .reply(200, {
+            status: 'OK',
+            result: {
+              id: '123456',
+              foreign_id: '114215767',
+              segment: 'status',
+              member_tags: 'stb,ubr',
+            },
+          });
+
         return new Promise(done => {
           program.personalization
             .registerMemberTags({
@@ -38,6 +60,7 @@ describe('v5', () => {
               expect(data.id).toBeDefined(); // id is memberUUID
               expect(data.foreign_id).toBeDefined();
               expect(data.member_tags).toBeDefined();
+              expect(apiCall.isDone()).toEqual(true);
 
               done();
             });
