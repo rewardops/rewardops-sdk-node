@@ -65,7 +65,7 @@ describe('v5', () => {
               done();
             });
         });
-      }, 20000); // sometimes the pii server takes time to respond
+      });
     });
   });
 });
