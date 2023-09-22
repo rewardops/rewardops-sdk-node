@@ -140,6 +140,25 @@ declare module '@rewardops/sdk-node' {
     };
   };
 
+  enum Segment {
+    status = 'status',
+    nonStatus = 'non_status'
+  }
+
+  interface GenericRegisterMemberTagsParams {
+    foreign_id: string;
+    member_tags: string;
+    segment: Segment;
+  }
+
+  interface RegisterMemberTagsParams extends GenericRegisterMemberTagsParams {
+    program_code: string;
+  }
+
+  interface RegisterMemberTagsResponse extends GenericRegisterMemberTagsParams {
+    id: string;
+  }
+
   interface Program {
     details: any;
     items: {
@@ -201,6 +220,9 @@ declare module '@rewardops/sdk-node' {
     coupons: {
       postValidate: (params: PostValidateParams, callback: RequestCallback) => PostValidateResponse;
     };
+    personalization: {
+      registerMemberTags: (member: RegisterMemberTagsParams) => RegisterMemberTagsResponse;
+    }
   }
 
   const program = (id: number, code?: string) => ({} as Program);
