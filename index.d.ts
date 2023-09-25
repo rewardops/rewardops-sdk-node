@@ -221,7 +221,7 @@ declare module '@rewardops/sdk-node' {
       postValidate: (params: PostValidateParams, callback: RequestCallback) => PostValidateResponse;
     };
     personalization: {
-      registerMemberTags: (member: RegisterMemberTagsParams) => RegisterMemberTagsResponse;
+      registerMemberTags: (member: RegisterMemberTagsParams, callback: RequestCallback) => RegisterMemberTagsResponse;
     }
   }
 
