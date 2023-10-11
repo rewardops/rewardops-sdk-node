@@ -48,14 +48,15 @@ describe('v5', () => {
           });
 
         return new Promise(done => {
-          program.personalization
-            .registerMemberTags({
+          program.personalization.registerMemberTags(
+            {
               foreign_id: '114215767',
               segment: 'status',
               member_tags: 'stb,ubr',
               program_code: programCode,
-            })
-            .then(data => {
+            },
+            (err, _, data) => {
+              expect(err).toBe(undefined);
               expect(typeof data).toBe('object');
               expect(data.id).toBeDefined(); // id is memberUUID
               expect(data.foreign_id).toBeDefined();
@@ -63,7 +64,8 @@ describe('v5', () => {
               expect(apiCall.isDone()).toEqual(true);
 
               done();
-            });
+            }
+          );
         });
       });
     });
