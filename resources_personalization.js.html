@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> resources/programs.js</title>
+  <title> resources/personalization.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>resources/programs.js</h1>
+                    <h1>resources/personalization.js</h1>
                 </header>
                 
 
@@ -86,87 +86,52 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Programs resources
+ * Personalization resources
  *
- * @module resources/programs
- * @copyright 2015–2020 RewardOps Inc.
+ * @module resources/order-recipients
+ * @copyright 2015–2023 RewardOps Inc.
  */
+const axios = require('axios');
 
-const items = require('./items');
-const customCategories = require('./custom-categories');
-const rewards = require('./rewards');
-const { contextInstance, contextType } = require('../context');
-const { coupons } = require('./coupons');
-const Personalization = require('./personalization');
+const config = require('../config');
+const { setPiiToken } = require('../utils/axios-helpers');
+const { log } = require('../utils/logger');
+
+const piiServerClient = axios.create();
 
 /**
- * A program-specific context type object with `getAll` and `get` methods.
  *
- * NOTE: Response may be paginated if you have many programs.
- *
- * @type {object}
- *
- * @example
- * // Get a list of all programs available to you.
- * RO.programs.getAll((error, responseBody, response) => {
- *   if (error) {
- *     console.log(error);
- *   } else {
- *     console.log(result);
- *   }
- * });
- *
- * @see {@link module:context} for more information.
+ * @param {string} programCode pangea program code
+ * @returns {*} registerMemberTags function
  */
-const programs = contextType('programs');
-
-/**
- * Get details of a program.
- *
- * The program object has methods for accessing the program's rewards and orders.
- *
- * @param {number} id The ID of a program
- * @param {string} code v5 uses `program_code` instead of `program_id`
- *
- * @returns {object} A program object for the program with the given ID
- *
- * @example
- * // Get details for program 123
- * const myProgram = RO.program(123);
- * myProgram.details((error, responseBody, response) => {
- *   if (error) {
- *     console.log(error);
- *   } else {
- *     console.log(result);
- *   }
- * });
- */
-const program = (id, code) => {
-  if (typeof id !== 'number') {
-    return Error('Program ID must be a number');
-  }
-
+function Personalization(programCode) {
   /**
-   * An alias of `programs.get(id)`.
    *
-   * @param {module:api~requestCallback} callback Callback that handles the response.
+   * @param {*} member consists of foreign_id, segment, member_tags, program_code
+   * @param callback callback function which will be called from client once done
+   * @returns {void}
    */
-  const getProgramDetails = callback => {
-    programs.get(id, callback);
+  const registerMemberTags = async (member, callback) => {
+    try {
+      await setPiiToken(piiServerClient);
+      const url = `${config.get('piiServerUrl')}/api/v5/programs/${programCode}/members`;
+
+      log('Request: POST {url}\nPayload: {member}', { data: { url, member } });
+
+      const {
+        data: { result },
+      } = await piiServerClient.post(url, member);
+      callback(undefined, undefined, result);
+    } catch (error) {
+      log('API Error: {error}', { level: 'error', data: { error } });
+      callback(error, undefined, undefined);
+    }
   };
 
-  return {
-    details: getProgramDetails,
-    items: items(id),
-    customCategories: customCategories(id),
-    rewards: rewards(id),
-    coupons,
-    personalization: Personalization(code),
-    ...contextInstance('programs', id, code),
-  };
-};
+  return { registerMemberTags };
+}
 
-module.exports = { program, programs };
+module.exports = Personalization;
 </code></pre>
         </article>
     </section>

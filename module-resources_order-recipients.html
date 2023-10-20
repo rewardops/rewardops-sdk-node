@@ -88,6 +88,8 @@
         
             
         
+            
+        
     
 </header>
 
@@ -153,6 +155,87 @@
             <a href="resources_order-recipients.js.html" class="button">View Source</a>
             <span>
                 <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2023 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_personalization.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_personalization.js.html">resources/personalization.js</a>, <a href="resources_personalization.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -786,6 +869,2490 @@ stores geographic-specific PII information.</p></div>
         <label>Type: </label>
         
 <code class="param-type"><a href="module-resources_orders.html#~OrderRecipients">module:resources/orders~OrderRecipients</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~Personalization">
+        <a class="href-link" href="#~Personalization">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                Personalization<span class="signature">(programCode)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_personalization.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_personalization.js.html">resources/personalization.js</a>, <a href="resources_personalization.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>registerMemberTags function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~storeOrderRecipient">
+        <a class="href-link" href="#~storeOrderRecipient">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                storeOrderRecipient<span class="signature">(v5OrderContext)</span><span class="type-signature"> &rarr; {<a href="module-resources_order-recipients.html#~StoreOrderRecipientFunc">module:resources/order-recipients~StoreOrderRecipientFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for creating an order recipient in context.</p>
+<p>NOTE: This is a v5 API endpoint, therefore ignores the <code>apiVersion</code> <a href="module-config.html#~DefaultConfig"><code>Config</code></a>
+property.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>v5OrderContext</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="module-resources_order-recipients.html#~V5OrderContext">module:resources/order-recipients~V5OrderContext</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Order context object</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_order-recipients.html#~StoreOrderRecipientFunc"><code>module:resources/order-recipients~StoreOrderRecipientFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line75">line 75</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p><code>create</code> order function in context</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_order-recipients.html#~StoreOrderRecipientFunc">module:resources/order-recipients~StoreOrderRecipientFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="~AddressModelSchema">
+    <a class="href-link" href="#~AddressModelSchema">#</a>
+    
+    <span class="code-name">
+        AddressModelSchema
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>RewardOps Address model schema</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>address</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Street address</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>address_2</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Street address - 2</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>city</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>City</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>country_code</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Country code - ISO 3166-1 alpha-2</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>country_subregion_code</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Country subdivision code - ISO 3166-2 alpha-2 (State/Province)</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>postal_code</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Postal code (ZIP code)</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line263">line 263</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~CreateOrderWithPiiStorageFunc">
+    <a class="href-link" href="#~CreateOrderWithPiiStorageFunc">#</a>
+    
+    <span class="code-name">
+        CreateOrderWithPiiStorageFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Create order function that makes a call to store geographic-specific PII information, then
+creates a new order along with the order recipient code generated from the first call.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line126">line 126</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Create new order for a program that has geographic-specific PII storage enabled.
+// NOTE: Notice the second `'example_program_code'` argument on the `RO.program` method.
+const program = RO.program(12, 'example_program_code');
+program.order.create(
+  {
+    reward_id: 45231,
+    member: {
+      id: 'jb0987',
+      full_name: 'Jolanta Banicki',
+      email: 'jolanta.b@example.com',
+    },
+  },
+  (error, responseBody, response) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(result);
+    }
+  }
+);</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~GetOrderRecipientFunc">
+    <a class="href-link" href="#~GetOrderRecipientFunc">#</a>
+    
+    <span class="code-name">
+        GetOrderRecipientFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Fetch order recipient function.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>orderRecipientCode</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Order recipient code (e.g., from a
+<a href="module-resources_orders.html#~GetSummaryFunc"><code>GetSummaryFunc</code></a> payload).</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>callback</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Callback that handles the response.</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line185">line 185</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Used in the context of a program
+const orderRecipient = ro.program(12, 'example_program_code').getOrderRecipient(
+  'poiuytr123456',
+  (undefined, responseBody, response) => {
+    console.log(result);
+  });</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~MemberPiiRequestBody">
+    <a class="href-link" href="#~MemberPiiRequestBody">#</a>
+    
+    <span class="code-name">
+        MemberPiiRequestBody
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Request body payload for Member PII information.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>id</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Member ID</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>accept_language</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>The member's preferred locale, in the format of Accept-Language
+as per RFC2616; e.g. <code>en-CA</code>, <code>en-US</code></p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>gift</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Is the order a gift?</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>full_name</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Full name</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>ip_address</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>IP address</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>email</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Email address</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>phone</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Phone number</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>address</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-resources_order-recipients.html#~AddressModelSchema">module:resources/order-recipients~AddressModelSchema</a></code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Address</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line247">line 247</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~StoreOrderRecipientFunc">
+    <a class="href-link" href="#~StoreOrderRecipientFunc">#</a>
+    
+    <span class="code-name">
+        StoreOrderRecipientFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Store order recipient function that makes a call to store data for geographic-specific
+PII storage-enabled programs.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>member</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-resources_order-recipients.html#~MemberPiiRequestBody">module:resources/order-recipients~MemberPiiRequestBody</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Member PII information</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line96">line 96</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~V5OrderContext">
+    <a class="href-link" href="#~V5OrderContext">#</a>
+    
+    <span class="code-name">
+        V5OrderContext
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Order options object</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>contextTypeName</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The type of the parent context ('programs')</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>contextId</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">number</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The ID of the order's parent program</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>programCode</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The Code of the order's parent program</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line276">line 276</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Personalization resources</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2023 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_personalization.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_personalization.js.html">resources/personalization.js</a>, <a href="resources_personalization.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~createOrderWithPiiStorage">
+        <a class="href-link" href="#~createOrderWithPiiStorage">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                createOrderWithPiiStorage<span class="signature">(orderContext)</span><span class="type-signature"> &rarr; {<a href="module-resources_order-recipients.html#~CreateOrderWithPiiStorageFunc">module:resources/order-recipients~CreateOrderWithPiiStorageFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for creating an order that first stores geographic-specific PII information, in context.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>orderContext</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="module-resources_order-recipients.html#~V5OrderContext">module:resources/order-recipients~V5OrderContext</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Order context object</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_order-recipients.html#~CreateOrderWithPiiStorageFunc"><code>module:resources/order-recipients~CreateOrderWithPiiStorageFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line117">line 117</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Create an order function that also
+stores geographic-specific PII information.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_order-recipients.html#~CreateOrderWithPiiStorageFunc">module:resources/order-recipients~CreateOrderWithPiiStorageFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getOrderRecipient">
+        <a class="href-link" href="#~getOrderRecipient">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getOrderRecipient<span class="signature">(v5OrderContext)</span><span class="type-signature"> &rarr; {<a href="module-resources_order-recipients.html#~GetOrderRecipientFunc">module:resources/order-recipients~GetOrderRecipientFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for fetching an order recipient in context.</p>
+<p>NOTE: This is a v5 API endpoint, therefore ignores the <code>apiVersion</code> config prop</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>v5OrderContext</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="module-resources_order-recipients.html#~V5OrderContext">module:resources/order-recipients~V5OrderContext</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Order context object</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_order-recipients.html#~GetOrderRecipientFunc"><code>module:resources/order-recipients~GetOrderRecipientFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line170">line 170</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p><code>create</code> order function in context</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_order-recipients.html#~GetOrderRecipientFunc">module:resources/order-recipients~GetOrderRecipientFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~orderRecipientFactory">
+        <a class="href-link" href="#~orderRecipientFactory">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                orderRecipientFactory<span class="signature">(contextTypeName, contextId, programCode)</span><span class="type-signature"> &rarr; {<a href="module-resources_orders.html#~OrderRecipients">module:resources/orders~OrderRecipients</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Factory for creating <code>orderRecipients</code> methods.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>contextTypeName</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The type of the parent context ('programs')</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>contextId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the order's parent program</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The Code of the order's parent program</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_order-recipients.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_order-recipients.js.html">resources/order-recipients.js</a>, <a href="resources_order-recipients.js.html#line214">line 214</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Orders object</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_orders.html#~OrderRecipients">module:resources/orders~OrderRecipients</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~Personalization">
+        <a class="href-link" href="#~Personalization">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                Personalization<span class="signature">(programCode)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_personalization.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_personalization.js.html">resources/personalization.js</a>, <a href="resources_personalization.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>registerMemberTags function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
 
 
     </div>
