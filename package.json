@@ -1,6 +1,6 @@
 {
   "name": "@rewardops/sdk-node",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Node.js SDK for the RewardOps API",
   "keywords": [
     "RewardOps",
