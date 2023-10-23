@@ -7,10 +7,10 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Jest: personalization.test",
+      "name": "Jest: members.test",
       //"env": { "NODE_ENV": "test" },
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": ["personalization.test", "--config", "jest.config.js"],
+      "args": ["members.test", "--config", "jest.config.js"],
       "console": "integratedTerminal",
       "windows": {
         "program": "${workspaceFolder}/node_modules/jest/bin/jest"
