@@ -220,6 +220,7 @@ declare module '@rewardops/sdk-node' {
     coupons: {
       postValidate: (params: PostValidateParams, callback: RequestCallback) => PostValidateResponse;
     };
+    members: (memberUUID: string) => any;
     personalization: {
       registerMemberTags: (member: RegisterMemberTagsParams, callback: RequestCallback) => RegisterMemberTagsResponse;
     }
