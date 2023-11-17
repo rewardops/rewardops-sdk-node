@@ -94,14 +94,12 @@ describe('v5', () => {
       });
 
       describe('#removeItem()', () => {
-        const itemOrderCode = '0ca2cf32-59e8-473d-97ff-afc4e2670e37';
-
         const apiCall = nock(RO.urls.getApiBaseUrl(), {
           reqHeaders: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         })
-          .delete(`/programs/${programCode}/members/${memberUUID}/favourites/${itemOrderCode}`)
+          .delete(`/programs/${programCode}/members/${memberUUID}/favourites`)
           .reply(200, {
             status: 'OK',
             result: [
@@ -115,14 +113,19 @@ describe('v5', () => {
         describe('Mark a retailer as unfavourite successfully', () => {
           it('should remove a retailer from the favourite list', () => {
             return new Promise(done => {
-              program.members(memberUUID).favourites.removeItem(itemOrderCode, (error, data) => {
-                expect(error).toBeNull();
-                expect(typeof data).toBe('object');
-                expect(Array.isArray(data)).toBe(true);
-                expect(apiCall.isDone()).toEqual(true);
+              program.members(memberUUID).favourites.removeItem(
+                {
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
+                },
+                (error, data) => {
+                  expect(error).toBeNull();
+                  expect(typeof data).toBe('object');
+                  expect(Array.isArray(data)).toBe(true);
+                  expect(apiCall.isDone()).toEqual(true);
 
-                done();
-              });
+                  done();
+                }
+              );
             });
           });
         });
@@ -187,7 +190,7 @@ describe('v5', () => {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
           })
-            .delete(`/programs/${programCode}/members/${memberUUID}/wishlist/${itemOrderToken}`)
+            .delete(`/programs/${programCode}/members/${memberUUID}/wishlist`)
             .reply(200, {
               status: 'OK',
               result: [
