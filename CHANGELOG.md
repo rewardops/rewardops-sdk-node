@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.2](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.1...v2.7.2) (2023-11-21)
+
 ### [2.7.1](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.0...v2.7.1) (2023-10-20)
 
 ### Bug Fixes
