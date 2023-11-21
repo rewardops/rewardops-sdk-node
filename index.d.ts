@@ -159,6 +159,10 @@ declare module '@rewardops/sdk-node' {
     id: string;
   }
 
+  interface SubsegmentsParams {
+    member_tags: string;
+  }
+
   interface Program {
     details: any;
     items: {
@@ -222,6 +226,9 @@ declare module '@rewardops/sdk-node' {
     };
     personalization: {
       registerMemberTags: (member: RegisterMemberTagsParams, callback: RequestCallback) => RegisterMemberTagsResponse;
+    },
+    subsegments: {
+      getAll: (params: SubsegmentsParams, callback: RequestCallback) => void;
     }
   }
 
