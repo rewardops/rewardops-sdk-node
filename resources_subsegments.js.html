@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> resources/personalization.js</title>
+  <title> resources/subsegments.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>resources/personalization.js</h1>
+                    <h1>resources/subsegments.js</h1>
                 </header>
                 
 
@@ -86,52 +86,78 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Personalization resources
+ * Subsegments resources
  *
- * @module resources/order-recipients
+ * @module resources/subsegments
  * @copyright 2015–2023 RewardOps Inc.
  */
-const axios = require('axios');
 
+const { isEmpty } = require('lodash');
 const config = require('../config');
-const { setPiiToken } = require('../utils/axios-helpers');
-const { log } = require('../utils/logger');
+const api = require('../api');
 
-const piiServerClient = axios.create();
+/**
+ *
+ */
+function apiConfig() {
+  return {
+    ...config.getAll(),
+    apiVersion: 'v5',
+  };
+}
+
+/**
+ * @param path
+ * @param params
+ */
+function requestOptions(path, params = undefined) {
+  const options = {
+    path,
+    config: apiConfig(),
+  };
+
+  if (!isEmpty(params)) {
+    options.params = params;
+  }
+
+  return options;
+}
+
+const getSubsegments = programCode => {
+  return function getAll(params, callback) {
+    const options = requestOptions(`/programs/${programCode}/subsegments`);
+
+    /*
+     * If called with two arguments,
+     * set options.params to the first
+     * argument (`params`).
+     *
+     * Otherwise (i.e., called with just
+     * one argument), set the callback as
+     * the argument.
+     */
+    if (arguments.length === 2) {
+      options.params = params;
+    } else {
+      options.params = {};
+      callback = params;
+    }
+
+    api.get(options, callback);
+  };
+};
 
 /**
  *
  * @param {string} programCode pangea program code
- * @returns {*} registerMemberTags function
+ * @returns {*} subsegmentsFactory object
  */
-function Personalization(programCode) {
-  /**
-   *
-   * @param {*} member consists of foreign_id, segment, member_tags, program_code
-   * @param callback callback function which will be called from client once done
-   * @returns {void}
-   */
-  const registerMemberTags = async (member, callback) => {
-    try {
-      await setPiiToken(piiServerClient);
-      const url = `${config.get('piiServerUrl')}/api/v5/programs/${programCode}/members`;
+const subsegmentsFactory = programCode => ({
+  programCode,
+  getAll: getSubsegments(programCode),
+});
 
-      log('Request: POST {url}\nPayload: {member}', { data: { url, member } });
-
-      const {
-        data: { result },
-      } = await piiServerClient.post(url, member);
-      callback(undefined, undefined, result);
-    } catch (error) {
-      log('API Error: {error}', { level: 'error', data: { error } });
-      callback(error, undefined, undefined);
-    }
-  };
-
-  return { registerMemberTags };
-}
-
-module.exports = Personalization;
+module.exports = subsegmentsFactory;
 </code></pre>
         </article>
     </section>
