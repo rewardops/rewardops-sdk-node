@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> resources/custom-categories</title>
+  <title> resources/members</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>resources/custom-categories</h1>
+                    <h1>resources/members</h1>
                 </header>
                 
 
@@ -95,7 +95,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Custom categories resources</p></div>
+            <div class="description"><p>Favourites(retaillers) resources</p></div>
         
 
         
@@ -136,7 +136,7 @@
 
     
     <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2023 RewardOps Inc.</li></ul></dd>
     
 
     
@@ -150,9 +150,9 @@
 
     
         <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
+            <a href="resources_members.js.html" class="button">View Source</a>
             <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line1">line 1</a>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -206,193 +206,8 @@
 
 
     
-    <h4 class="name" id="~customCategories">
-        <a class="href-link" href="#~customCategories">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                customCategories<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_custom-categories.html#~CustomCategories">module:resources/custom-categories~CustomCategories</a>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Factory for categories objects.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>programId</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">number</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>The ID of the category's parent program</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
-            <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line157">line 157</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>Returns Custom categories object.</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type"><a href="module-resources_custom-categories.html#~CustomCategories">module:resources/custom-categories~CustomCategories</a></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-    <h5>Example</h5>
-    
-    
-        <pre class="prettyprint"><code>// Returns a custom categories object for the program with ID 55
-var categories = ro.program(756).customCategories;</code></pre>
-    
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~getAllProgramCustomCategories">
-        <a class="href-link" href="#~getAllProgramCustomCategories">#</a>
+    <h4 class="name" id="~addToFavourites">
+        <a class="href-link" href="#~addToFavourites">#</a>
         
             
                 <span class='tag'>protected</span>
@@ -402,17 +217,13 @@ var categories = ro.program(756).customCategories;</code></pre>
         
         <span class="code-name">
             
-                getAllProgramCustomCategories<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_custom-categories.html#~GetAllFunc">module:resources/custom-categories~GetAllFunc</a>}</span>
+                addToFavourites<span class="signature">(programCode, memberUUID)</span><span class="type-signature"> &rarr; {*}</span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        <p>Higher order function for creating a <code>getAll</code> program custom categories function.</p>
-    </div>
     
 
 
@@ -449,779 +260,57 @@ var categories = ro.program(756).customCategories;</code></pre>
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>programId</code></td>
+      <td class="name"><code>programCode</code></td>
   
 
   <td class="type">
   
       
-<code class="param-type">number</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>The ID of the custom category's parent program</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-resources_custom-categories.html#~GetAllFunc"><code>module:resources/custom-categories~GetAllFunc</code></a> for examples.</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
-            <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line22">line 22</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>Returns <code>getAll</code> program custom categories function.</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type"><a href="module-resources_custom-categories.html#~GetAllFunc">module:resources/custom-categories~GetAllFunc</a></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~getProgramCustomCategory">
-        <a class="href-link" href="#~getProgramCustomCategory">#</a>
-        
-            
-                <span class='tag'>protected</span>
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                getProgramCustomCategory<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_custom-categories.html#~GetFunc">module:resources/custom-categories~GetFunc</a>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Higher order function for creating a <code>get</code> program custom categories function.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>programId</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">number</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>The ID of the custom category's parent program</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-resources_custom-categories.html#~GetFunc"><code>module:resources/custom-categories~GetFunc</code></a> for examples.</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
-            <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line75">line 75</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>Returns <code>get</code> program custom categories function.</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type"><a href="module-resources_custom-categories.html#~GetFunc">module:resources/custom-categories~GetFunc</a></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Type Definitions</h1>
-            <div class="members">
-            
-                <div class="member">
-
-<h4 class="name" id="~CustomCategories">
-    <a class="href-link" href="#~CustomCategories">#</a>
-    
-    <span class="code-name">
-        CustomCategories
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Custom categories object.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>programId</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type">number</code>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>The ID of the category's parent program</p></td>
-</tr>
-
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>get</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type"><a href="module-resources_custom-categories.html#~GetFunc">module:resources/custom-categories~GetFunc</a></code>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Get custom category function</p></td>
-</tr>
-
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>getAll</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type"><a href="module-resources_custom-categories.html#~GetAllFunc">module:resources/custom-categories~GetAllFunc</a></code>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Get all custom categories function</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
-            <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line163">line 163</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-<h4 class="name" id="~GetAllFunc">
-    <a class="href-link" href="#~GetAllFunc">#</a>
-    
-    <span class="code-name">
-        GetAllFunc
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Function for getting an array of customCategory JSON objects.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-            <th>Attributes</th>
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>params</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type">object</code>
-
-
-    
-    </td>
-
-    
-        <td class="attributes">
-        
-            &lt;optional><br>
-        
-
-        
-        </td>
-    
-
-    
-
-    <td class="description last"><p><a href="https://github.com/request/request">Request</a> params to pass to the API call</p></td>
-</tr>
-
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>callback</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
-
-
-    
-    </td>
-
-    
-        <td class="attributes">
-        
-
-        
-        </td>
-    
-
-    
-
-    <td class="description last"><p>Callback that handles the response</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
-            <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line49">line 49</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    
-        <pre class="prettyprint"><code>// Gets an array of customCategory objects the program with id 12
-ro.program(12).customCategories.getAll((error, data) => {
-  // ...
-});</code></pre>
-    
-
-
-</div>
-            
-                <div class="member">
-
-<h4 class="name" id="~GetFunc">
-    <a class="href-link" href="#~GetFunc">#</a>
-    
-    <span class="code-name">
-        GetFunc
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    <p>Function for getting a customCategory JSON object.</p>
-</div>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>code</code></td>
-    
-
-    <td class="type">
-    
-        
 <code class="param-type">string</code>
 
 
-    
-    </td>
+  
+  </td>
 
-    
+  
 
-    
+  
 
-    <td class="description last"><p>Custom category code</p></td>
+  <td class="description last"><p>pangea program code</p></td>
 </tr>
 
+
         
+
             
 <tr class="deep-level-0">
-    
-        <td class="name"><code>params</code></td>
-    
+  
+      <td class="name"><code>memberUUID</code></td>
+  
 
-    <td class="type">
-    
-        
-<code class="param-type">object</code>
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
 
 
-    
-    </td>
+  
+  </td>
 
-    
+  
 
-    
+  
 
-    <td class="description last"><p><a href="https://github.com/request/request">Request</a> params to pass to the API call</p></td>
+  <td class="description last"><p>PII identificator</p></td>
 </tr>
 
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>callback</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Callback that handles the response</p></td>
-</tr>
 
         
         </tbody>
     </table>
 </div>
+
+
 
 
 
@@ -1258,9 +347,9 @@ ro.program(12).customCategories.getAll((error, data) => {
 
     
         <p class="tag-source">
-            <a href="resources_custom-categories.js.html" class="button">View Source</a>
+            <a href="resources_members.js.html" class="button">View Source</a>
             <span>
-                <a href="resources_custom-categories.js.html">resources/custom-categories.js</a>, <a href="resources_custom-categories.js.html#line126">line 126</a>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line47">line 47</a>
             </span>
         </p>
     
@@ -1270,24 +359,1080 @@ ro.program(12).customCategories.getAll((error, data) => {
 
 
 
-    <h5>Example</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>function</p></div>
     
     
-        <pre class="prettyprint"><code>// Get JSON for the customCategory with code CAT_000002
-ro.program(12).customCategories.get('CAT_000002', (error, responseBody, response) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(result);
-  }
-});</code></pre>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
     
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~addToWishlist">
+        <a class="href-link" href="#~addToWishlist">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                addToWishlist<span class="signature">(programCode, memberUUID)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>memberUUID</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>PII identificator</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line102">line 102</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~apiConfig">
+        <a class="href-link" href="#~apiConfig">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                apiConfig<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~memberFactory">
+        <a class="href-link" href="#~memberFactory">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                memberFactory<span class="signature">(programCode)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line151">line 151</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>memberFactory function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~removeFromFavourites">
+        <a class="href-link" href="#~removeFromFavourites">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                removeFromFavourites<span class="signature">(programCode, memberUUID)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>memberUUID</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>PII identificator</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line82">line 82</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~removeFromWishlist">
+        <a class="href-link" href="#~removeFromWishlist">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                removeFromWishlist<span class="signature">(programCode, memberUUID)</span><span class="type-signature"> &rarr; {*}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>pangea program code</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>memberUUID</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>PII identificator</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line132">line 132</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>function</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">*</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~requestOptions">
+        <a class="href-link" href="#~requestOptions">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                requestOptions<span class="signature">(path, params)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>path</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>params</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_members.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_members.js.html">resources/members.js</a>, <a href="resources_members.js.html#line27">line 27</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </div>
             
             </div>
         </div>
+    
+
     
 
     
