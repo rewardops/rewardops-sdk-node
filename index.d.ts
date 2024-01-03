@@ -235,6 +235,7 @@ declare module '@rewardops/sdk-node' {
       getAll: (params: ItemsParams, callback: RequestCallback) => void;
       get: (id: string, params: BaseParams, callback: RequestCallback) => void;
       getParameters: (params: GetAllParams, callback: RequestCallback) => void;
+      summary: (memberUUID: string, callback: RequestCallback) => void;
     };
   }
 
