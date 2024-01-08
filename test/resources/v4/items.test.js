@@ -25,46 +25,101 @@ describe('v4 RO.program()', () => {
       expect(program.items.programId).toEqual(id);
     });
 
+    it('should pass an array to the callback', () => {
+      return new Promise(done => {
+        nock(RO.urls.getApiBaseUrl(), {
+          reqHeaders: {
+            Authorization: 'Bearer abcd1234itemTime',
+          },
+        })
+          .get('/programs/33/items')
+          .reply(200, {
+            result: [],
+          });
+
+        program.items.getAll((error, data) => {
+          expect(Array.isArray(data)).toBe(true);
+
+          done();
+        });
+      });
+    });
+
     describe('getAll()', () => {
-      it('should pass an array to the callback', () => {
-        return new Promise(done => {
-          nock(RO.urls.getApiBaseUrl(), {
+      describe('when favouriting and wishlisting param is enabled', () => {
+        const apiCallBuilder = reqParams => {
+          return nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
             },
           })
-            .get('/programs/33/items')
+            .get('/programs/12/member_saved_items')
+            .query(reqParams)
             .reply(200, {
               result: [],
             });
+        };
 
-          program.items.getAll((error, data) => {
-            expect(Array.isArray(data)).toBe(true);
+        describe('and favourite_only param is true', () => {
+          it('should make an HTTP get request to /programs/:id/member_saved_items endpoint', () => {
+            return new Promise(done => {
+              const params = { favourites_only: true };
 
-            done();
+              const apiCall = apiCallBuilder(params);
+
+              RO.program(12).items.getAll(params, (error, itemList) => {
+                expect(error).toEqual(null);
+
+                expect(Array.isArray(itemList)).toBe(true);
+                expect(apiCall.isDone()).toEqual(true);
+
+                done();
+              });
+            });
+          });
+        });
+
+        describe('and wishlist_only param is true', () => {
+          it('should make an HTTP get request to /programs/:id/member_saved_items endpoint', () => {
+            return new Promise(done => {
+              const params = { wishlist_only: true };
+
+              const apiCall = apiCallBuilder(params);
+
+              RO.program(12).items.getAll(params, (error, itemList) => {
+                expect(error).toEqual(null);
+
+                expect(Array.isArray(itemList)).toBe(true);
+                expect(apiCall.isDone()).toEqual(true);
+
+                done();
+              });
+            });
           });
         });
       });
 
-      it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
-          const apiCall = nock(RO.urls.getApiBaseUrl(), {
-            reqHeaders: {
-              Authorization: 'Bearer abcd1234itemTime',
-            },
-          })
-            .get('/programs/12/items')
-            .reply(200, {
-              result: [],
+      describe('when favourite_only and wishlist_only params are NOT passed', () => {
+        it('should make an HTTP get request to /programs/:id/items endpoint', () => {
+          return new Promise(done => {
+            const apiCall = nock(RO.urls.getApiBaseUrl(), {
+              reqHeaders: {
+                Authorization: 'Bearer abcd1234itemTime',
+              },
+            })
+              .get('/programs/12/items')
+              .reply(200, {
+                result: [],
+              });
+
+            RO.program(12).items.getAll((error, itemList) => {
+              expect(error).toEqual(null);
+
+              expect(Array.isArray(itemList)).toBe(true);
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
             });
-
-          RO.program(12).items.getAll((error, itemList) => {
-            expect(error).toEqual(null);
-
-            expect(Array.isArray(itemList)).toBe(true);
-            expect(apiCall.isDone()).toEqual(true);
-
-            done();
           });
         });
       });
