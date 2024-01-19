@@ -227,10 +227,16 @@ declare module '@rewardops/sdk-node' {
     members: (memberUUID: string) => any;
     personalization: {
       registerMemberTags: (member: RegisterMemberTagsParams, callback: RequestCallback) => RegisterMemberTagsResponse;
-    },
+    };
     subsegments: {
       getAll: (params: SubsegmentsParams, callback: RequestCallback) => void;
-    }
+    };
+    memberSavedItems: {
+      getAll: (params: ItemsParams, callback: RequestCallback) => void;
+      get: (id: string, params: BaseParams, callback: RequestCallback) => void;
+      getParameters: (params: GetAllParams, callback: RequestCallback) => void;
+      summary: (memberUUID: string, callback: RequestCallback) => void;
+    };
   }
 
   const program = (id: number, code?: string) => ({} as Program);
