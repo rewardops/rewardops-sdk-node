@@ -88,6 +88,8 @@
         
             
         
+            
+        
     
 </header>
 
@@ -153,6 +155,87 @@
             <a href="resources_items.js.html" class="button">View Source</a>
             <span>
                 <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2024 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -333,9 +416,9 @@
 
     
         <p class="tag-source">
-            <a href="resources_items.js.html" class="button">View Source</a>
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
             <span>
-                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line22">line 22</a>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line22">line 22</a>
             </span>
         </p>
     
@@ -764,6 +847,171 @@
 
 
     
+    <h4 class="name" id="~getSavedItemsSummary">
+        <a class="href-link" href="#~getSavedItemsSummary">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getSavedItemsSummary<span class="signature">(programCode)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>string that contains the programCode</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line53">line 53</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>api caller</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
     <h4 class="name" id="~items">
         <a class="href-link" href="#~items">#</a>
         
@@ -922,6 +1170,211 @@
         <label>Type: </label>
         
 <code class="param-type"><a href="module-resources_items.html#~ProgramItems">module:resources/items~ProgramItems</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Returns a items object for the program with ID 55
+const items = ro.program(756).items;</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~memberSavedItems">
+        <a class="href-link" href="#~memberSavedItems">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                memberSavedItems<span class="signature">(programId, code)</span><span class="type-signature"> &rarr; {module:resources/member_saved_items~ProgramItems}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Factory for items objects.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>code</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line79">line 79</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Program items object.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">module:resources/member_saved_items~ProgramItems</code>
 
 
     </div>
@@ -1622,6 +2075,2360 @@ ro.program(12).items.getParameters((error, responseBody, response) => {
             <a href="resources_items.js.html" class="button">View Source</a>
             <span>
                 <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line193">line 193</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~ProgramItems">
+    <a class="href-link" href="#~ProgramItems">#</a>
+    
+    <span class="code-name">
+        ProgramItems
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Program items object.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>programId</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">number</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>getAll</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">module:resources/msmber_saved_items~GetAllFunc</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><code>getAll</code> program items function.</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>summary</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">module:resources/member_saved_items_summary~GetAllSummaryFunc</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line85">line 85</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Member Saved Items resources</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2020 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>2015–2024 RewardOps Inc.</li></ul></dd>
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getAllProgramItems">
+        <a class="href-link" href="#~getAllProgramItems">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getAllProgramItems<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_items.html#~GetAllFunc">module:resources/items~GetAllFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for creating a <code>getAll</code> program items function.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_items.html#~GetAllFunc"><code>module:resources/items~GetAllFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line22">line 22</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Returns <code>getAll</code> program items function.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_items.html#~GetAllFunc">module:resources/items~GetAllFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getProgramItem">
+        <a class="href-link" href="#~getProgramItem">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getProgramItem<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_items.html#~GetFunc">module:resources/items~GetFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for creating a <code>get</code> program item function.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_items.html#~GetFunc"><code>module:resources/items~GetFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line75">line 75</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Returns <code>get</code> program item function.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_items.html#~GetFunc">module:resources/items~GetFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getProgramItemParameters">
+        <a class="href-link" href="#~getProgramItemParameters">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getProgramItemParameters<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_items.html#~GetParametersFunc">module:resources/items~GetParametersFunc</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Higher order function for creating a <code>getParameters</code> program item function.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-resources_items.html#~GetParametersFunc"><code>module:resources/items~GetParametersFunc</code></a> for examples.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line133">line 133</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Returns <code>getParameters</code> program item function.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_items.html#~GetParametersFunc">module:resources/items~GetParametersFunc</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getSavedItemsSummary">
+        <a class="href-link" href="#~getSavedItemsSummary">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getSavedItemsSummary<span class="signature">(programCode)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programCode</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>string that contains the programCode</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line53">line 53</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>api caller</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~items">
+        <a class="href-link" href="#~items">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                items<span class="signature">(programId)</span><span class="type-signature"> &rarr; {<a href="module-resources_items.html#~ProgramItems">module:resources/items~ProgramItems</a>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Factory for items objects.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line186">line 186</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Program items object.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="module-resources_items.html#~ProgramItems">module:resources/items~ProgramItems</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Returns a items object for the program with ID 55
+const items = ro.program(756).items;</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~memberSavedItems">
+        <a class="href-link" href="#~memberSavedItems">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                memberSavedItems<span class="signature">(programId, code)</span><span class="type-signature"> &rarr; {module:resources/member_saved_items~ProgramItems}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Factory for items objects.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>programId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>code</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line79">line 79</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Program items object.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">module:resources/member_saved_items~ProgramItems</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Returns a items object for the program with ID 55
+const items = ro.program(756).items;</code></pre>
+    
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="~GetAllFunc">
+    <a class="href-link" href="#~GetAllFunc">#</a>
+    
+    <span class="code-name">
+        GetAllFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Function for getting an array of item JSON objects.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>params</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">object</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><a href="https://github.com/request/request">Request</a> params to pass to the API call</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>callback</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Callback that handles the response</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line49">line 49</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Gets an array of item detail objects the program with id 12
+ro.program(12).items.getAll((error, responseBody, response) => {
+  // ...
+});</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~GetFunc">
+    <a class="href-link" href="#~GetFunc">#</a>
+    
+    <span class="code-name">
+        GetFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Function for getting a item JSON object.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>itemId</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Program item ID</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>params</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">object</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><a href="https://github.com/request/request">Request</a> params to pass to the API call</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>callback</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Callback that handles the response</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line102">line 102</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Get JSON for the item with ID 938
+ro.program(12).items.get(938, (error, responseBody, response) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(result);
+  }
+});</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~GetParametersFunc">
+    <a class="href-link" href="#~GetParametersFunc">#</a>
+    
+    <span class="code-name">
+        GetParametersFunc
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Function for getting an array of filter parameter JSON objects that are relevant to the program.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>params</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">object</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><a href="https://github.com/request/request">Request</a> params to pass to the API call</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>callback</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-api.html#~requestCallback">module:api~requestCallback</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Callback that handles the response</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line160">line 160</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Gets an array of filter parameter objects for the program with id 12
+ro.program(12).items.getParameters((error, responseBody, response) => {
+  // ...
+});</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~ProgramItems">
+    <a class="href-link" href="#~ProgramItems">#</a>
+    
+    <span class="code-name">
+        ProgramItems
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Program items object.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>programId</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">number</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>get</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-resources_items.html#~GetFunc">module:resources/items~GetFunc</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><code>get</code> program item function.</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>getAll</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type"><a href="module-resources_items.html#~GetAllFunc">module:resources/items~GetAllFunc</a></code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><code>getAll</code> program items function.</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>getParameters</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">function</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Get parameters function</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_items.js.html">resources/items.js</a>, <a href="resources_items.js.html#line193">line 193</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~ProgramItems">
+    <a class="href-link" href="#~ProgramItems">#</a>
+    
+    <span class="code-name">
+        ProgramItems
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Program items object.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>programId</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">number</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The ID of the item's parent program</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>getAll</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">module:resources/msmber_saved_items~GetAllFunc</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p><code>getAll</code> program items function.</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>summary</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">module:resources/member_saved_items_summary~GetAllSummaryFunc</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="resources_member-saved-items.js.html" class="button">View Source</a>
+            <span>
+                <a href="resources_member-saved-items.js.html">resources/member-saved-items.js</a>, <a href="resources_member-saved-items.js.html#line85">line 85</a>
             </span>
         </p>
     
