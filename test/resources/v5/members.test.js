@@ -265,6 +265,81 @@ describe('v5', () => {
           });
         });
       });
+
+      describe('#updateShoppingCart()', () => {
+        const apiCall = nock(RO.urls.getApiBaseUrl(), {
+          reqHeaders: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        })
+          .post(`/programs/${programCode}/members/${memberUUID}/cart/item`)
+          .reply(200, {
+            status: 'OK',
+            result: {
+              status: 'created',
+              items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+                {
+                  siv_id: 1235,
+                  quantity: 1,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+              unavailable_items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+              saved_items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+            },
+          });
+
+        it('should handle a params object without failing', () => {
+          return new Promise(done => {
+            program.members(memberUUID).cart.updateCart(
+              {
+                item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
+                quantity: 1,
+                is_saved_for_later: false,
+                custom_data: {},
+              },
+              (error, data) => {
+                expect(error).toBeNull();
+                expect(typeof data).toBe('object');
+                expect(apiCall.isDone()).toEqual(true);
+
+                done();
+              }
+            );
+          });
+        });
+
+        describe('error handling', () => {
+          it('responds with an error if the request params are empty', async () => {
+            const requestBody = {};
+
+            await program.members(memberUUID).cart.updateCart(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A params object is required'));
+          });
+        });
+      });
     });
   });
 });
