@@ -213,5 +213,58 @@ describe('v5', () => {
         });
       });
     });
+
+    describe('cart', () => {
+      describe('#getShoppingCart()', () => {
+        const apiCall = nock(RO.urls.getApiBaseUrl(), {
+          reqHeaders: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        })
+          .get(`/programs/${programCode}/members/${memberUUID}/cart`)
+          .reply(200, {
+            status: 'OK',
+            result: {
+              status: 'created',
+              items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+              unavailable_items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+              saved_items: [
+                {
+                  siv_id: 1234,
+                  quantity: 2,
+                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  custom_data: {},
+                },
+              ],
+            },
+          });
+
+        it('should get the shopping cart successfully', () => {
+          return new Promise(done => {
+            program.members(memberUUID).cart.getCart((error, data) => {
+              expect(error).toBeNull();
+              expect(typeof data).toBe('object');
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
+            });
+          });
+        });
+      });
+    });
   });
 });
