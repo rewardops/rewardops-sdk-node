@@ -221,7 +221,7 @@ describe('v5', () => {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         })
-          .get(`/programs/${programCode}/members/${memberUUID}/cart`)
+          .get(`/programs/${programCode}/members/${memberUUID}/cart?segment_code=status`)
           .reply(200, {
             status: 'OK',
             result: {
@@ -255,7 +255,7 @@ describe('v5', () => {
 
         it('should get the shopping cart successfully', () => {
           return new Promise(done => {
-            program.members(memberUUID).cart.getCart((error, data) => {
+            program.members(memberUUID).cart.getCart({ segment_code: 'status' }, (error, data) => {
               expect(error).toBeNull();
               expect(typeof data).toBe('object');
               expect(apiCall.isDone()).toEqual(true);
