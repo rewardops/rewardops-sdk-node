@@ -310,7 +310,7 @@ describe('v5', () => {
             },
           });
 
-        it('should handle a params object without failing', () => {
+        it('should update a shopping cart successfully', () => {
           return new Promise(done => {
             program.members(memberUUID).cart.updateCart(
               {
