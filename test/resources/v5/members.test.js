@@ -216,12 +216,16 @@ describe('v5', () => {
 
     describe('cart', () => {
       describe('#getShoppingCart()', () => {
+        const params = {
+          segment_code: 'status',
+        };
         const apiCall = nock(RO.urls.getApiBaseUrl(), {
           reqHeaders: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         })
-          .get(`/programs/${programCode}/members/${memberUUID}/cart?segment_code=status`)
+          .get(`/programs/${programCode}/members/${memberUUID}/cart`)
+          .query(params)
           .reply(200, {
             status: 'OK',
             result: {
@@ -255,7 +259,7 @@ describe('v5', () => {
 
         it('should get the shopping cart successfully', () => {
           return new Promise(done => {
-            program.members(memberUUID).cart.getCart({ segment_code: 'status' }, (error, data) => {
+            program.members(memberUUID).cart.getCart(params, (error, data) => {
               expect(error).toBeNull();
               expect(typeof data).toBe('object');
               expect(apiCall.isDone()).toEqual(true);
