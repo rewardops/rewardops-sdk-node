@@ -268,6 +268,24 @@ describe('v5', () => {
             });
           });
         });
+
+        describe('error handling', () => {
+          it('responds with an error if the request params are empty', async () => {
+            const requestBody = {};
+
+            await program.members(memberUUID).cart.getCart(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A params object is required'));
+          });
+
+          it('responds with an error if the request param is not segment_code', async () => {
+            const requestBody = { segment: 'status' };
+
+            await program.members(memberUUID).cart.getCart(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A segment_code param is required'));
+          });
+        });
       });
 
       describe('#updateShoppingCart()', () => {
