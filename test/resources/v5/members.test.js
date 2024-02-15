@@ -232,28 +232,22 @@ describe('v5', () => {
               status: 'created',
               items: [
                 {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
                   custom_data: {},
                 },
               ],
-              unavailable_items: [
+              available_unsaved_items: [
                 {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
                   custom_data: {},
                 },
               ],
-              saved_items: [
-                {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
-                  custom_data: {},
-                },
-              ],
+              unavailable_items: [],
+              saved_items: [],
             },
           });
 
@@ -301,34 +295,22 @@ describe('v5', () => {
               status: 'created',
               items: [
                 {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
-                  custom_data: {},
-                },
-                {
-                  siv_id: 1235,
+                  siv_id: 272902,
+                  iv_id: 204492,
                   quantity: 1,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
                   custom_data: {},
                 },
               ],
-              unavailable_items: [
+              available_unsaved_items: [
                 {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
                   custom_data: {},
                 },
               ],
-              saved_items: [
-                {
-                  siv_id: 1234,
-                  quantity: 2,
-                  item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108',
-                  custom_data: {},
-                },
-              ],
+              unavailable_items: [],
+              saved_items: [],
             },
           });
 
