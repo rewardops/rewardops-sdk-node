@@ -215,7 +215,7 @@ describe('v5', () => {
     });
 
     describe('cart', () => {
-      describe('#getShoppingCart()', () => {
+      describe('#getShoppingCartSummary()', () => {
         const params = {
           segment_code: 'status',
         };
@@ -253,7 +253,7 @@ describe('v5', () => {
 
         it('should get the shopping cart successfully', () => {
           return new Promise(done => {
-            program.members(memberUUID).cart.getCart(params, (error, data) => {
+            program.members(memberUUID).cart.getSummary(params, (error, data) => {
               expect(error).toBeNull();
               expect(typeof data).toBe('object');
               expect(apiCall.isDone()).toEqual(true);
@@ -267,7 +267,7 @@ describe('v5', () => {
           it('responds with an error if the request params are empty', async () => {
             const requestBody = {};
 
-            await program.members(memberUUID).cart.getCart(requestBody, mockCallBack);
+            await program.members(memberUUID).cart.getSummary(requestBody, mockCallBack);
 
             expect(mockCallBack).toHaveBeenCalledWith(new Error('A params object is required'));
           });
@@ -275,7 +275,7 @@ describe('v5', () => {
           it('responds with an error if the request param is not segment_code', async () => {
             const requestBody = { segment: 'status' };
 
-            await program.members(memberUUID).cart.getCart(requestBody, mockCallBack);
+            await program.members(memberUUID).cart.getSummary(requestBody, mockCallBack);
 
             expect(mockCallBack).toHaveBeenCalledWith(new Error('A segment_code param is required'));
           });
