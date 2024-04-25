@@ -224,7 +224,7 @@ describe('v5', () => {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         })
-          .get(`/programs/${programCode}/members/${memberUUID}/cart`)
+          .get(`/programs/${programCode}/members/${memberUUID}/cart/summary`)
           .query(params)
           .reply(200, {
             status: 'OK',
