@@ -215,7 +215,7 @@ describe('v5', () => {
     });
 
     describe('cart', () => {
-      describe('#getShoppingCartSummary()', () => {
+      describe('#getSummary()', () => {
         const params = {
           segment_code: 'status',
         };
