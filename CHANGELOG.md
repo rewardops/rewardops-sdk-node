@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.3...v2.8.0) (2024-06-05)
+
+### Features
+
+- add getCart to membersFactory ([ebbbc73](https://github.com/rewardops/rewardops-sdk-node/commit/ebbbc737f51d941d492d77d0953f89303f608963))
+- add updateCart to membersFactory ([6e4ecf0](https://github.com/rewardops/rewardops-sdk-node/commit/6e4ecf01740e19ff73fd27dc4065371f548c74d7))
+
+### Bug Fixes
+
+- rename - call /cart/summary instead of /cart (MX-3892) ([282ed99](https://github.com/rewardops/rewardops-sdk-node/commit/282ed9906ae23c9867d26c6da6e82f900624fe66))
+- rename cart endpoint call for phase 1 (MX-3892) ([c8d8a9c](https://github.com/rewardops/rewardops-sdk-node/commit/c8d8a9cbe781c84fe9975274885f5131500c5b73))
+
 ### [2.7.4](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.2...v2.7.4) (2024-01-19)
 
 ### [2.7.3](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.0...v2.7.3) (2023-12-14)
