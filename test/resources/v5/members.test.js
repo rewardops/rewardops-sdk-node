@@ -213,5 +213,137 @@ describe('v5', () => {
         });
       });
     });
+
+    describe('cart', () => {
+      describe('#getSummary()', () => {
+        const params = {
+          segment_code: 'status',
+        };
+        const apiCall = nock(RO.urls.getApiBaseUrl(), {
+          reqHeaders: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        })
+          .get(`/programs/${programCode}/members/${memberUUID}/cart/summary`)
+          .query(params)
+          .reply(200, {
+            status: 'OK',
+            result: {
+              status: 'created',
+              items: [
+                {
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
+                  custom_data: {},
+                },
+              ],
+              available_unsaved_items: [
+                {
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
+                  custom_data: {},
+                },
+              ],
+              unavailable_items: [],
+              saved_items: [],
+            },
+          });
+
+        it('should get the shopping cart successfully', () => {
+          return new Promise(done => {
+            program.members(memberUUID).cart.getSummary(params, (error, data) => {
+              expect(error).toBeNull();
+              expect(typeof data).toBe('object');
+              expect(apiCall.isDone()).toEqual(true);
+
+              done();
+            });
+          });
+        });
+
+        describe('error handling', () => {
+          it('responds with an error if the request params are empty', async () => {
+            const requestBody = {};
+
+            await program.members(memberUUID).cart.getSummary(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A params object is required'));
+          });
+
+          it('responds with an error if the request param is not segment_code', async () => {
+            const requestBody = { segment: 'status' };
+
+            await program.members(memberUUID).cart.getSummary(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A segment_code param is required'));
+          });
+        });
+      });
+
+      describe('#updateShoppingCart()', () => {
+        const apiCall = nock(RO.urls.getApiBaseUrl(), {
+          reqHeaders: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        })
+          .post(`/programs/${programCode}/members/${memberUUID}/cart/item`)
+          .reply(200, {
+            status: 'OK',
+            result: {
+              status: 'created',
+              items: [
+                {
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
+                  custom_data: {},
+                },
+              ],
+              available_unsaved_items: [
+                {
+                  siv_id: 272902,
+                  iv_id: 204492,
+                  quantity: 1,
+                  custom_data: {},
+                },
+              ],
+              unavailable_items: [],
+              saved_items: [],
+            },
+          });
+
+        it('should update a shopping cart successfully', () => {
+          return new Promise(done => {
+            program.members(memberUUID).cart.updateCart(
+              {
+                item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
+                quantity: 1,
+                is_saved_for_later: false,
+                custom_data: {},
+              },
+              (error, data) => {
+                expect(error).toBeNull();
+                expect(typeof data).toBe('object');
+                expect(apiCall.isDone()).toEqual(true);
+
+                done();
+              }
+            );
+          });
+        });
+
+        describe('error handling', () => {
+          it('responds with an error if the request params are empty', async () => {
+            const requestBody = {};
+
+            await program.members(memberUUID).cart.updateCart(requestBody, mockCallBack);
+
+            expect(mockCallBack).toHaveBeenCalledWith(new Error('A params object is required'));
+          });
+        });
+      });
+    });
   });
 });
