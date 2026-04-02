@@ -74,7 +74,6 @@
     "@commitlint/config-conventional": "^16.2.1",
     "@faker-js/faker": "^7.6.0",
     "async": "^2.6.4",
-    "better-docs": "^1.2.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
