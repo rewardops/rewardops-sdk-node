@@ -25,12 +25,9 @@ describe('api', () => {
   it('should pass the request object to the callback', () => {
     jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback(null, 'testToken'));
 
-    nock(RO.urls.getApiBaseUrl())
-      .get('/')
-      .once()
-      .reply(200, { result: 'foo' });
+    nock(RO.urls.getApiBaseUrl()).get('/').once().reply(200, { result: 'foo' });
 
-    return new Promise(done => {
+    return new Promise((done) => {
       RO.api.get(
         {
           path: '/',
@@ -56,12 +53,9 @@ describe('api', () => {
   it('should handle 5XX responses', () => {
     jest.spyOn(auth, 'getToken').mockImplementationOnce((_, callback) => callback(null, 'testToken'));
 
-    nock(RO.urls.getApiBaseUrl())
-      .get('/timeout-error')
-      .once()
-      .reply(504);
+    nock(RO.urls.getApiBaseUrl()).get('/timeout-error').once().reply(504);
 
-    return new Promise(done => {
+    return new Promise((done) => {
       RO.api.get(
         {
           path: '/timeout-error',
@@ -82,7 +76,7 @@ describe('api', () => {
   });
 
   it('should pass an AuthorizationError to the callback when it receives an AuthenticationError from RO.auth.getToken()', () => {
-    return new Promise(done => {
+    return new Promise((done) => {
       const config = {
         clientId: null,
         clientSecret: null,
@@ -106,7 +100,7 @@ describe('api', () => {
   });
 
   it('should check to see if a new token has been received already when the server gives a token error', () => {
-    return new Promise(done => {
+    return new Promise((done) => {
       const expires = new Date();
       const firstToken = 'HeresAToken123456789';
       const secondToken = 'apiTestToken1234';
@@ -117,7 +111,7 @@ describe('api', () => {
           Authorization: `Bearer ${firstToken}`,
         },
       })
-        .filteringRequestBody(body => {
+        .filteringRequestBody((body) => {
           // Change auth.token after the
           // request has been made but before
           // sending the response
@@ -171,7 +165,7 @@ describe('api', () => {
   });
 
   it('should request a new token and retry when the server responds that the attempted token is invalid', () => {
-    return new Promise(done => {
+    return new Promise((done) => {
       const expires = new Date();
       const badToken = 'HeresAToken123456789';
       const goodToken = 'apiTestToken1234';
@@ -254,7 +248,7 @@ describe('api', () => {
     });
 
     it('should make an HTTP GET request to the url provided', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'abcdefg1234567',
           clientSecret: 'abcdefg1234567',
@@ -277,7 +271,7 @@ describe('api', () => {
     });
 
     it('should accept a params property and pass it on to the request() call', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const token = 'ccccvvvv5555';
         const config = { clientId: 'abc', clientSecret: '123' };
         const params = {
@@ -317,7 +311,7 @@ describe('api', () => {
     });
 
     it('should pass a third argument to the callback that is the full JSON body of the API response', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'abcdefg1234567',
           clientSecret: 'abcdefg1234567',

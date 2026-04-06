@@ -45,10 +45,10 @@ async function main() {
   const orderRequestPayload = { ...payloads.requests.createOrderPii, items: [orderItem] };
   await util
     .promisify(program.orders.create)(orderRequestPayload)
-    .then(response => {
+    .then((response) => {
       console.log('response :>> ', JSON.stringify(response, undefined, 2));
     })
-    .catch(error => console.log(JSON.stringify(error, undefined, 2)));
+    .catch((error) => console.log(JSON.stringify(error, undefined, 2)));
 }
 
 main();

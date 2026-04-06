@@ -32,7 +32,7 @@ describe('config', () => {
       mockOptionalConfig = omit(mockConfig(), REQUIRED_PROPS);
     });
 
-    it.each([null, {}])('returns the default if given %p', input => {
+    it.each([null, {}])('returns the default if given %p', (input) => {
       expect(mergeConfig(input)).toEqual(defaultConfig);
     });
 
@@ -40,7 +40,7 @@ describe('config', () => {
       expect(mergeConfig(mockOptionalConfig)).toStrictEqual({ ...defaultConfig, ...mockOptionalConfig });
     });
 
-    it.each(OPTIONAL_PROPS)('omits nil props from the merge so default props values are used', prop => {
+    it.each(OPTIONAL_PROPS)('omits nil props from the merge so default props values are used', (prop) => {
       const input = { ...mockOptionalConfig, [prop]: undefined };
       const expected = { ...defaultConfig, ...mockOptionalConfig, [prop]: defaultConfig[prop] };
       expect(mergeConfig(input)).toStrictEqual(expected);
@@ -52,8 +52,8 @@ describe('config', () => {
       config.init(minimalMockConfig);
 
       const secondInitCall = () => config.init();
-      expect(secondInitCall).toThrowError(SDKError);
-      expect(secondInitCall).toThrowError('Cannot initialize configuration more than once');
+      expect(secondInitCall).toThrow(SDKError);
+      expect(secondInitCall).toThrow('Cannot initialize configuration more than once');
     });
 
     it('freezes the config object following invocation', () => {
@@ -76,7 +76,7 @@ describe('config', () => {
         );
       });
 
-      it.each(REQUIRED_PROPS)('throws an error if `%s` prop not passed', prop => {
+      it.each(REQUIRED_PROPS)('throws an error if `%s` prop not passed', (prop) => {
         const omittedRequiredProp = () => config.init(omit(minimalMockConfig, [prop]));
 
         expect(omittedRequiredProp).toThrow(
@@ -87,19 +87,19 @@ describe('config', () => {
         );
       });
 
-      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is omitted', prop => {
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is omitted', (prop) => {
         const omittedOptionalProp = () => config.init(omit(mockConfig(), [prop]));
-        expect(omittedOptionalProp).not.toThrowError();
+        expect(omittedOptionalProp).not.toThrow();
       });
 
-      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `undefined`', prop => {
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `undefined`', (prop) => {
         const omittedOptionalProp = () => config.init(mockConfig({ [prop]: undefined }));
-        expect(omittedOptionalProp).not.toThrowError();
+        expect(omittedOptionalProp).not.toThrow();
       });
 
-      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `null`', prop => {
+      it.each(OPTIONAL_PROPS)('does not throw an error if optional %s prop is given as `null`', (prop) => {
         const omittedOptionalProp = () => config.init(mockConfig({ [prop]: null }));
-        expect(omittedOptionalProp).not.toThrowError();
+        expect(omittedOptionalProp).not.toThrow();
       });
     });
   });

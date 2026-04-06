@@ -126,7 +126,7 @@ describe('#formatMessage', () => {
     expect(formattedMessage).toEqual(expect.stringContaining(expectedSubstring));
   });
 
-  it.each([100, 'foobar', null, NaN, Infinity, undefined])('should passthrough primitives (%p)', input => {
+  it.each([100, 'foobar', null, NaN, Infinity, undefined])('should passthrough primitives (%p)', (input) => {
     expect(formatMessage(input)).toBe(input);
   });
 });
@@ -163,7 +163,7 @@ describe('#getLogLevel', () => {
 describe('#filterLogData', () => {
   const { filterLogData } = jest.requireActual('../../lib/utils/logger');
 
-  it.each([[], null, undefined, 1, 'foo'])('returns %p since it is not an object', input => {
+  it.each([[], null, undefined, 1, 'foo'])('returns %p since it is not an object', (input) => {
     expect(filterLogData(input)).toBe(input);
   });
 
@@ -240,7 +240,7 @@ describe('#logFormat', () => {
     const formattedLog = logFormat({ level: mockLogLevel, message: mockMessage, timestamp: mockTimestamp });
 
     const EXPECTED_SUBSTRINGS = [LOG_PREFIX, mockTimestamp, mockLogLevel.toUpperCase(), mockMessage];
-    EXPECTED_SUBSTRINGS.forEach(substring => {
+    EXPECTED_SUBSTRINGS.forEach((substring) => {
       expect(formattedLog).toEqual(expect.stringContaining(substring));
     });
   });
@@ -291,7 +291,7 @@ describe('#logFormat', () => {
       `"apiToken": "${REDACTED_MESSAGE}"`,
       `"access_token": "${REDACTED_MESSAGE}"`,
     ];
-    EXPECTED_SUBSTRINGS.forEach(substring => {
+    EXPECTED_SUBSTRINGS.forEach((substring) => {
       expect(formattedLog).toEqual(expect.stringContaining(substring));
     });
   });
@@ -358,7 +358,7 @@ describe('#log', () => {
     log('testLog');
 
     const EXPECTED_SUBSTRINGS = [LOG_PREFIX, 'INFO', `[${expectedDate.toISOString()}]`, 'testLog'];
-    EXPECTED_SUBSTRINGS.forEach(substring => {
+    EXPECTED_SUBSTRINGS.forEach((substring) => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
     });
   });
@@ -367,7 +367,7 @@ describe('#log', () => {
     log('errorLog', { level: 'error' });
 
     const EXPECTED_SUBSTRINGS = [LOG_PREFIX, 'ERROR', `[${expectedDate.toISOString()}]`, 'errorLog'];
-    EXPECTED_SUBSTRINGS.forEach(substring => {
+    EXPECTED_SUBSTRINGS.forEach((substring) => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
     });
   });
@@ -387,7 +387,7 @@ describe('#log', () => {
       `[${expectedDate.toISOString()}]`,
       `${error.message}\n${error.stack}`,
     ];
-    EXPECTED_SUBSTRINGS.forEach(substring => {
+    EXPECTED_SUBSTRINGS.forEach((substring) => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining(substring));
     });
   });
@@ -416,7 +416,7 @@ describe('#log', () => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.not.stringContaining('"foo": "bar"'));
     });
 
-    test.each(['error', 'warn'])('%s message is logged when `quiet` is `true` and `verbose` is `false`', level => {
+    test.each(['error', 'warn'])('%s message is logged when `quiet` is `true` and `verbose` is `false`', (level) => {
       config.init(mockConfig({ verbose: false, quiet: true }));
 
       log('quiet testLog', { level });
@@ -424,15 +424,18 @@ describe('#log', () => {
       expect(mockConsole.log).toHaveBeenCalledWith(expect.stringContaining('testLog'));
     });
 
-    test.each(['info', 'debug'])('%s message is NOT logged when `quiet` is `true` and `verbose` is `false`', level => {
-      config.init(mockConfig({ verbose: false, quiet: true }));
+    test.each(['info', 'debug'])(
+      '%s message is NOT logged when `quiet` is `true` and `verbose` is `false`',
+      (level) => {
+        config.init(mockConfig({ verbose: false, quiet: true }));
 
-      log('quiet testLog', { level });
+        log('quiet testLog', { level });
 
-      expect(mockConsole.log).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
-    });
+        expect(mockConsole.log).not.toHaveBeenCalledWith(expect.stringContaining('testLog'));
+      }
+    );
 
-    test.each(['error', 'warn', 'info', 'debug'])('%s message is NOT logged when `silent` is `true`', level => {
+    test.each(['error', 'warn', 'info', 'debug'])('%s message is NOT logged when `silent` is `true`', (level) => {
       config.init(mockConfig({ silent: true }));
 
       log('silent testLog', { level });

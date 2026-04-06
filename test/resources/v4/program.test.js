@@ -45,7 +45,7 @@ describe('v4 RO.program()', () => {
 
   describe('details()', () => {
     it('should be an alias for ro.programs.get(program.id)', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         // A random integer, per
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
         const id = Math.floor(Math.random() * (1000000 - 1)) + 1;
