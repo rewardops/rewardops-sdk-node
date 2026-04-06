@@ -19,6 +19,6 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
     // JSDoc
-    'jsdoc/tag-lines': ['error', 'any', { noEndLines: true }],
+    'jsdoc/tag-lines': ['error', 'any'],
   },
 };
