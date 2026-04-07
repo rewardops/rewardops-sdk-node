@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['examples/'],
   env: {
     browser: true,
     es6: true,
