@@ -4,6 +4,7 @@ const { getTestAccessToken } = require('./auth-helpers');
 
 /**
  * Minimal mock {@link module:config~DefaultConfig} object.
+ *
  * @private
  */
 const minimalMockConfig = {
@@ -13,6 +14,7 @@ const minimalMockConfig = {
 
 /**
  * Test helper that returns a complete mock config object.
+ *
  * @param {module:config~DefaultConfig} configOverrides Returns a complete config object with overrides and defaults.
  *
  * @returns {module:config~DefaultConfig} Mock config object.
