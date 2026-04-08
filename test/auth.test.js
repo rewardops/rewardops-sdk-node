@@ -26,7 +26,7 @@ describe('RO.auth', () => {
     });
 
     it("should pass an AuthenticationError to the callback when config.clientId isn't present", () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: null,
           clientSecret: 'abcdefg1234567',
@@ -45,7 +45,7 @@ describe('RO.auth', () => {
     });
 
     it("should pass an AuthenticationError to the callback when config.clientSecret isn't present", () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: '1234567abcdefg',
           clientSecret: null,
@@ -64,7 +64,7 @@ describe('RO.auth', () => {
     });
 
     it("should pass an AuthenticationError to the callback when config.clientId and config.clientSecret aren't present", () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: null,
           clientSecret: null,
@@ -83,7 +83,7 @@ describe('RO.auth', () => {
     });
 
     it('should make an HTTP POST request to the correct URL', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: '1234qwer',
           clientSecret: 'gggg6666',
@@ -108,7 +108,7 @@ describe('RO.auth', () => {
     });
 
     it('should send the clientId and clientSecret in the correct header fields', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'clientIdForTestingRequestHeaders',
           clientSecret: 'someFakeValueForHeaderTesting',
@@ -132,7 +132,7 @@ describe('RO.auth', () => {
     });
 
     it('should pass an existing valid token to the callback', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const expires = new Date();
         const testToken = 'thisIsMy5555555Token';
         const config = {
@@ -158,7 +158,7 @@ describe('RO.auth', () => {
     });
 
     it('should set the correct expires Date object', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: '123456',
           clientSecret: '0987654',
@@ -188,7 +188,7 @@ describe('RO.auth', () => {
     });
 
     it('should request a new token from the server if the existing token has expired', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const expires = new Date().setHours(new Date().getHours() - 3);
         const testToken = '5omeTokenWEAKRwaefrwoiejr9032';
         const config = {
@@ -225,7 +225,7 @@ describe('RO.auth', () => {
     });
 
     it('should try to request a new token up to three times on server error', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'clientIdForTestingErrorRetry',
           clientSecret: 'someFakeValueForTestingErrorRetry',
@@ -262,7 +262,7 @@ describe('RO.auth', () => {
     });
 
     it("should pass the server's error message to the callback after three failed attempts", () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'fakeIdForTestingErrorPassing',
           clientSecret: 'someSecretOrAnother',
@@ -293,7 +293,7 @@ describe('RO.auth', () => {
     });
 
     it('should timeout and pass an error to the callback when the server times out', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'asdf0987ghjk',
           clientSecret: 'asdf1234poiu',
@@ -323,7 +323,7 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        RO.auth.getToken(config, error => {
+        RO.auth.getToken(config, (error) => {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toEqual('ETIMEDOUT');
 
@@ -339,7 +339,7 @@ describe('RO.auth', () => {
     });
 
     it('should timeout and pass an error to the callback when there is a socket timeout', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: 'asdf0987ghjk',
           clientSecret: 'asdf1234poiu',
@@ -368,7 +368,7 @@ describe('RO.auth', () => {
 
         RO.auth.token = {};
 
-        RO.auth.getToken(config, error => {
+        RO.auth.getToken(config, (error) => {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toEqual('ESOCKETTIMEDOUT');
 
@@ -384,7 +384,7 @@ describe('RO.auth', () => {
     });
 
     it('should avoid race conditions when multiple calls to getToken() are made when no valid token is present, and pass the same new token to all callbacks', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         // TODO: Test this with a large number of concurrent requests, ex: 100
         //
         // Implementation note:
@@ -468,7 +468,7 @@ describe('RO.auth', () => {
     });
 
     it('should fire a "unlockToken" event on success, passing the new access_token as an argument', () => {
-      return new Promise(done => {
+      return new Promise((done) => {
         const config = {
           clientId: '0987ghjk',
           clientSecret: '1234poiu',

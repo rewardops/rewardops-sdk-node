@@ -20,7 +20,6 @@ const mockOrderRecipientCode = faker.datatype.uuid();
 
 /**
  * This helper simulates middleware that you may use to inject headers into requests e.g. Data Dog
- *
  * @param {object} client Axios instance
  * @param {string} httpMethod Any valid http method e.g. 'post', 'get'
  * @param {object} [headers] Headers to be injected to the request object

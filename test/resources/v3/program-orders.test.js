@@ -30,7 +30,7 @@ describe('v3 RO.program()', () => {
 
     describe('getAll()', () => {
       it('should pass an array to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234programTime',
@@ -53,7 +53,7 @@ describe('v3 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234programTime',
@@ -79,7 +79,7 @@ describe('v3 RO.program()', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const params = {
             page: 7,
             per_page_count: 50,
@@ -109,7 +109,7 @@ describe('v3 RO.program()', () => {
 
     describe('get()', () => {
       it('should pass an object to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234programTime',
@@ -130,7 +130,7 @@ describe('v3 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234programTime',
@@ -156,14 +156,12 @@ describe('v3 RO.program()', () => {
 
     describe('create()', () => {
       it('should fire the callback with an error when a non-number is passed as the reward ID', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const options = {
             reward_id: '131313', // A string, not a number
             member: { id: 'anything' },
           };
-          const scope = nock(RO.urls.getApiBaseUrl())
-            .post('/programs/33/orders', options)
-            .reply(200);
+          const scope = nock(RO.urls.getApiBaseUrl()).post('/programs/33/orders', options).reply(200);
 
           program.orders.create(options, (error, data) => {
             expect(error).toBeInstanceOf(Error);
@@ -179,7 +177,7 @@ describe('v3 RO.program()', () => {
       });
 
       it('should pass an object to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const newOrder = {
             reward_id: 1234,
             member: {
@@ -206,7 +204,7 @@ describe('v3 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const newOrder = {
             reward_id: 1234,
             retail_value: 4,
@@ -245,7 +243,7 @@ describe('v3 RO.program()', () => {
       });
 
       it("should pass an error to the callback when a params object isn't passed", () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const scope = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234programTime',

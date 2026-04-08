@@ -27,7 +27,7 @@ describe('v4 RO.program()', () => {
 
     describe('getAll()', () => {
       it('should pass an array to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -47,7 +47,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -70,7 +70,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const params = {
             page: 7,
             per_page_count: 50,
@@ -100,7 +100,7 @@ describe('v4 RO.program()', () => {
 
     describe('get()', () => {
       it('should pass an object to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -121,7 +121,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -145,7 +145,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const params = {
             member_id: '5432',
           };
@@ -174,7 +174,7 @@ describe('v4 RO.program()', () => {
 
     describe('getParameter()', () => {
       it('should pass an object to the callback', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -195,7 +195,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234itemTime',
@@ -219,7 +219,7 @@ describe('v4 RO.program()', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise(done => {
+        return new Promise((done) => {
           const params = {
             filter: 'CCATEGORY("CAT_TEST_001")',
           };
