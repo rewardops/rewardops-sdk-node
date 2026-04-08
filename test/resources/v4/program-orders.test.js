@@ -16,7 +16,7 @@ describe('RO.program.orders', () => {
     nock.cleanAll();
   });
 
-  describe.each([undefined, faker.internet.url()])('`piiServerUrl` set to %s', (piiServerUrl) => {
+  describe.each([undefined, faker.internet.url()])('`piiServerUrl` set to %s', piiServerUrl => {
     const LOCALE = 'en-CA';
     const programId = faker.datatype.number();
     const programOrdersUrl = `/programs/${programId}/orders`;
@@ -50,7 +50,7 @@ describe('RO.program.orders', () => {
       it.todo('should call the base API URL');
 
       it('should fire the callback with an error when the params object is missing', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.orders.getSummary((error, data) => {
             expect(error).toBeInstanceOf(Error);
             expect(error.message).toEqual('A params object is required');
@@ -63,7 +63,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should pass an object to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = { member_id: 38 };
 
           nock(RO.urls.getApiBaseUrl(), {
@@ -87,7 +87,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = { member_id: 38 };
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
@@ -115,7 +115,7 @@ describe('RO.program.orders', () => {
 
     describe('#getAll', () => {
       it('should pass an array to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
@@ -138,7 +138,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
@@ -164,7 +164,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             page: 7,
             per_page_count: 50,
@@ -194,7 +194,7 @@ describe('RO.program.orders', () => {
 
     describe('#get', () => {
       it('should pass an object to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
@@ -215,7 +215,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: 'Bearer abcd1234rewardTime',
@@ -239,7 +239,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             use_program_order_code: false,
           };
@@ -276,7 +276,7 @@ describe('RO.program.orders', () => {
       if (!piiServerUrl) {
         describe('validation', () => {
           it('should fire the callback with an error when the params object is missing a member object', () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               const params = {
                 items: [{}],
               };
@@ -293,7 +293,7 @@ describe('RO.program.orders', () => {
           });
 
           it('should fire the callback with an error when the params object is missing an items array', () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               const params = {
                 member: { id: 'hoo_ah' },
               };
@@ -310,7 +310,7 @@ describe('RO.program.orders', () => {
           });
 
           it("should pass an error to the callback when a params object isn't passed", () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               RO.program(133000).orders.create((error, result) => {
                 expect(error).toBeInstanceOf(Error);
                 expect(error.message).toEqual('A params object is required');
@@ -324,7 +324,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should pass an object to the callback', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const newOrder = {
               member: {
                 id: faker.datatype.uuid(),
@@ -354,7 +354,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should make an HTTP get request to the correct URL', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const newOrder = {
               member: {
                 id: faker.datatype.uuid(),
@@ -416,7 +416,7 @@ describe('RO.program.orders', () => {
 
       describe('validation', () => {
         it('should fire the callback with an error when no id is passed as the first argument', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const params = {
               payment_status: 'PAID',
               payment_status_notes: 'The user paid, and we thank them for it.',
@@ -436,7 +436,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when no params object is passed', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.orders.update(orderId, (error, data) => {
               expect(error).toBeInstanceOf(Error);
               expect(error.message).toEqual('A params object is required');
@@ -450,7 +450,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should pass an object to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             payment_status: 'PAID',
             payment_status_notes: 'The user paid, and we thank them for it.',
@@ -476,7 +476,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             payment_status: 'PAID',
             payment_status_notes: 'The user paid, and we thank them for it.',
@@ -509,7 +509,7 @@ describe('RO.program.orders', () => {
 
       describe('validation', () => {
         it('should fire the callback with an error when no id is passed as the first argument', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const params = {
               order_item_payment_status: 'PAID',
               status_notes: 'The user paid, and we thank them for it.',
@@ -529,7 +529,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when no params object is passed', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.orders.updateOrderItems(orderId, (error, data) => {
               expect(error).toBeInstanceOf(Error);
               expect(error.message).toEqual('A params object is required');
@@ -543,7 +543,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should pass an object to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             order_item_payment_status: 'PAID',
             status_notes: 'The user paid, and we thank them for it.',
@@ -569,7 +569,7 @@ describe('RO.program.orders', () => {
       });
 
       it('should make an HTTP get request to the correct URL', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const params = {
             order_item_payment_status: 'PAID',
             status_notes: 'The user paid, and we thank them for it.',
@@ -648,7 +648,7 @@ describe('RO.program.orders', () => {
 
       describe('validation', () => {
         it('should fire the callback with an error when the orderId param is missing', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.orders.cancel(undefined, refundReasonDescription, params, (error, data) => {
               expect(error).toBeInstanceOf(Error);
               expect(error.message).toEqual('must pass an orderId to `orders.cancel()`');
@@ -661,7 +661,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when the params is missing', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.orders.cancel(orderId, refundReasonDescription, undefined, (error, data) => {
               expect(error).toBeInstanceOf(Error);
               expect(error.message).toEqual('A params object is required');
@@ -674,7 +674,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when the order_items is missing in params', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             params.order_suppliers[0].order_items = undefined;
             program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
               expect(error).toBeInstanceOf(Error);
@@ -690,7 +690,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when the fulfillment is missing in params', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             params.order_suppliers[0].fulfillment = undefined;
             program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
               expect(error).toBeInstanceOf(Error);
@@ -706,7 +706,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when the supplier_id is missing in params', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             params.order_suppliers[0].supplier_id = undefined;
             program.orders.cancel(orderId, refundReasonDescription, params, (error, data) => {
               expect(error).toBeInstanceOf(Error);
@@ -722,7 +722,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should fire the callback with an error when the param refundReasonDescription is missing', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.orders.cancel(orderId, undefined, params, (error, data) => {
               expect(error).toBeInstanceOf(Error);
               expect(error.message).toEqual('must pass an refundReasonDescription param to `orders.cancel()`');
@@ -735,7 +735,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should pass an object to the callback', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const cancelOrderCall = nock(RO.urls.getApiBaseUrl(), {
               reqHeaders: {
                 Authorization: 'Bearer abcd1234rewardTime',
@@ -757,7 +757,7 @@ describe('RO.program.orders', () => {
         });
 
         it('should make an HTTP get request to the correct URL', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             const apiCall = nock(RO.urls.getApiBaseUrl(), {
               reqHeaders: {
                 Authorization: 'Bearer abcd1234rewardTime',

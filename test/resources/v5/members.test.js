@@ -62,7 +62,7 @@ describe('v5', () => {
 
         describe('Mark a retailer as favourite successfully', () => {
           it('should add new favourite retailer', () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               program.members(memberUUID).favourites.addItem(
                 {
                   item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
@@ -112,7 +112,7 @@ describe('v5', () => {
 
         describe('Mark a retailer as unfavourite successfully', () => {
           it('should remove a retailer from the favourite list', () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               program.members(memberUUID).favourites.removeItem(
                 {
                   item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
@@ -152,7 +152,7 @@ describe('v5', () => {
             });
 
           it('should create a new wishlist item', () => {
-            return new Promise((done) => {
+            return new Promise(done => {
               program.members(memberUUID).wishlist.addItem(
                 {
                   item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',
@@ -201,7 +201,7 @@ describe('v5', () => {
               ],
             });
 
-          return new Promise((done) => {
+          return new Promise(done => {
             program.members(memberUUID).wishlist.removeItem(itemOrderToken, (error, data) => {
               expect(error).toBeNull();
               expect(typeof data).toBe('object');
@@ -252,7 +252,7 @@ describe('v5', () => {
           });
 
         it('should get the shopping cart successfully', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.members(memberUUID).cart.getSummary(params, (error, data) => {
               expect(error).toBeNull();
               expect(typeof data).toBe('object');
@@ -315,7 +315,7 @@ describe('v5', () => {
           });
 
         it('should update a shopping cart successfully', () => {
-          return new Promise((done) => {
+          return new Promise(done => {
             program.members(memberUUID).cart.updateCart(
               {
                 item_order_token: 'bwtb5ngbkz01nnkkxhnvzh7se3fgs108=',

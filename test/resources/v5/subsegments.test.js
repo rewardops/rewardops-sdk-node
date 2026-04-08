@@ -63,7 +63,7 @@ describe('v5', () => {
         });
 
       it('should responds subsegments data', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.subsegments.getAll((error, data) => {
             expect(error).toBeNull();
             expect(typeof data).toBe('object');

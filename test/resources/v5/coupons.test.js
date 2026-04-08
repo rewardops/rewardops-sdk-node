@@ -29,7 +29,7 @@ describe('v5', () => {
 
     describe('postValidate()', () => {
       it('should pass an object to the callback', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -74,7 +74,7 @@ describe('v5', () => {
       });
 
       it('should return the api error (invalid coupon)', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           const errorObject = { error: 'invalidCoupon' };
           const apiCall = nock(RO.urls.getApiBaseUrl(), {
             reqHeaders: {
@@ -94,7 +94,7 @@ describe('v5', () => {
                 items: [],
               },
             },
-            (error) => {
+            error => {
               expect(error).not.toBeNull();
               expect(error.message).toMatchObject(errorObject);
               expect(apiCall.isDone()).toEqual(true);
@@ -106,7 +106,7 @@ describe('v5', () => {
       });
 
       it('should return an error: missing coupon code', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.coupons.postValidate(
             {
               coupon_preflight: {
@@ -116,7 +116,7 @@ describe('v5', () => {
                 items: [],
               },
             },
-            (error) => {
+            error => {
               expect(error.message).toBe(getInputErrorMessage('coupon code', 'string'));
               expect(error).not.toBeNull();
 
@@ -127,7 +127,7 @@ describe('v5', () => {
       });
 
       it('should return an error: missing external member id', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.coupons.postValidate(
             {
               coupon_preflight: {
@@ -137,7 +137,7 @@ describe('v5', () => {
                 items: [],
               },
             },
-            (error) => {
+            error => {
               expect(error.message).toBe(getInputErrorMessage('member id', 'string'));
               expect(error).not.toBeNull();
 
@@ -148,7 +148,7 @@ describe('v5', () => {
       });
 
       it('should return an error: missing owner type', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.coupons.postValidate(
             {
               coupon_preflight: {
@@ -158,7 +158,7 @@ describe('v5', () => {
                 items: [],
               },
             },
-            (error) => {
+            error => {
               expect(error.message).toBe(getInputErrorMessage('owner type', 'string'));
               expect(error).not.toBeNull();
 
@@ -169,7 +169,7 @@ describe('v5', () => {
       });
 
       it('should return an error: missing owner code', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.coupons.postValidate(
             {
               coupon_preflight: {
@@ -179,7 +179,7 @@ describe('v5', () => {
                 items: [],
               },
             },
-            (error) => {
+            error => {
               expect(error.message).toBe(getInputErrorMessage('owner code', 'string'));
               expect(error).not.toBeNull();
 
@@ -190,7 +190,7 @@ describe('v5', () => {
       });
 
       it('should return an error: missing items', () => {
-        return new Promise((done) => {
+        return new Promise(done => {
           program.coupons.postValidate(
             {
               coupon_preflight: {
@@ -200,7 +200,7 @@ describe('v5', () => {
                 external_member_id: '21dasd',
               },
             },
-            (error) => {
+            error => {
               expect(error.message).toBe(getInputErrorMessage('items', 'array'));
               expect(error).not.toBeNull();
 

@@ -23,7 +23,7 @@ describe('v4 RO.programs', () => {
 
   describe('getAll()', () => {
     it('should pass an array to the callback', () => {
-      return new Promise((done) => {
+      return new Promise(done => {
         RO.programs.getAll((error, programList) => {
           expect(error).toEqual(null);
 
@@ -35,10 +35,12 @@ describe('v4 RO.programs', () => {
     });
 
     it('should make an HTTP get request to the correct URL', () => {
-      return new Promise((done) => {
-        const apiCall = nock(`${RO.urls.getApiServerUrl()}/api/v3`).get('/programs').reply(200, {
-          result: [],
-        });
+      return new Promise(done => {
+        const apiCall = nock(`${RO.urls.getApiServerUrl()}/api/v3`)
+          .get('/programs')
+          .reply(200, {
+            result: [],
+          });
 
         RO.programs.getAll((error, programList) => {
           expect(error).toEqual(null);
@@ -52,7 +54,7 @@ describe('v4 RO.programs', () => {
     });
 
     it('should accept an optional params object and pass it on to the RO.api.get() call as query params', () => {
-      return new Promise((done) => {
+      return new Promise(done => {
         const params = {
           page: 7,
           per_page_count: 50,
@@ -82,7 +84,7 @@ describe('v4 RO.programs', () => {
 
   describe('get()', () => {
     it('should pass an object to the callback', () => {
-      return new Promise((done) => {
+      return new Promise(done => {
         const id = 555;
 
         RO.programs.get(id, (error, data) => {
@@ -96,7 +98,7 @@ describe('v4 RO.programs', () => {
     });
 
     it('should make an HTTP get request to the correct URL', () => {
-      return new Promise((done) => {
+      return new Promise(done => {
         const scope = nock(`${RO.urls.getApiServerUrl()}/api/v3`, {
           reqHeaders: {
             Authorization: 'Bearer abcd1234programs',
