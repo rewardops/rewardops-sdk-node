@@ -2,7 +2,7 @@ const async = require('async');
 const nock = require('nock');
 const EventEmitter = require('events');
 const { faker } = require('@faker-js/faker');
-const request = require('request');
+const axios = require('axios');
 
 const { mockConfig } = require('./test-helpers/mock-config');
 const RO = require('..');
@@ -508,26 +508,28 @@ describe('RO.auth', () => {
 
       it('should contain the PII hostname, if it is set in the config', () => {
         const config = mockConfig({ piiServerUrl: mockPiiServerUrl });
-        const requestSpy = jest.spyOn(request, 'post').mockImplementation((_, callback) => callback('testError'));
+        const axiosSpy = jest.spyOn(axios, 'request').mockRejectedValue('testError');
 
         RO.auth.getToken(config, () => {});
 
-        expect(requestSpy).toBeCalledWith(
-          expect.objectContaining({ url: `${mockPiiServerUrl}/api/v5/auth/token` }),
-          expect.any(Function)
+        expect(axiosSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ url: `${mockPiiServerUrl}/api/v5/auth/token` })
         );
+
+        axiosSpy.mockRestore();
       });
 
       it('should contain the API hostname, if `piiServerUrl` is not set in the config', () => {
         const config = mockConfig({ piiServerUrl: null, apiServerUrl: mockApiServerUrl });
-        const requestSpy = jest.spyOn(request, 'post').mockImplementation((_, callback) => callback('testError'));
+        const axiosSpy = jest.spyOn(axios, 'request').mockRejectedValue('testError');
 
         RO.auth.getToken(config, () => {});
 
-        expect(requestSpy).toBeCalledWith(
-          expect.objectContaining({ url: `${mockApiServerUrl}/api/v4/auth/token` }),
-          expect.any(Function)
+        expect(axiosSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ url: `${mockApiServerUrl}/api/v4/auth/token` })
         );
+
+        axiosSpy.mockRestore();
       });
     });
   });
