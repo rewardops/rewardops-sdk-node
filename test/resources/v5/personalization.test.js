@@ -27,9 +27,7 @@ describe('v5', () => {
       it('should register member tags and return member UUID', () => {
         // https://api-qa.ca.rewardops.io/api/v5/auth/token
 
-        nock('https://api-qa.ca.rewardops.io/')
-          .post('/api/v5/auth/token')
-          .reply(200, { token: ACCESS_TOKEN });
+        nock('https://api-qa.ca.rewardops.io/').post('/api/v5/auth/token').reply(200, { token: ACCESS_TOKEN });
 
         const apiCall = nock('https://api-qa.ca.rewardops.io/', {
           reqHeaders: {
@@ -47,7 +45,7 @@ describe('v5', () => {
             },
           });
 
-        return new Promise(done => {
+        return new Promise((done) => {
           program.personalization.registerMemberTags(
             {
               foreign_id: '114215767',

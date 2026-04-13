@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['examples/', 'scripts/'],
   env: {
     browser: true,
     es6: true,
@@ -19,6 +20,6 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
     // JSDoc
-    'jsdoc/tag-lines': ['error', 'any', { noEndLines: true }],
+    'jsdoc/tag-lines': ['error', 'any'],
   },
 };

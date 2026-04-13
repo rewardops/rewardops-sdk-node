@@ -34,21 +34,19 @@ describe('storeOrderRecipientSchema.validate()', () => {
   test('it should not reject an id that is undefined', async () => {
     const params = { id: undefined, accept_language: testLocale };
 
-    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('id is a required field');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrow('id is a required field');
   });
 
   test('it reject if the given locale is not supported', async () => {
     const params = { id: testNumber, accept_language: faker.random.locale() };
 
-    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError('Locale is not supported');
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrow('Locale is not supported');
   });
 
   test('it reject if the given locale is undefined', async () => {
     const params = { id: testNumber, accept_language: undefined };
 
-    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrowError(
-      'accept_language is a required field'
-    );
+    await expect(storeOrderRecipientSchema.validate(params)).rejects.toThrow('accept_language is a required field');
   });
 });
 

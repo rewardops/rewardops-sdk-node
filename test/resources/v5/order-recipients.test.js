@@ -20,7 +20,6 @@ const mockOrderRecipientCode = faker.datatype.uuid();
 
 /**
  * This helper simulates middleware that you may use to inject headers into requests e.g. Data Dog
- *
  * @param {object} client Axios instance
  * @param {string} httpMethod Any valid http method e.g. 'post', 'get'
  * @param {object} [headers] Headers to be injected to the request object
@@ -150,7 +149,7 @@ describe('v5 order-recipients', () => {
 
           await orderRecipient.create({ member }, mockCallBack);
 
-          expect(mockCallBack).toBeCalledWith(testError);
+          expect(mockCallBack).toHaveBeenCalledWith(testError);
         });
 
         it('returns the error to the callback if an error occurs during store order recipient', async () => {
@@ -158,7 +157,9 @@ describe('v5 order-recipients', () => {
 
           await orderRecipient.create({ member }, mockCallBack);
 
-          expect(mockCallBack).toBeCalledWith({ error: expect.objectContaining({ status: 422, data: testError }) });
+          expect(mockCallBack).toHaveBeenCalledWith({
+            error: expect.objectContaining({ status: 422, data: testError }),
+          });
         });
 
         it('returns the error to the callback if an error occurs during order create', async () => {
@@ -170,7 +171,7 @@ describe('v5 order-recipients', () => {
 
           await orderRecipient.create({ member, amount: 100 }, mockCallBack);
 
-          expect(mockCallBack).toBeCalledWith(testError);
+          expect(mockCallBack).toHaveBeenCalledWith(testError);
         });
       });
 
@@ -191,7 +192,7 @@ describe('v5 order-recipients', () => {
           expect(createOrderCall.isDone()).toBe(true);
 
           // NOTE: PII create order should have the same callback signature as orders#create
-          expect(mockCallBack).toBeCalledWith(
+          expect(mockCallBack).toHaveBeenCalledWith(
             null,
             'testData',
             { result: 'testData' },
@@ -207,7 +208,7 @@ describe('v5 order-recipients', () => {
 
           expect(createOrderCall.isDone()).toBe(true);
 
-          expect(mockCallBack).toBeCalledWith(
+          expect(mockCallBack).toHaveBeenCalledWith(
             null,
             'testData',
             { result: 'testData' },
@@ -236,7 +237,7 @@ describe('v5 order-recipients', () => {
 
       await orderRecipient.getOrderRecipient(mockOrderRecipientCode, mockCallBack);
 
-      expect(mockCallBack).toBeCalledWith('testError');
+      expect(mockCallBack).toHaveBeenCalledWith('testError');
     });
 
     describe('Successful GET order recipient', () => {

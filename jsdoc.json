@@ -8,8 +8,7 @@
   "opts": {
     "destination": "docs/",
     "recurse": true,
-    "readme": "README.md",
-    "template": "node_modules/better-docs"
+    "readme": "README.md"
   },
   "templates": {
     "cleverLinks": true

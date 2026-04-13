@@ -142,7 +142,7 @@ declare module '@rewardops/sdk-node' {
 
   enum Segment {
     status = 'status',
-    nonStatus = 'non_status'
+    nonStatus = 'non_status',
   }
 
   interface GenericRegisterMemberTagsParams {
