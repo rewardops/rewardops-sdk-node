@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/rewardops/rewardops-sdk-node/pull/124) (2026-04-10)
+
+### Bug Fixes
+
+- get `npm audit --production` to pass
+- switch from using `request` to using `axios`, as part of getting `npm audit --production` to pass
+
 ## [2.8.0](https://github.com/rewardops/rewardops-sdk-node/compare/v2.7.3...v2.8.0) (2024-06-05)
 
 ### Features
