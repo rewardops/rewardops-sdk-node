@@ -1,84 +1,25 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> api.js</title>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api.js</title>
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="./build/entry.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-  
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 
+<body>
 
+<div id="main">
 
-<body class="layout small-header">
-    <div id="stickyNavbarOverlay"></div>
+    <h1 class="page-title">Source: api.js</h1>
+
     
-
-<div class="top-nav">
-    <div class="inner">
-        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        <div class="logo">
-            
-            
-        </div>
-        <div class="menu">
-            
-            <div class="navigation">
-                <a
-                    href="index.html"
-                    class="link"
-                >
-                    Documentation
-                </a>
-                
-                
-                
-            </div>
-        </div>
-    </div>
-</div>
-    <div id="main">
-        <div
-            class="sidebar "
-            id="sidebarNav"
-        >
-            
-            <nav>
-                
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
-                
-            </nav>
-        </div>
-        <div class="core" id="main-content-wrapper">
-            <div class="content">
-                <header class="page-title">
-                    <p>Source</p>
-                    <h1>api.js</h1>
-                </header>
-                
 
 
 
@@ -87,12 +28,11 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * API
- *
  * @module api
  * @copyright 2015–2020 RewardOps Inc.
  */
 
-const request = require('request');
+const axios = require('axios');
 const { isEmpty } = require('lodash');
 
 const auth = require('./auth');
@@ -102,7 +42,6 @@ const { log } = require('./utils/logger');
 
 /**
  * Generate extended `Error` object with `message`, `status`, and `result` properties.
- *
  * @param {string} message Error message
  * @param {string|number} status HTTP status code
  * @param {object} result API response body
@@ -119,8 +58,24 @@ function getError(message, status, result) {
 }
 
 /**
- * Makes a call to the RewardOps API
+ * Build a request-like object for compatibility with tests and callbacks
+ * @param {object} axiosConfig The axios configuration object
  *
+ * @returns {object} Returns an object with { headers, method, uri } properties
+ * @private
+ */
+function buildRequestObj(axiosConfig) {
+  // Use axios.getUri() to get the final URL with properly serialized params
+  const requestUri = new URL(axios.getUri(axiosConfig));
+  return {
+    headers: axiosConfig.headers,
+    method: axiosConfig.method,
+    uri: requestUri, // URL object for test compatibility
+  };
+}
+
+/**
+ * Makes a call to the RewardOps API
  * @param {string} httpMethod The name of the HTTP method
  * @param {object} options API request options.
  * @param {string} options.path The relative path to the API endpoint.
@@ -144,87 +99,100 @@ function apiCall(httpMethod, options, callback) {
     if (error) {
       callback(error);
     } else {
-      const requestOptions = {
+      log(`Request: ${httpMethod} ${url}`);
+
+      // Convert request options to axios format
+      const axiosConfig = {
         method: httpMethod,
         url,
-        json: true,
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        validateStatus: () => true, // Don't reject on any status code, handle all statuses in .then()
       };
 
-      // Some firewalls strip the body of GET requests.
-      // To get around this, we send the params for GET
-      // requests as query params instead of a JSON body.
+      // Handle query params and body
       if (httpMethod === 'GET' &amp;&amp; options.params) {
-        requestOptions.qs = options.params;
+        axiosConfig.params = options.params;
       } else if (options.params) {
-        requestOptions.body = options.params;
+        axiosConfig.data = options.params;
       }
 
-      log(`Request: ${httpMethod} ${url}`);
+      axios(axiosConfig)
+        .then((response) => {
+          const { status: statusCode, headers, data: responseBody } = response;
+          const meta = {
+            request: axiosConfig,
+            response: {
+              responseBody,
+              statusCode,
+              headers,
+            },
+          };
 
-      // eslint-disable-next-line default-param-last
-      request(requestOptions, (err, { statusCode = 500, headers, request: req } = {}, responseBody) => {
-        const meta = {
-          request: requestOptions,
-          response: {
-            responseBody,
-            statusCode,
-            headers,
-          },
-        };
-        if (err) {
+          // Create a request-like object for compatibility with tests
+          const requestObj = buildRequestObj(axiosConfig);
+
+          if (statusCode === 401) {
+            if (token === auth.token.access_token) {
+              /*
+               * When the server responds to an API call
+               * that the token is invalid, and the token hasn't
+               * since been updated, fire an "invalidateToken"
+               * event, which deletes the existing token.
+               */
+              emitter.emit('invalidateToken');
+            }
+
+            apiCall(httpMethod, options, callback);
+          } else if (responseBody &amp;&amp; responseBody.error) {
+            log('API Error: {responseBody}', { level: 'error', meta, data: { responseBody } });
+
+            error = getError(responseBody.error, statusCode, responseBody.result);
+            callback(error, undefined, undefined, requestObj);
+          } else if (responseBody &amp;&amp; responseBody.result &amp;&amp; responseBody.result.error) {
+            log('API Error: {errorDetails}', {
+              level: 'error',
+              meta,
+              data: { errorDetails: responseBody.result.error.detail },
+            });
+
+            error = getError(responseBody.result.error.detail, statusCode, responseBody.result);
+            callback(error, undefined, undefined, requestObj);
+          } else if (['5', '4'].includes(String(statusCode)[0])) {
+            /**
+             * Handle unexpected errors 5XX or 4XX (i.e. 504: GatewayTimeout)
+             */
+            log(`API Error: Unknown cause, status ${statusCode}`, { level: 'error', meta });
+
+            error = getError(null, statusCode, null);
+            callback(error, undefined, undefined, requestObj);
+          } else {
+            log(`Success: ${statusCode} ${url}`);
+
+            callback(null, responseBody.result, responseBody, requestObj);
+          }
+        })
+        .catch((err) => {
+          const meta = {
+            request: axiosConfig,
+            response: {
+              responseBody: err.response &amp;&amp; err.response.data,
+              statusCode: (err.response &amp;&amp; err.response.status) || 500,
+              headers: err.response &amp;&amp; err.response.headers,
+            },
+          };
           log(err, { meta });
 
-          callback(err, undefined, undefined, req);
-        } else if (statusCode === 401) {
-          if (token === auth.token.access_token) {
-            /*
-             * When the server responds to an API call
-             * that the token is invalid, and the token hasn't
-             * since been updated, fire an "invalidateToken"
-             * event, which deletes the existing token.
-             */
-            emitter.emit('invalidateToken');
-          }
-
-          apiCall(httpMethod, options, callback);
-        } else if (responseBody &amp;&amp; responseBody.error) {
-          log('API Error: {responseBody}', { level: 'error', meta, data: { responseBody } });
-
-          error = getError(responseBody.error, statusCode, responseBody.result);
-          callback(error, undefined, undefined, req);
-        } else if (responseBody &amp;&amp; responseBody.result &amp;&amp; responseBody.result.error) {
-          log('API Error: {errorDetails}', {
-            level: 'error',
-            meta,
-            data: { errorDetails: responseBody.result.error.detail },
-          });
-
-          error = getError(responseBody.result.error.detail, statusCode, responseBody.result);
-          callback(error, undefined, undefined, req);
-        } else if (['5', '4'].includes(String(statusCode)[0])) {
-          /**
-           * Handle unexpected errors 5XX or 4XX (i.e. 504: GatewayTimeout)
-           */
-          log(`API Error: Unknown cause, status ${statusCode}`, { level: 'error', meta });
-
-          error = getError(null, statusCode, null);
-          callback(error, undefined, undefined, req);
-        } else {
-          log(`Success: ${statusCode} ${url}`);
-
-          callback(null, responseBody.result, responseBody, req);
-        }
-      });
+          const requestObj = buildRequestObj(axiosConfig);
+          callback(err, undefined, undefined, requestObj);
+        });
     }
   });
 }
 
 /**
  * Enum for HTTP methods
- *
  * @enum {string}
  * @private
  */
@@ -237,7 +205,6 @@ const HTTP_METHODS = {
 
 /**
  * Container object for API call methods
- *
  * @type {object}
  * @property {module:api~apiCall} get `GET` API call method
  * @property {module:api~apiCall} post `POST` API call method
@@ -250,11 +217,10 @@ const api = {};
 
 /**
  * Higher order function for generating methods on the {@link api} object.
- *
  * @type {object}
  * @private
  */
-const generateApiMethod = httpMethod => (options, callback) => {
+const generateApiMethod = (httpMethod) => (options, callback) => {
   apiCall(httpMethod, options, callback);
 };
 
@@ -262,7 +228,7 @@ const generateApiMethod = httpMethod => (options, callback) => {
  * On module initialization, loop through the HTTP methods to
  * populate the {@link api} object.
  */
-Object.keys(HTTP_METHODS).forEach(httpMethod => {
+Object.keys(HTTP_METHODS).forEach((httpMethod) => {
   api[httpMethod.toLowerCase()] = generateApiMethod(httpMethod);
 });
 
@@ -270,7 +236,6 @@ module.exports = api;
 
 /**
  * Callbacks follow the [Node.js error-first callback pattern]{@link https://nodejs.org/api/errors.html#errors_error_first_callbacks}.
- *
  * @callback module:api~requestCallback
  * @param {(Error|null)} error Either an `Error` object or `null` if there's no error
  * @param {object} responseBody The 'result' object from the API response body
@@ -284,26 +249,19 @@ module.exports = api;
 
 
 
-            </div>
-            
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
-                    <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
-                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
-                    </p>
-                </div>
-            </footer>
-            
-        </div>
-        <div id="side-nav" class="side-nav">
-        </div>
-    </div>
-<script src="scripts/app.min.js"></script>
-<script>PR.prettyPrint();</script>
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Apr 14 2026 15:07:38 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
 <script src="scripts/linenumber.js"> </script>
-
-
 </body>
 </html>

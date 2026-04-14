@@ -1,84 +1,25 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> utils/logger.js</title>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/logger.js</title>
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="./build/entry.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-  
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 
+<body>
 
+<div id="main">
 
-<body class="layout small-header">
-    <div id="stickyNavbarOverlay"></div>
+    <h1 class="page-title">Source: utils/logger.js</h1>
+
     
-
-<div class="top-nav">
-    <div class="inner">
-        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        <div class="logo">
-            
-            
-        </div>
-        <div class="menu">
-            
-            <div class="navigation">
-                <a
-                    href="index.html"
-                    class="link"
-                >
-                    Documentation
-                </a>
-                
-                
-                
-            </div>
-        </div>
-    </div>
-</div>
-    <div id="main">
-        <div
-            class="sidebar "
-            id="sidebarNav"
-        >
-            
-            <nav>
-                
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
-                
-            </nav>
-        </div>
-        <div class="core" id="main-content-wrapper">
-            <div class="content">
-                <header class="page-title">
-                    <p>Source</p>
-                    <h1>utils/logger.js</h1>
-                </header>
-                
 
 
 
@@ -90,7 +31,6 @@
  *
  * we use the winston library to simplify logging
  * see: https://github.com/winstonjs/winston for API docs
- *
  * @module utils/logger
  * @copyright 2015–2020 RewardOps Inc.
  */
@@ -108,7 +48,6 @@ const { combine, timestamp: timestampFormatter, printf } = winston.format;
 
 /**
  * Redacted message placeholder value
- *
  * @private
  */
 const REDACTED_MESSAGE = '[REDACTED]';
@@ -116,37 +55,34 @@ const REDACTED_MESSAGE = '[REDACTED]';
 /**
  * Reports whether a value is either an array or object, and therefore
  * can be traversed as valid JSON (i.e. JSON-stringifiable).
- *
  * @param {*} value Any value
  *
  * @returns {boolean} Report of whether value can be traversed as JSON
  *
  * @private
  */
-const isJSON = value => isPlainObject(value) || isArray(value);
+const isJSON = (value) => isPlainObject(value) || isArray(value);
 
 /**
  * Pretty print a given value.
- *
  * @param {object|Array} json JSON object
  *
  * @returns {string} Prettier JSON string
  *
  * @private
  */
-const prettyPrint = json => JSON.stringify(json, undefined, 2);
+const prettyPrint = (json) => JSON.stringify(json, undefined, 2);
 
 /**
  * Deeply iterate over an object and redact secret values by replacing
  * them with a `REDACTED_MESSAGE` const string.
- *
  * @param {object} obj Object with potential secrets
  *
  * @returns {object} New object with secrets redacted
  *
  * @private
  */
-const redactSecrets = obj => redact(REDACTED_MESSAGE).map(obj);
+const redactSecrets = (obj) => redact(REDACTED_MESSAGE).map(obj);
 
 /**
  * List of Personally Identifiable Information (PII) that we want to filter from the logs.
@@ -172,14 +108,13 @@ const redactyl = new Redactyl({
 /**
  * Deeply iterate over an object and redact PII values by replacing
  * them with a `REDACTED_MESSAGE` const string.
- *
  * @param {object} data Object with potential PII data
  *
  * @returns {object} New object with PII data redacted
  *
  * @private
  */
-const filterLogData = data => {
+const filterLogData = (data) => {
   if (data instanceof Error) {
     /*
      * serialize Error to plain object to avoid error:
@@ -191,13 +126,12 @@ const filterLogData = data => {
 
   // TODO: Look for another alternative for format error messages (formatErrorMessage)
   return isPlainObject(data)
-    ? flow([rawData => redactSecrets(rawData), redactedData => redactyl.redact(redactedData)])(data)
+    ? flow([(rawData) => redactSecrets(rawData), (redactedData) => redactyl.redact(redactedData)])(data)
     : data;
 };
 
 /**
  * Filters log data for PII and secrets, then formats the data using the `prettyPrint` function.
- *
  * @param {object} data Unfiltered data object
  *
  * @returns {string} Stringified, filtered data object
@@ -211,17 +145,15 @@ const processLogData = flow([filterLogData, prettyPrint]);
  *
  * If given a JSON-stringifiable object, it redacts any potential secrets
  * and pretty prints; otherwise, it simply passes through the message.
- *
  * @param {*} message Log message
  *
  * @returns {string} Formatted message
  * @private
  */
-const formatMessage = message => (isJSON(message) ? prettyPrint(redactSecrets(message)) : message);
+const formatMessage = (message) => (isJSON(message) ? prettyPrint(redactSecrets(message)) : message);
 
 /**
  * Get Winston log level based on SDK configuration.
- *
  * @returns {string} Log level
  * @private
  */
@@ -237,7 +169,6 @@ const getLogLevel = () => {
 
 /**
  * RewardOps log format
- *
  * @param {object} options Log format options
  * @param {string|number} options.level Log level
  * @param {string} options.message Log message
@@ -258,7 +189,6 @@ const logFormat = ({ level, message = '', timestamp, meta = {} }) =>
 
 /**
  * Create Winston Console Transport
- *
  * @returns Winston Console Transport with configured log level
  * @private
  */
@@ -266,7 +196,6 @@ const consoleTransport = new winston.transports.Console({ level: getLogLevel(), 
 
 /**
  * Winston logger configuration
- *
  * @type {winston.Logger}
  * @private
  */
@@ -277,7 +206,6 @@ const logger = winston.createLogger({
 
 /**
  * Whether the file logger is enabled.
- *
  * @type {boolean}
  * @private
  */
@@ -285,7 +213,6 @@ let isFileLoggerEnabled = false;
 
 /**
  * If `logFilePath` is set on {@link module:config}, set log messages to be added to a file.
- *
  * @throws Will throw is `logFilePath` not set
  * @private
  */
@@ -308,7 +235,6 @@ const addFileLogger = () => {
 
 /**
  * Remove log-to-file configuration for `logger`.
- *
  * @see {@link logger} for more information.
  * @private
  */
@@ -320,7 +246,6 @@ const removeFileLogger = () => {
 
 /**
  * Set/Reset log-to-file configuration for `logger`.
- *
  * @see {@link logger} for more information.
  * @private
  */
@@ -335,7 +260,6 @@ const setFileLogger = () => {
  * Sets the path for the log file and enable file logging.
  *
  * NOTE: Runs on module initialization.
- *
  * @param {string} path Log file path
  */
 function setLogFilePath(path) {
@@ -353,7 +277,6 @@ let isLoggerSetupComplete = false;
  * Update logger setup with Console Transform and optional File Transform.
  *
  * Used following library config initialization to adjust logging, if necessary.
- *
  * @private
  */
 const completeLogSetup = () => {
@@ -375,7 +298,6 @@ const completeLogSetup = () => {
  * Reset logger setup.
  *
  * Used for testing purposes.
- *
  * @private
  */
 const resetLoggerSetup = () => {
@@ -384,7 +306,6 @@ const resetLoggerSetup = () => {
 
 /**
  * Takes a message string and a data object, returning a string with redacted and filtered data.
- *
  * @param {string} message The string template with placeholders.
  * @param {object} data Object containing unfiltered data to be included in the log message.
  *
@@ -405,7 +326,6 @@ const mergeMessageAndData = (message, data) => {
  *
  * NOTE: If an Error object is passed as the message, it will log both the error's
  * message and stack trace.
- *
  * @param {string} message Log message
  * @param {object} options Options object
  * @param {string} options.level Log level
@@ -451,26 +371,19 @@ module.exports = {
 
 
 
-            </div>
-            
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
-                    <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
-                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
-                    </p>
-                </div>
-            </footer>
-            
-        </div>
-        <div id="side-nav" class="side-nav">
-        </div>
-    </div>
-<script src="scripts/app.min.js"></script>
-<script>PR.prettyPrint();</script>
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Apr 14 2026 15:07:38 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
 <script src="scripts/linenumber.js"> </script>
-
-
 </body>
 </html>

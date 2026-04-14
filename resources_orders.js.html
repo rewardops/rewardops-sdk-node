@@ -1,84 +1,25 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> resources/orders.js</title>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: resources/orders.js</title>
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="./build/entry.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-  
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 
+<body>
 
+<div id="main">
 
-<body class="layout small-header">
-    <div id="stickyNavbarOverlay"></div>
+    <h1 class="page-title">Source: resources/orders.js</h1>
+
     
-
-<div class="top-nav">
-    <div class="inner">
-        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        <div class="logo">
-            
-            
-        </div>
-        <div class="menu">
-            
-            <div class="navigation">
-                <a
-                    href="index.html"
-                    class="link"
-                >
-                    Documentation
-                </a>
-                
-                
-                
-            </div>
-        </div>
-    </div>
-</div>
-    <div id="main">
-        <div
-            class="sidebar "
-            id="sidebarNav"
-        >
-            
-            <nav>
-                
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul></div>
-                
-            </nav>
-        </div>
-        <div class="core" id="main-content-wrapper">
-            <div class="content">
-                <header class="page-title">
-                    <p>Source</p>
-                    <h1>resources/orders.js</h1>
-                </header>
-                
 
 
 
@@ -87,7 +28,6 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * Orders resources
- *
  * @module resources/orders
  * @copyright 2015–2020 RewardOps Inc.
  */
@@ -98,7 +38,6 @@ const { cancelOrderSchema } = require('../schemas/cancel-order');
 
 /**
  * Higher order function for creating a `getOrderSummary` function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~GetSummaryFunc} `getSummary` orders function in context
@@ -107,7 +46,7 @@ const { cancelOrderSchema } = require('../schemas/cancel-order');
  *
  * @protected
  */
-const getOrderSummary = orderContext => {
+const getOrderSummary = (orderContext) => {
   return function getSummary(params, callback) {
     const options = {
       path: `/${orderContext.contextTypeName}/${orderContext.contextId}/orders/summary`,
@@ -133,7 +72,6 @@ const getOrderSummary = orderContext => {
 
 /**
  * Get an order summary JSON objects function.
- *
  * @typedef module:resources/orders~GetSummaryFunc
  *
  * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the API call
@@ -152,7 +90,6 @@ const getOrderSummary = orderContext => {
 
 /**
  * Higher order function for creating a `getAll` orders function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~GetAllFunc} `getAll` orders function in context
@@ -161,7 +98,7 @@ const getOrderSummary = orderContext => {
  *
  * @protected
  */
-const getAllOrders = orderContext => {
+const getAllOrders = (orderContext) => {
   return function getAll(memberId, params, callback) {
     const options = {
       path: `/${orderContext.contextTypeName}/${orderContext.contextId}/orders`,
@@ -192,7 +129,6 @@ const getAllOrders = orderContext => {
 
 /**
  * Get an array of order JSON objects function.
- *
  * @typedef module:resources/orders~GetAllFunc
  *
  * @property {number} memberId Member ID
@@ -212,7 +148,6 @@ const getAllOrders = orderContext => {
 
 /**
  * Higher order function for creating a `get` order function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~GetFunc} `get` order function in context
@@ -221,7 +156,7 @@ const getAllOrders = orderContext => {
  *
  * @protected
  */
-const getOrder = orderContext => {
+const getOrder = (orderContext) => {
   return function get(orderId, params, callback) {
     const options = {
       path: `/${orderContext.contextTypeName}/${orderContext.contextId}/orders/${orderId}`,
@@ -249,7 +184,6 @@ const getOrder = orderContext => {
 
 /**
  * Get an order JSON object function.
- *
  * @typedef module:resources/orders~GetFunc
  *
  * @property {string} orderId Order ID
@@ -273,7 +207,6 @@ const getOrder = orderContext => {
  * **NOTE: If the program is configured to use {@link module:config~DefaultConfig geographic-specific PII storage},
  * the SDK handles the {@link module:resources/order-recipients~storeOrderRecipient storeOrderRecipient} call under
  * the hood by making this function an alias for {@link module:resources/order-recipients~StoreOrderRecipientFunc}.**
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object.
  *   **NOTE: If using geographic-specific PII storage, use
  *   {@link module:resources/order-recipients~V5OrderContext V5OrderContext} type as the parametre instead.**
@@ -284,7 +217,7 @@ const getOrder = orderContext => {
  *
  * @protected
  */
-const createOrder = orderContext => {
+const createOrder = (orderContext) => {
   return function create(params, callback) {
     let error;
     let errorMessage;
@@ -335,7 +268,6 @@ const createOrder = orderContext => {
  * Create an order function.
  *
  * NOTE: The `params` object is required and must include a `reward_id` and a `member` object.
- *
  * @typedef module:resources/orders~CreateFunc
  *
  * @property {object} params [Request]{@link https://github.com/request/request} params to pass to the create order API call.
@@ -365,7 +297,6 @@ const createOrder = orderContext => {
 
 /**
  * Higher order function for creating a `update` order function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~UpdateFunc} `update` order function in context
@@ -374,7 +305,7 @@ const createOrder = orderContext => {
  *
  * @protected
  */
-const updateOrder = orderContext => {
+const updateOrder = (orderContext) => {
   return function update(orderExternalId, params, callback) {
     let error;
     let errorMessage;
@@ -414,7 +345,6 @@ const updateOrder = orderContext => {
 
 /**
  * Update an order function.
- *
  * @typedef module:resources/orders~UpdateFunc
  *
  * @property {string} orderExternalId External order ID.
@@ -432,7 +362,6 @@ const updateOrder = orderContext => {
 
 /**
  * Higher order function for creating a `updateOrderItems` function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~UpdateFunc} `updateOrderItems` function in context
@@ -441,7 +370,7 @@ const updateOrder = orderContext => {
  *
  * @protected
  */
-const updateOrderItemsInContext = orderContext => {
+const updateOrderItemsInContext = (orderContext) => {
   return function updateOrderItems(externalOrderId, params, callback) {
     let error;
     let errorMessage;
@@ -481,7 +410,6 @@ const updateOrderItemsInContext = orderContext => {
 
 /**
  * Cancel an order function.
- *
  * @typedef module:resources/orders~CancelFunc
  *
  * @property {string} orderId RewardOps order ID.
@@ -505,7 +433,6 @@ const updateOrderItemsInContext = orderContext => {
 
 /**
  * Higher order function for creating a `cancelOrder` function in context.
- *
  * @param {module:resources/orders~OrderContext} orderContext Order context object
  *
  * @returns {module:resources/orders~CancelFunc} `cancelOrder` function in context
@@ -514,7 +441,7 @@ const updateOrderItemsInContext = orderContext => {
  *
  * @protected
  */
-const cancelOrder = orderContext => {
+const cancelOrder = (orderContext) => {
   return function cancel(orderId, refundReasonDescription, params, callback) {
     let error;
     let errorMessage;
@@ -562,7 +489,6 @@ const cancelOrder = orderContext => {
 
 /**
  * Function for updating all the items in an order.
- *
  * @typedef module:resources/orders~UpdateOrderItemsFunc
  *
  * @property {(string)} externalOrderId External order ID.
@@ -580,7 +506,6 @@ const cancelOrder = orderContext => {
 
 /**
  * Factory for creating `orders` methods and properties.
- *
  * @param {string} contextTypeName The type of the parent context ('programs')
  * @param {number} contextId The ID of the order's parent program
  *
@@ -616,7 +541,6 @@ function ordersFactory(contextTypeName, contextId) {
 
 /**
  * Orders methods object
- *
  * @typedef module:resources/orders~Orders
  *
  * @property {string} contextTypeName The type of the parent context ('programs')
@@ -631,7 +555,6 @@ function ordersFactory(contextTypeName, contextId) {
 
 /**
  * Order options object
- *
  * @typedef module:resources/orders~OrderContext
  *
  * @property {string} contextTypeName The type of the parent context ('programs')
@@ -646,26 +569,19 @@ module.exports = ordersFactory;
 
 
 
-            </div>
-            
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
-                    <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
-                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
-                    </p>
-                </div>
-            </footer>
-            
-        </div>
-        <div id="side-nav" class="side-nav">
-        </div>
-    </div>
-<script src="scripts/app.min.js"></script>
-<script>PR.prettyPrint();</script>
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api.html">api</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-config.html">config</a></li><li><a href="module-context.html">context</a></li><li><a href="module-emitter.html">emitter</a></li><li><a href="module-resources_custom-categories.html">resources/custom-categories</a></li><li><a href="module-resources_items.html">resources/items</a></li><li><a href="module-resources_members.html">resources/members</a></li><li><a href="module-resources_order-recipients.html">resources/order-recipients</a></li><li><a href="module-resources_orders.html">resources/orders</a></li><li><a href="module-resources_programs.html">resources/programs</a></li><li><a href="module-resources_rewards.html">resources/rewards</a></li><li><a href="module-resources_subsegments.html">resources/subsegments</a></li><li><a href="module-urls.html">urls</a></li><li><a href="module-utils_auth.html">utils/auth</a></li><li><a href="module-utils_axios.html">utils/axios</a></li><li><a href="module-utils_logger.html">utils/logger</a></li></ul><h3>Classes</h3><ul><li><a href="SDKError.html">SDKError</a></li></ul><h3>Global</h3><ul><li><a href="global.html#RO">RO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Apr 14 2026 15:07:38 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
 <script src="scripts/linenumber.js"> </script>
-
-
 </body>
 </html>
