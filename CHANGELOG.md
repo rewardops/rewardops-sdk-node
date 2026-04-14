@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/rewardops/rewardops-sdk-node/pull/125 https://github.com/rewardops/rewardops-sdk-node/pull/128) (2026-04-14)
+
+### Bug Fixes
+
+- get `npm audit` to pass
+- require a newer version of Node, because it was needed to fix vulnerable dependencies
+
 ## [2.9.0](https://github.com/rewardops/rewardops-sdk-node/pull/124) (2026-04-10)
 
 ### Bug Fixes
