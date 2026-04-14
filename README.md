@@ -184,6 +184,7 @@ To build the documentation locally:
 ```sh
 npm run build:docs
 ```
+**Important:** Before starting the publishing process, log in to npm from the terminal using `npm login`. Make sure you are using the correct account that has owner/publisher access to this package, otherwise publishing will fail.
 
 To publish a new version, run:
 
